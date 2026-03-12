@@ -1,5 +1,6 @@
 ---
 title: Knowledge Base
+layout: default
 ---
 
 # Knowledge Base
