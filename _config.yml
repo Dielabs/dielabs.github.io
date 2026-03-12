@@ -1,3 +1,10 @@
 title: Dielabs
 description: AI Inference Engineering Lab
-theme: jekyll-theme-midnight
+url: "https://dielabs.github.io"
+
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
