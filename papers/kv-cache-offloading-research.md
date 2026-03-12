@@ -1,3 +1,8 @@
+﻿---
+layout: default
+title: "KV Cache Offloading Research"
+---
+
 **DIELABS Discovery Paper**
 
 DDP-2026-001
@@ -463,3 +468,4 @@ The practical conclusion, for those working on consumer hardware, is clear: **op
 ---
 
 *Dielabs — [dielabs.eu](https://dielabs.eu)*
+

@@ -1,3 +1,8 @@
+﻿---
+layout: default
+title: "Inference Engineering Manual"
+---
+
 # LLM Inference Engineering Manual
 
 *A technical reference for infrastructure engineers entering AI operations*
@@ -885,3 +890,4 @@ The AI infrastructure that matters is not only better models (research labs prod
 ---
 
 *Dielabs — [dielabs.eu](https://dielabs.eu)*
+

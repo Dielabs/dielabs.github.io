@@ -1,3 +1,8 @@
+﻿---
+layout: default
+title: "Inference Observability"
+---
+
 # Inference Observability — Monitoring, Diagnostics and Incident Response
 
 **Version:** 1.0  
@@ -259,3 +264,4 @@ Run before every benchmark session to guarantee clean, comparable data.
 ---
 
 *Dielabs — Inference Observability Runbook v1.0*
+

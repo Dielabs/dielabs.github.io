@@ -1,3 +1,8 @@
+﻿---
+layout: default
+title: "Inference Stack Model"
+---
+
 # Inference Stack Model (ISM) — L0–L6
 
 A layered model for understanding, diagnosing and operating LLM inference systems.
@@ -330,3 +335,4 @@ This is the final layer.
 ---
 
 *Part of the Dielabs framework. See also: [Inference Mastery Model](inference-mastery-model.md), [Inference Diagnostic Framework](inference-diagnostic-framework.md)*
+

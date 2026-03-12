@@ -1,3 +1,8 @@
+﻿---
+layout: default
+title: "LLM Parameter Topology"
+---
+
 # LLM Parameter Topology — Artifact, Startup, Request
 
 > **Dielabs core principle**
@@ -265,3 +270,4 @@ This framework applies to any LLM serving stack:
 ---
 
 *Dielabs KB — LLM Parameter Topology v2.0*
+

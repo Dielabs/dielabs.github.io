@@ -1,3 +1,8 @@
+﻿---
+layout: default
+title: "Inference Diagnostic Framework"
+---
+
 # Inference Diagnostic Framework — L0–L6
 
 A structured approach for root-cause analysis in LLM inference systems.
@@ -54,3 +59,4 @@ When a problem surfaces, start from the highest visible layer and descend to roo
 ---
 
 *Part of the Dielabs framework. See also: [Inference Stack Model](inference-stack-model.md), [Inference Mastery Model](inference-mastery-model.md)*
+

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ page.title | default: site.title }} — Dielabs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080b0f;
+      --surface: #0d1117;
+      --border: #1c2333;
+      --accent: #00d4ff;
+      --accent-dim: rgba(0, 212, 255, 0.07);
+      --text: #c9d1d9;
+      --text-dim: #4a5568;
+      --text-bright: #e6edf3;
+      --mono: 'IBM Plex Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,11,15,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+    }
+
+    .nav-brand {
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-bright);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-brand span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* MAIN */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 64px 32px 120px;
+    }
+
+    /* BREADCRUMB */
+    .breadcrumb {
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .breadcrumb a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    /* CONTENT TYPOGRAPHY */
+    .content h1 {
+      font-family: var(--sans);
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 800;
+      color: var(--text-bright);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .content h1::after {
+      content: '';
+      display: block;
+      width: 48px;
+      height: 2px;
+      background: var(--accent);
+      margin-top: 20px;
+    }
+
+    .content h2 {
+      font-family: var(--sans);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-top: 48px;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .content h3 {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 32px;
+      margin-bottom: 12px;
+    }
+
+    .content h4 {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-bright);
+      margin-top: 24px;
+      margin-bottom: 8px;
+    }
+
+    .content p {
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .content a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(0,212,255,0.3);
+      transition: border-color 0.2s;
+    }
+
+    .content a:hover { border-color: var(--accent); }
+
+    .content ul, .content ol {
+      margin: 0 0 16px 20px;
+      color: var(--text);
+    }
+
+    .content li { margin-bottom: 6px; }
+
+    .content strong { color: var(--text-bright); font-weight: 500; }
+
+    .content em { color: var(--text-dim); font-style: italic; }
+
+    .content hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+      position: relative;
+    }
+
+    .content hr::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: -1px;
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    /* CODE */
+    .content code {
+      font-family: var(--mono);
+      font-size: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--accent);
+      padding: 1px 6px;
+      border-radius: 2px;
+    }
+
+    .content pre {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 20px 24px;
+      overflow-x: auto;
+      margin: 20px 0 24px;
+    }
+
+    .content pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    /* TABLES */
+    .content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 13px;
+    }
+
+    .content th {
+      background: var(--surface);
+      color: var(--accent);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 10px 16px;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+
+    .content td {
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: top;
+    }
+
+    .content tr:nth-child(even) td { background: rgba(13,17,23,0.5); }
+
+    /* BLOCKQUOTE */
+    .content blockquote {
+      border-left: 3px solid var(--accent);
+      padding: 12px 20px;
+      margin: 20px 0;
+      background: var(--accent-dim);
+      color: var(--text);
+      font-style: italic;
+    }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    footer a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--accent); }
+
+    @media (max-width: 600px) {
+      nav { padding: 0 16px; }
+      .nav-links { display: none; }
+      main { padding: 40px 16px 80px; }
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="/">Die<span>labs</span></a>
+  <ul class="nav-links">
+    <li><a href="/papers/">Papers</a></li>
+    <li><a href="/kb/">KB</a></li>
+    <li><a href="/benchmarks/">Benchmarks</a></li>
+    <li><a href="/stack/">Stack</a></li>
+    <li><a href="/cv/">CV</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="breadcrumb">
+    <a href="/">dielabs</a> / {{ page.title | default: page.name }}
+  </div>
+  <article class="content">
+    {{ content }}
+  </article>
+</main>
+
+<footer>
+  <span>Dielabs — Diego Bardella</span>
+  <span><a href="https://github.com/dielabs" target="_blank">GitHub</a> &nbsp;·&nbsp; <a href="/">Home</a></span>
+</footer>
+
+</body>
+</html>

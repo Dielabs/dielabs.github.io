@@ -1,3 +1,8 @@
+﻿---
+layout: default
+title: "KV Cache Architecture"
+---
+
 
 Unified Technical Workbook
 
@@ -400,3 +405,4 @@ New request arrives
 
 *Dielabs Knowledge Base | KV Cache Unified Workbook | February 2026*
 *[dielabs.eu](https://dielabs.eu)*
+

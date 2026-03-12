@@ -1,3 +1,8 @@
+﻿---
+layout: default
+title: "Inference Mastery Model"
+---
+
 # Inference Mastery Model (IMM) — Layers A–G
 
 A competency framework for LLM inference engineering. Unlike the ISM (which maps components), the IMM maps **skills** — what an inference engineer needs to understand and operate at each level of depth.
@@ -104,3 +109,4 @@ Operating inference systems at scale with reliability and cost awareness.
 ---
 
 *Part of the Dielabs framework. See also: [Inference Stack Model](inference-stack-model.md), [Inference Diagnostic Framework](inference-diagnostic-framework.md)*
+

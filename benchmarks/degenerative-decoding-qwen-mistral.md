@@ -1,3 +1,8 @@
+﻿---
+layout: default
+title: "Benchmark: Degenerative Decoding Qwen vs Mistral"
+---
+
 # Narrative Loop and Degenerative Decoding in vLLM
 ## Complete Case Study — Parts 1 and 2
 
@@ -406,3 +411,4 @@ The causes of this difference are not isolable from the tests conducted. Candida
 ---
 
 *Produced as part of the AI Infrastructure laboratory — Dielabs*
+

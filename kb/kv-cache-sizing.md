@@ -1,3 +1,8 @@
+﻿---
+layout: default
+title: "KV Cache Sizing"
+---
+
 # KV Cache — Sizing and Calculations
 
 Memory calculation is not just about getting the model to start — it determines the **load capacity** (concurrency) before the system hits OOM (Out of Memory).
@@ -182,3 +187,4 @@ In a standard vLLM deployment without advanced configurations, the assumptions o
 ---
 
 *Dielabs KB — KV Cache Sizing and Calculations v1.0*
+
