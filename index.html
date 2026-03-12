@@ -5,57 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dielabs — AI Inference Engineering</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto+Condensed:wght@300;400;700&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #080b0f;
-      --surface: #0d1117;
-      --border: #1c2333;
-      --accent: #00d4ff;
-      --accent-dim: rgba(0, 212, 255, 0.08);
-      --text: #c9d1d9;
-      --text-dim: #4a5568;
-      --text-bright: #e6edf3;
-      --mono: 'IBM Plex Mono', monospace;
-      --sans: 'Syne', sans-serif;
+      --bg:         #1a1610;
+      --bg2:        #211e18;
+      --bg3:        #2a261e;
+      --border:     #3d3828;
+      --border-hi:  #6b5f42;
+      --rust:       #b5692a;
+      --rust-dim:   rgba(181,105,42,0.12);
+      --warm:       #c9b48a;
+      --text:       #a89878;
+      --text-dim:   #5c5240;
+      --text-bright:#e8dcc8;
+      --mono:       'IBM Plex Mono', monospace;
+      --serif:      'Playfair Display', serif;
+      --cond:       'Roboto Condensed', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--bg);
+      background-color: var(--bg);
       color: var(--text);
-      font-family: var(--mono);
-      font-size: 14px;
+      font-family: var(--cond);
+      font-size: 15px;
       line-height: 1.7;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* Grid overlay */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
-      background-size: 48px 48px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* Glow */
     body::after {
       content: '';
       position: fixed;
-      top: -20%;
-      left: -10%;
-      width: 60%;
-      height: 60%;
-      background: radial-gradient(ellipse, rgba(0,212,255,0.04) 0%, transparent 70%);
+      inset: 0;
+      background: radial-gradient(ellipse at 20% 0%, rgba(181,105,42,0.06) 0%, transparent 60%);
       pointer-events: none;
       z-index: 0;
     }
@@ -63,240 +50,290 @@
     main {
       position: relative;
       z-index: 1;
-      max-width: 860px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 80px 32px 120px;
+      padding: 80px 40px 120px;
     }
 
-    /* Header */
     header {
-      margin-bottom: 80px;
-      animation: fadeUp 0.6s ease both;
+      margin-bottom: 72px;
+      animation: fadeIn 0.8s ease both;
     }
 
-    .label {
+    .eyebrow {
       font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      color: var(--accent);
+      font-size: 10px;
+      letter-spacing: 0.3em;
       text-transform: uppercase;
+      color: var(--rust);
       margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .eyebrow::after {
+      content: '';
+      flex: 1;
+      max-width: 60px;
+      height: 1px;
+      background: var(--rust);
+      opacity: 0.4;
     }
 
     h1 {
-      font-family: var(--sans);
-      font-size: clamp(42px, 7vw, 72px);
-      font-weight: 800;
+      font-family: var(--serif);
+      font-size: clamp(40px, 6vw, 68px);
+      font-weight: 700;
       color: var(--text-bright);
-      line-height: 1.0;
-      letter-spacing: -0.02em;
-      margin-bottom: 24px;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
     }
 
-    h1 span {
-      color: var(--accent);
+    h1 em {
+      font-style: italic;
+      color: var(--warm);
+    }
+
+    .sub {
+      font-family: var(--cond);
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-top: 16px;
+      margin-bottom: 28px;
     }
 
     .tagline {
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--text-dim);
+      font-family: var(--serif);
+      font-size: 17px;
+      font-style: italic;
+      color: var(--warm);
+      opacity: 0.7;
       max-width: 480px;
-      line-height: 1.8;
+      line-height: 1.6;
+      border-left: 2px solid var(--rust);
+      padding-left: 16px;
     }
 
-    /* Divider */
-    .divider {
-      width: 100%;
+    .rule {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 56px 0;
+    }
+
+    .rule::before, .rule::after {
+      content: '';
+      flex: 1;
       height: 1px;
       background: var(--border);
-      margin: 48px 0;
-      position: relative;
     }
 
-    .divider::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 80px;
-      height: 1px;
-      background: var(--accent);
+    .rule-mark {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
     }
 
-    /* About */
     .about {
       margin-bottom: 64px;
-      animation: fadeUp 0.6s 0.1s ease both;
+      animation: fadeIn 0.8s 0.1s ease both;
     }
 
     .about p {
-      font-size: 14px;
+      font-size: 15px;
       color: var(--text);
       line-height: 1.9;
-      max-width: 620px;
+      max-width: 640px;
     }
 
-    .about p + p { margin-top: 16px; }
+    .about p + p { margin-top: 14px; }
 
-    /* Section label */
-    .section-label {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-bottom: 24px;
-    }
-
-    /* Areas grid */
-    .areas {
+    .areas-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
       margin-bottom: 64px;
-      animation: fadeUp 0.6s 0.2s ease both;
+      animation: fadeIn 0.8s 0.2s ease both;
     }
 
-    .area-item {
-      background: var(--surface);
-      padding: 20px 24px;
-      transition: background 0.2s;
+    .area {
+      background: var(--bg2);
+      padding: 22px 24px;
+      transition: background 0.25s;
+      position: relative;
     }
 
-    .area-item:hover {
-      background: var(--accent-dim);
+    .area::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px; height: 0;
+      background: var(--rust);
+      transition: height 0.25s;
     }
 
-    .area-item .area-name {
-      font-size: 12px;
+    .area:hover { background: var(--bg3); }
+    .area:hover::before { height: 100%; }
+
+    .area-name {
+      font-family: var(--cond);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
       color: var(--text-bright);
-      font-weight: 500;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
-    .area-item .area-desc {
+    .area-desc {
+      font-family: var(--mono);
       font-size: 11px;
       color: var(--text-dim);
+      line-height: 1.5;
     }
 
-    /* Repos / links */
     .links {
       display: flex;
       flex-direction: column;
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
-      margin-bottom: 64px;
-      animation: fadeUp 0.6s 0.3s ease both;
+      margin-bottom: 72px;
+      animation: fadeIn 0.8s 0.3s ease both;
     }
 
-    .link-item {
+    .link-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--surface);
-      padding: 16px 24px;
+      background: var(--bg2);
+      padding: 18px 28px;
       text-decoration: none;
       color: var(--text);
-      transition: background 0.2s, color 0.2s;
+      transition: background 0.2s;
       gap: 16px;
     }
 
-    .link-item:hover {
-      background: var(--accent-dim);
-      color: var(--text-bright);
+    .link-row:hover { background: var(--rust-dim); }
+    .link-row:hover .link-title { color: var(--text-bright); }
+    .link-row:hover .arrow { color: var(--rust); transform: translateX(4px); }
+
+    .link-left { display: flex; align-items: baseline; gap: 20px; }
+
+    .link-index {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      min-width: 24px;
     }
 
-    .link-item:hover .link-arrow {
-      color: var(--accent);
-      transform: translateX(4px);
+    .link-title {
+      font-family: var(--cond);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--warm);
+      transition: color 0.2s;
     }
 
-    .link-name {
-      font-size: 13px;
-      color: var(--text-bright);
-    }
-
-    .link-path {
+    .link-desc {
+      font-family: var(--mono);
       font-size: 11px;
       color: var(--text-dim);
-      margin-top: 2px;
     }
 
-    .link-arrow {
-      font-size: 16px;
+    .arrow {
+      font-size: 18px;
       color: var(--text-dim);
       transition: transform 0.2s, color 0.2s;
       flex-shrink: 0;
     }
 
-    /* Footer */
     footer {
-      animation: fadeUp 0.6s 0.4s ease both;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 24px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      animation: fadeIn 0.8s 0.4s ease both;
     }
 
     .footer-name {
-      font-family: var(--sans);
-      font-size: 13px;
-      font-weight: 700;
+      font-family: var(--serif);
+      font-size: 20px;
       color: var(--text-bright);
+      margin-bottom: 4px;
     }
 
-    .footer-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .footer-links a {
+    .footer-meta {
+      font-family: var(--mono);
       font-size: 11px;
       color: var(--text-dim);
-      text-decoration: none;
       letter-spacing: 0.1em;
+    }
+
+    .footer-links { display: flex; gap: 28px; }
+
+    .footer-links a {
+      font-family: var(--cond);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
       transition: color 0.2s;
     }
 
-    .footer-links a:hover { color: var(--accent); }
+    .footer-links a:hover { color: var(--rust); }
 
-    /* Status dot */
     .status {
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      font-family: var(--mono);
       font-size: 11px;
       color: var(--text-dim);
-      margin-top: 12px;
+      margin-top: 20px;
     }
 
-    .status-dot {
-      width: 6px;
-      height: 6px;
+    .dot {
+      width: 6px; height: 6px;
       border-radius: 50%;
-      background: #00ff88;
-      animation: pulse 2s infinite;
+      background: #7a9e6a;
+      animation: pulse 2.5s infinite;
     }
 
     @keyframes pulse {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+      50%       { opacity: 0.25; }
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    @media (max-width: 600px) {
-      main { padding: 48px 20px 80px; }
+    @media (max-width: 640px) {
+      main { padding: 48px 24px 80px; }
+      .areas-grid { grid-template-columns: 1fr 1fr; }
       footer { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 420px) {
+      .areas-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -304,96 +341,113 @@
 <main>
 
   <header>
-    <div class="label">// dielabs.github.io</div>
-    <h1>AI Inference<br><span>Engineering</span></h1>
-    <p class="tagline">Understanding systems by building, measuring and documenting them.</p>
+    <div class="eyebrow">Dielabs</div>
+    <h1>AI Inference<br><em>Engineering</em></h1>
+    <p class="sub">Personal Engineering Lab · Turin, IT</p>
+    <p class="tagline">Understanding systems by building,<br>measuring and documenting them.</p>
     <div class="status">
-      <span class="status-dot"></span>
-      Lab active — RTX 4070 Super / vLLM / Prometheus
+      <span class="dot"></span>
+      RTX 4070 Super · vLLM · Prometheus · Grafana
     </div>
   </header>
 
-  <div class="divider"></div>
+  <div class="rule"><span class="rule-mark">about</span></div>
 
   <section class="about">
-    <div class="section-label">// about</div>
     <p>
-      Dielabs is a personal inference engineering lab focused on the operational and infrastructural side of AI systems.
-      No training pipelines, no data science — just runtimes, memory, throughput and observability.
+      Dielabs investigates the operational and infrastructural side of AI systems.
+      No training pipelines, no data science — runtimes, memory, throughput, observability.
     </p>
     <p>
-      Built on 10+ years of enterprise infrastructure background (VMware, Nutanix, NetApp),
-      reoriented around GPU-accelerated inference stacks and the engineering discipline required to run them well.
+      Built on 10+ years of enterprise infrastructure background — VMware, Nutanix, NetApp —
+      reoriented around GPU-accelerated inference stacks and the engineering discipline required to run them at scale.
     </p>
   </section>
 
-  <section style="margin-bottom:64px; animation: fadeUp 0.6s 0.2s ease both;">
-    <div class="section-label">// areas of exploration</div>
-    <div class="areas">
-      <div class="area-item">
+  <div class="rule"><span class="rule-mark">focus areas</span></div>
+
+  <section style="margin-bottom:0; animation: fadeIn 0.8s 0.2s ease both;">
+    <div class="areas-grid">
+      <div class="area">
         <div class="area-name">GPU Infrastructure</div>
         <div class="area-desc">Homelab node, DCGM, driver stack</div>
       </div>
-      <div class="area-item">
+      <div class="area">
         <div class="area-name">Inference Runtimes</div>
         <div class="area-desc">vLLM internals, KV cache, batching</div>
       </div>
-      <div class="area-item">
+      <div class="area">
         <div class="area-name">Benchmarking</div>
-        <div class="area-desc">GuideLLM sweeps, A/B configs, metrics</div>
+        <div class="area-desc">GuideLLM sweeps, A/B configs</div>
       </div>
-      <div class="area-item">
+      <div class="area">
         <div class="area-name">Observability</div>
         <div class="area-desc">Prometheus, Grafana, PromQL, DCGM</div>
       </div>
-      <div class="area-item">
+      <div class="area">
         <div class="area-name">Memory Engineering</div>
         <div class="area-desc">KV offload, LMCache, quantization</div>
       </div>
-      <div class="area-item">
+      <div class="area">
         <div class="area-name">Distributed Inference</div>
         <div class="area-desc">Parallelism, NCCL, disaggregated P/D</div>
       </div>
     </div>
   </section>
 
-  <section style="margin-bottom:64px; animation: fadeUp 0.6s 0.3s ease both;">
-    <div class="section-label">// repository</div>
+  <div class="rule"><span class="rule-mark">repository</span></div>
+
+  <section style="margin-bottom:64px;">
     <div class="links">
-      <a class="link-item" href="papers/">
-        <div>
-          <div class="link-name">Papers</div>
-          <div class="link-path">Technical papers and long-form research notes</div>
+      <a class="link-row" href="papers/">
+        <div class="link-left">
+          <span class="link-index">01</span>
+          <div>
+            <div class="link-title">Papers</div>
+            <div class="link-desc">Technical papers and long-form research notes</div>
+          </div>
         </div>
-        <span class="link-arrow">→</span>
+        <span class="arrow">→</span>
       </a>
-      <a class="link-item" href="kb/">
-        <div>
-          <div class="link-name">Knowledge Base</div>
-          <div class="link-path">Conceptual notes on inference systems</div>
+      <a class="link-row" href="kb/">
+        <div class="link-left">
+          <span class="link-index">02</span>
+          <div>
+            <div class="link-title">Knowledge Base</div>
+            <div class="link-desc">Conceptual notes on inference systems</div>
+          </div>
         </div>
-        <span class="link-arrow">→</span>
+        <span class="arrow">→</span>
       </a>
-      <a class="link-item" href="benchmarks/">
-        <div>
-          <div class="link-name">Benchmarks</div>
-          <div class="link-path">Performance experiments and benchmark artifacts</div>
+      <a class="link-row" href="benchmarks/">
+        <div class="link-left">
+          <span class="link-index">03</span>
+          <div>
+            <div class="link-title">Benchmarks</div>
+            <div class="link-desc">Performance experiments and benchmark artifacts</div>
+          </div>
         </div>
-        <span class="link-arrow">→</span>
+        <span class="arrow">→</span>
       </a>
-      <a class="link-item" href="stack/">
-        <div>
-          <div class="link-name">Stack</div>
-          <div class="link-path">Infrastructure configurations and framework docs</div>
+      <a class="link-row" href="stack/">
+        <div class="link-left">
+          <span class="link-index">04</span>
+          <div>
+            <div class="link-title">Stack</div>
+            <div class="link-desc">Infrastructure configurations and framework docs</div>
+          </div>
         </div>
-        <span class="link-arrow">→</span>
+        <span class="arrow">→</span>
       </a>
-      <a class="link-item" href="cv/">
-        <div>
-          <div class="link-name">CV</div>
-          <div class="link-path">Professional profile</div>
+      <a class="link-row" href="cv/">
+        <div class="link-left">
+          <span class="link-index">05</span>
+          <div>
+            <div class="link-title">CV</div>
+            <div class="link-desc">Professional profile</div>
+          </div>
         </div>
-        <span class="link-arrow">→</span>
+        <span class="arrow">→</span>
       </a>
     </div>
   </section>
@@ -401,7 +455,7 @@
   <footer>
     <div>
       <div class="footer-name">Diego Bardella</div>
-      <div style="font-size:11px; color:var(--text-dim); margin-top:4px;">Inference Engineering · Turin, IT</div>
+      <div class="footer-meta">Inference Engineering · Turin, IT</div>
     </div>
     <div class="footer-links">
       <a href="https://linkedin.com/in/diegobardella" target="_blank">LinkedIn</a>
