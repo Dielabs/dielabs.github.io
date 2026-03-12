@@ -5,295 +5,215 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ page.title | default: site.title }} — Dielabs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto+Condensed:wght@300;400;700&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:          #1a1610;
-      --bg2:         #211e18;
-      --border:      #3d3828;
-      --rust:        #b5692a;
-      --rust-dim:    rgba(181,105,42,0.10);
-      --warm:        #c9b48a;
-      --text:        #a89878;
-      --text-dim:    #5c5240;
-      --text-bright: #e8dcc8;
-      --mono:        'IBM Plex Mono', monospace;
-      --serif:       'Playfair Display', serif;
-      --cond:        'Roboto Condensed', sans-serif;
+      --blue:   #0057FF;
+      --violet: #7B2FFF;
+      --pink:   #FF2D78;
+      --cyan:   #00D4FF;
+      --white:  #ffffff;
+      --off:    #F7F7FA;
+      --text:   #1a1a2e;
+      --muted:  #5a5a7a;
+      --border: rgba(0,0,0,0.08);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
       color: var(--text);
-      font-family: var(--cond);
       font-size: 15px;
       line-height: 1.75;
       min-height: 100vh;
     }
 
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at 20% 0%, rgba(181,105,42,0.05) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ── Nav ── */
+    /* ── NAV ── */
     nav {
-      position: relative;
-      z-index: 10;
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem; height: 56px;
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
-      background: var(--bg);
-      padding: 0 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 52px;
     }
 
     .nav-logo {
-      font-family: var(--serif);
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text-bright);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem; letter-spacing: 0.06em;
+      background: linear-gradient(90deg, var(--blue), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       text-decoration: none;
     }
 
-    .nav-logo span {
-      font-style: italic;
-      color: var(--warm);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 28px;
-    }
-
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
     .nav-links a {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.2em;
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--text-dim);
-      text-decoration: none;
-      transition: color 0.2s;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
     }
+    .nav-links a:hover { color: var(--blue); }
 
-    .nav-links a:hover { color: var(--rust); }
-
-    /* ── Page wrapper ── */
+    /* ── PAGE WRAPPER ── */
     .page {
-      position: relative;
-      z-index: 1;
       max-width: 1100px;
       margin: 0 auto;
-      padding: 64px 40px 120px;
-      animation: fadeIn 0.5s ease both;
+      padding: 3.5rem 3rem 6rem;
+      animation: fadeIn 0.45s ease both;
     }
 
-    /* ── Breadcrumb ── */
+    /* ── BREADCRUMB ── */
     .breadcrumb {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-bottom: 40px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 2.5rem;
+      display: flex; align-items: center; gap: 8px;
     }
+    .breadcrumb a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: var(--blue); }
+    .breadcrumb .sep { color: var(--border); opacity: 0.6; }
 
-    .breadcrumb a {
-      color: var(--text-dim);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .breadcrumb a:hover { color: var(--rust); }
-    .breadcrumb .sep { color: var(--border); }
-
-    /* ── Markdown content ── */
+    /* ── MARKDOWN CONTENT ── */
     .content h1 {
-      font-family: var(--serif);
-      font-size: clamp(28px, 5.5vw, 72px);
-      font-weight: 700;
-      color: var(--text-bright);
-      line-height: 1.0;
-      letter-spacing: -0.02em;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(28px, 4.5vw, 60px);
+      line-height: 1.0; letter-spacing: 0.02em;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1.5px solid var(--border);
       white-space: nowrap;
     }
 
     .content h2 {
-      font-family: var(--serif);
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--warm);
-      margin-top: 48px;
-      margin-bottom: 16px;
-      padding-bottom: 8px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(20px, 2.5vw, 32px);
+      letter-spacing: 0.03em;
+      background: linear-gradient(90deg, var(--blue), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-top: 3rem; margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
       border-bottom: 1px solid var(--border);
     }
 
     .content h3 {
-      font-family: var(--cond);
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-bright);
-      margin-top: 32px;
-      margin-bottom: 12px;
+      font-size: 0.82rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--blue);
+      margin-top: 2rem; margin-bottom: 0.7rem;
     }
 
     .content h4 {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--rust);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-top: 24px;
-      margin-bottom: 8px;
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--violet);
+      margin-top: 1.5rem; margin-bottom: 0.5rem;
     }
 
     .content p {
-      color: var(--text);
-      margin-bottom: 16px;
-      max-width: 680px;
-      line-height: 1.85;
+      color: var(--muted); margin-bottom: 1rem;
+      max-width: 700px; line-height: 1.85;
     }
 
     .content a {
-      color: var(--rust);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(181,105,42,0.3);
+      color: var(--blue); text-decoration: none;
+      border-bottom: 1px solid rgba(0,87,255,0.25);
       transition: border-color 0.2s;
     }
-
-    .content a:hover { border-color: var(--rust); }
+    .content a:hover { border-color: var(--blue); }
 
     .content ul, .content ol {
-      margin: 0 0 16px 20px;
-      color: var(--text);
+      margin: 0 0 1rem 1.4rem; color: var(--muted);
     }
+    .content li { margin-bottom: 5px; line-height: 1.75; }
 
-    .content li { margin-bottom: 6px; line-height: 1.7; }
-
-    .content strong { color: var(--text-bright); font-weight: 700; }
-    .content em { color: var(--warm); font-style: italic; }
+    .content strong { color: var(--text); font-weight: 600; }
+    .content em { color: var(--violet); font-style: italic; }
 
     .content code {
-      font-family: var(--mono);
-      font-size: 12px;
-      background: var(--bg2);
-      color: var(--warm);
+      font-family: 'DM Mono', 'IBM Plex Mono', monospace;
+      font-size: 0.82rem;
+      background: var(--off);
+      color: var(--violet);
       padding: 2px 6px;
+      border-radius: 4px;
       border: 1px solid var(--border);
     }
 
     .content pre {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--rust);
-      padding: 20px 24px;
-      margin: 24px 0;
+      background: var(--off);
+      border: 1.5px solid var(--border);
+      border-left: 3px solid var(--blue);
+      border-radius: 8px;
+      padding: 1.4rem 1.6rem;
+      margin: 1.5rem 0;
       overflow-x: auto;
     }
-
     .content pre code {
-      background: none;
-      border: none;
-      padding: 0;
-      font-size: 13px;
-      color: var(--text);
+      background: none; border: none; padding: 0;
+      font-size: 0.85rem; color: var(--text);
     }
 
     .content blockquote {
-      border-left: 3px solid var(--rust);
-      padding-left: 20px;
-      margin: 24px 0;
-      font-family: var(--serif);
+      border-left: 2px solid var(--blue);
+      padding-left: 1.2rem;
+      margin: 1.5rem 0;
       font-style: italic;
-      color: var(--warm);
-      opacity: 0.8;
+      color: var(--muted); opacity: 0.85;
     }
 
     .content table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 24px 0;
-      font-size: 13px;
+      width: 100%; border-collapse: collapse;
+      margin: 1.5rem 0; font-size: 0.88rem;
     }
-
     .content th {
-      font-family: var(--cond);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      background: var(--bg2);
-      padding: 10px 16px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); background: var(--off);
+      padding: 10px 14px; text-align: left;
+      border-bottom: 1.5px solid var(--border);
     }
-
     .content td {
-      padding: 10px 16px;
+      padding: 10px 14px;
       border-bottom: 1px solid var(--border);
-      color: var(--text);
+      color: var(--muted);
     }
-
-    .content tr:hover td { background: rgba(181,105,42,0.04); }
+    .content tr:hover td { background: var(--off); }
 
     .content hr {
       border: none;
-      border-top: 1px solid var(--border);
-      margin: 40px 0;
+      border-top: 1.5px solid var(--border);
+      margin: 2.5rem 0;
     }
 
-    /* ── Footer ── */
+    /* ── FOOTER ── */
     footer {
-      position: relative;
-      z-index: 1;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 24px 40px 48px;
+      background: var(--off);
       border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
+      max-width: 100%;
+      padding: 1.5rem 3rem;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 10px;
     }
 
     .footer-left {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--text-dim);
-      letter-spacing: 0.1em;
+      font-size: 0.78rem; color: var(--muted); letter-spacing: 0.04em;
     }
 
     .footer-right a {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      text-decoration: none;
-      transition: color 0.2s;
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
     }
-
-    .footer-right a:hover { color: var(--rust); }
+    .footer-right a:hover { color: var(--blue); }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
@@ -301,24 +221,25 @@
     }
 
     @media (max-width: 600px) {
-      nav { padding: 0 20px; }
-      .page { padding: 40px 20px 80px; }
-      footer { padding: 20px; }
-      .content h1 { white-space: normal; font-size: clamp(26px, 8vw, 48px); }
+      nav { padding: 0 1.2rem; }
+      .nav-links { display: none; }
+      .page { padding: 2.5rem 1.2rem 4rem; }
+      footer { padding: 1.2rem; }
+      .content h1 { white-space: normal; font-size: clamp(24px, 8vw, 44px); }
     }
   </style>
 </head>
 <body>
 
 <nav>
-  <a class="nav-logo" href="/">Die<span>labs</span></a>
-  <div class="nav-links">
-    <a href="/papers/">Papers</a>
-    <a href="/kb/">KB</a>
-    <a href="/benchmarks/">Benchmarks</a>
-    <a href="/stack/">Stack</a>
-    <a href="/cv/">CV</a>
-  </div>
+  <a class="nav-logo" href="/">Dielabs</a>
+  <ul class="nav-links">
+    <li><a href="/papers/">Papers</a></li>
+    <li><a href="/kb/">KB</a></li>
+    <li><a href="/benchmarks/">Benchmarks</a></li>
+    <li><a href="/stack/">Stack</a></li>
+    <li><a href="/cv/">CV</a></li>
+  </ul>
 </nav>
 
 <div class="page">

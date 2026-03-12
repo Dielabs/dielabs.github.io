@@ -5,346 +5,358 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dielabs — AI Inference Engineering</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto+Condensed:wght@300;400;700&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:         #1a1610;
-      --bg2:        #211e18;
-      --bg3:        #2a261e;
-      --border:     #3d3828;
-      --border-hi:  #6b5f42;
-      --rust:       #b5692a;
-      --rust-dim:   rgba(181,105,42,0.12);
-      --warm:       #c9b48a;
-      --text:       #a89878;
-      --text-dim:   #5c5240;
-      --text-bright:#e8dcc8;
-      --mono:       'IBM Plex Mono', monospace;
-      --serif:      'Playfair Display', serif;
-      --cond:       'Roboto Condensed', sans-serif;
+      --blue:    #0057FF;
+      --violet:  #7B2FFF;
+      --pink:    #FF2D78;
+      --cyan:    #00D4FF;
+      --yellow:  #FFE500;
+      --white:   #ffffff;
+      --off:     #F7F7FA;
+      --text:    #1a1a2e;
+      --muted:   #5a5a7a;
+      --border:  rgba(0,0,0,0.08);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background-color: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
       color: var(--text);
-      font-family: var(--cond);
       font-size: 15px;
       line-height: 1.7;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at 20% 0%, rgba(181,105,42,0.06) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 0;
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 3rem;
+      height: 56px;
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
     }
 
-    main {
-      position: relative;
-      z-index: 1;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 80px 40px 120px;
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.06em;
+      background: linear-gradient(90deg, var(--blue), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
     }
 
-    header {
-      margin-bottom: 72px;
-      animation: fadeIn 0.8s ease both;
-    }
-
-    .eyebrow {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.3em;
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--rust);
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--blue); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 7rem 3rem 4rem;
+      position: relative; overflow: hidden;
     }
 
-    .eyebrow::after {
-      content: '';
-      flex: 1;
-      max-width: 60px;
-      height: 1px;
-      background: var(--rust);
-      opacity: 0.4;
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); opacity: 0.15; pointer-events: none;
+      animation: float 9s ease-in-out infinite;
+    }
+    .orb-1 { width: 480px; height: 480px; background: var(--blue);   top: -80px;  right: -80px; }
+    .orb-2 { width: 320px; height: 320px; background: var(--violet); top: 40%;    right: 18%; animation-delay: -3s; }
+    .orb-3 { width: 280px; height: 280px; background: var(--cyan);   bottom: 0;   left: 28%;  animation-delay: -5s; }
+    .orb-4 { width: 220px; height: 220px; background: var(--pink);   top: 18%;    left: -60px; animation-delay: -2s; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0) scale(1); }
+      50%      { transform: translateY(-24px) scale(1.04); }
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; width: 100%; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--blue);
+      border: 1.5px solid rgba(0,87,255,0.28);
+      padding: 5px 14px; border-radius: 100px;
+      margin-bottom: 1.6rem;
+      background: rgba(0,87,255,0.05);
+    }
+    .hero-badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--blue); animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:0.35; transform:scale(0.75); }
     }
 
     h1 {
-      font-family: var(--serif);
-      font-size: clamp(40px, 8.5vw, 110px);
-      font-weight: 700;
-      color: var(--text-bright);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 5vw, 72px);
       line-height: 1.0;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
+      letter-spacing: 0.03em;
+      color: var(--text);
+      margin-bottom: 0.2em;
       white-space: nowrap;
     }
 
     h1 em {
-      font-style: italic;
-      color: var(--warm);
+      font-style: normal;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--violet) 55%, var(--pink) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .sub {
-      font-family: var(--cond);
-      font-size: 13px;
-      font-weight: 300;
-      letter-spacing: 0.15em;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--text-dim);
-      margin-top: 16px;
-      margin-bottom: 28px;
+      color: var(--muted);
+      margin-top: 0.8rem;
+      margin-bottom: 1.6rem;
       white-space: nowrap;
     }
 
     .tagline {
-      font-family: var(--serif);
-      font-size: clamp(15px, 2.2vw, 20px);
+      font-size: clamp(14px, 1.8vw, 18px);
+      font-weight: 300;
       font-style: italic;
-      color: var(--warm);
-      opacity: 0.7;
+      color: var(--muted);
       line-height: 1.6;
-      border-left: 2px solid var(--rust);
-      padding-left: 16px;
+      border-left: 2px solid var(--blue);
+      padding-left: 14px;
+      margin-bottom: 2rem;
     }
 
-    .rule {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin: 56px 0;
+    .status {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+    .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #3db86a; animation: pulse 2.5s infinite;
     }
 
-    .rule::before, .rule::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--off);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.8rem 3rem;
+      display: flex; justify-content: center; gap: 5rem; flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; letter-spacing: 0.05em;
+      background: linear-gradient(135deg, var(--blue), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-top: 2px;
     }
 
-    .rule-mark {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--text-dim);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+    /* ── SECTIONS ── */
+    .section { padding: 5rem 3rem; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 0.6rem;
     }
 
-    .about {
-      margin-bottom: 64px;
-      animation: fadeIn 0.8s 0.1s ease both;
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 1; letter-spacing: 0.03em;
+      color: var(--text); margin-bottom: 0.8rem;
     }
 
-    .about p {
-      font-size: 15px;
-      color: var(--text);
-      line-height: 1.9;
-      max-width: 640px;
+    .section-desc {
+      font-size: 0.95rem; color: var(--muted);
+      max-width: 540px; line-height: 1.75; margin-bottom: 2.5rem;
     }
 
-    .about p + p { margin-top: 14px; }
+    /* ── ABOUT ── */
+    .about-text p {
+      font-size: 0.95rem; color: var(--muted);
+      line-height: 1.9; max-width: 640px;
+    }
+    .about-text p + p { margin-top: 12px; }
 
-    .areas-grid {
+    /* ── FOCUS GRID ── */
+    .focus-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
+      gap: 1.5px;
       background: var(--border);
-      border: 1px solid var(--border);
-      margin-bottom: 64px;
-      animation: fadeIn 0.8s 0.2s ease both;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
     }
 
-    .area {
-      background: var(--bg2);
-      padding: 22px 24px;
-      transition: background 0.25s;
-      position: relative;
+    .focus-card {
+      background: var(--white); padding: 2rem;
+      transition: background 0.25s; position: relative;
     }
+    .focus-card:hover { background: var(--off); }
 
-    .area::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 2px; height: 0;
-      background: var(--rust);
-      transition: height 0.25s;
+    .focus-accent {
+      width: 36px; height: 3px; border-radius: 2px; margin-bottom: 1.2rem;
     }
+    .a-blue   { background: var(--blue); }
+    .a-violet { background: var(--violet); }
+    .a-pink   { background: var(--pink); }
+    .a-cyan   { background: var(--cyan); }
+    .a-yellow { background: #f0b800; }
+    .a-grad   { background: linear-gradient(90deg, var(--blue), var(--violet)); }
 
-    .area:hover { background: var(--bg3); }
-    .area:hover::before { height: 100%; }
-
-    .area-name {
-      font-family: var(--cond);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--text-bright);
-      margin-bottom: 6px;
+    .focus-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem; letter-spacing: 0.04em;
+      color: var(--text); margin-bottom: 0.5rem;
     }
+    .focus-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
 
-    .area-desc {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-dim);
-      line-height: 1.5;
-    }
-
+    /* ── LINKS (repository) ── */
     .links {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
+      display: flex; flex-direction: column; gap: 1.5px;
       background: var(--border);
-      border: 1px solid var(--border);
-      margin-bottom: 72px;
-      animation: fadeIn 0.8s 0.3s ease both;
+      border: 1.5px solid var(--border);
+      border-radius: 16px; overflow: hidden;
     }
 
     .link-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--bg2);
-      padding: 18px 28px;
-      text-decoration: none;
-      color: var(--text);
-      transition: background 0.2s;
-      gap: 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--white);
+      padding: 1.2rem 1.8rem;
+      text-decoration: none; color: var(--text);
+      transition: background 0.2s; gap: 16px;
     }
+    .link-row:hover { background: var(--off); }
+    .link-row:hover .link-title { color: var(--blue); }
+    .link-row:hover .arrow { color: var(--blue); transform: translateX(4px); }
 
-    .link-row:hover { background: var(--rust-dim); }
-    .link-row:hover .link-title { color: var(--text-bright); }
-    .link-row:hover .arrow { color: var(--rust); transform: translateX(4px); }
-
-    .link-left { display: flex; align-items: baseline; gap: 20px; }
+    .link-left { display: flex; align-items: center; gap: 1.5rem; }
 
     .link-index {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--text-dim);
-      min-width: 24px;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      color: var(--muted); min-width: 22px;
     }
 
     .link-title {
-      font-family: var(--cond);
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--warm);
-      transition: color 0.2s;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem; letter-spacing: 0.05em;
+      color: var(--text); transition: color 0.2s;
     }
 
     .link-desc {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-dim);
+      font-size: 0.82rem; color: var(--muted); margin-top: 1px;
     }
 
     .arrow {
-      font-size: 18px;
-      color: var(--text-dim);
-      transition: transform 0.2s, color 0.2s;
-      flex-shrink: 0;
+      font-size: 1.2rem; color: var(--muted);
+      transition: transform 0.2s, color 0.2s; flex-shrink: 0;
     }
 
+    /* ── FOOTER ── */
     footer {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 24px;
-      padding-top: 32px;
+      background: var(--off);
       border-top: 1px solid var(--border);
-      animation: fadeIn 0.8s 0.4s ease both;
+      padding: 2rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
     }
 
-    .footer-name {
-      font-family: var(--serif);
-      font-size: 20px;
-      color: var(--text-bright);
-      margin-bottom: 4px;
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem; letter-spacing: 0.06em;
+      background: linear-gradient(90deg, var(--blue), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    .footer-meta {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-dim);
-      letter-spacing: 0.1em;
-    }
+    footer p { font-size: 0.8rem; color: var(--muted); }
 
-    .footer-links { display: flex; gap: 28px; }
-
+    .footer-links { display: flex; gap: 1.5rem; }
     .footer-links a {
-      font-family: var(--cond);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.2em;
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: var(--text-dim);
-      text-decoration: none;
-      transition: color 0.2s;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
     }
+    .footer-links a:hover { color: var(--blue); }
 
-    .footer-links a:hover { color: var(--rust); }
-
-    .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-dim);
-      margin-top: 20px;
-    }
-
-    .dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #7a9e6a;
-      animation: pulse 2.5s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.25; }
-    }
-
+    /* ── ANIMATIONS ── */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+    .hero-content { animation: fadeIn 0.7s ease both; }
 
-    @media (max-width: 640px) {
-      main { padding: 48px 24px 80px; }
-      h1 { white-space: normal; font-size: clamp(36px, 10vw, 64px); }
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      .hero, .section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      h1 { white-space: normal; font-size: clamp(32px, 9vw, 56px); }
       .sub { white-space: normal; }
-      .areas-grid { grid-template-columns: 1fr 1fr; }
-      footer { flex-direction: column; align-items: flex-start; }
+      .stats-bar { gap: 2rem; padding: 1.5rem; }
+      .focus-grid { grid-template-columns: 1fr 1fr; }
+      footer { flex-direction: column; }
     }
-
-    @media (max-width: 420px) {
-      .areas-grid { grid-template-columns: 1fr; }
+    @media (max-width: 480px) {
+      .focus-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-<main>
 
-  <header>
-    <div class="eyebrow">Dielabs</div>
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Dielabs</a>
+  <ul class="nav-links">
+    <li><a href="#focus">Focus</a></li>
+    <li><a href="#repository">Repository</a></li>
+    <li><a href="papers/">Papers</a></li>
+    <li><a href="kb/">KB</a></li>
+    <li><a href="stack/">Stack</a></li>
+    <li><a href="cv/">CV</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+  <div class="hero-content">
+    <span class="hero-badge">AI Inference Engineering Lab</span>
     <h1>AI Inference <em>Engineering</em></h1>
     <p class="sub">Personal Engineering Lab · Casale Monferrato, IT</p>
     <p class="tagline">Understanding systems by building, measuring and documenting them.</p>
@@ -352,55 +364,92 @@
       <span class="dot"></span>
       RTX 4070 Super · vLLM · Prometheus · Grafana
     </div>
-  </header>
+  </div>
+</section>
 
-  <div class="rule"><span class="rule-mark">about</span></div>
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-number">RTX 4070S</div>
+    <div class="stat-label">Primary GPU</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">5</div>
+    <div class="stat-label">Models Benchmarked</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">L0–L6</div>
+    <div class="stat-label">Inference Stack Model</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">17</div>
+    <div class="stat-label">PromQL Metrics</div>
+  </div>
+</div>
 
-  <section class="about">
-    <p>
-      Dielabs investigates the operational and infrastructural side of AI systems.
-      No training pipelines, no data science — runtimes, memory, throughput, observability.
-    </p>
-    <p>
-      Built on 15+ years of enterprise infrastructure background — VMware, vCloud, Nutanix, NetApp —
-      reoriented around GPU-accelerated inference stacks and the engineering discipline required to run them at scale.
-    </p>
-  </section>
+<!-- ABOUT -->
+<div class="section" style="background: var(--white);">
+  <div class="section-inner">
+    <p class="section-label">About</p>
+    <h2 class="section-title">The Lab</h2>
+    <div class="about-text">
+      <p>
+        Dielabs investigates the operational and infrastructural side of AI systems.
+        No training pipelines, no data science — runtimes, memory, throughput, observability.
+      </p>
+      <p>
+        Built on 15+ years of enterprise infrastructure background — VMware, vCloud, Nutanix, NetApp —
+        reoriented around GPU-accelerated inference stacks and the engineering discipline required to run them at scale.
+      </p>
+    </div>
+  </div>
+</div>
 
-  <div class="rule"><span class="rule-mark">focus areas</span></div>
-
-  <section style="margin-bottom:0; animation: fadeIn 0.8s 0.2s ease both;">
-    <div class="areas-grid">
-      <div class="area">
-        <div class="area-name">GPU Infrastructure</div>
-        <div class="area-desc">Homelab node, DCGM, driver stack</div>
+<!-- FOCUS AREAS -->
+<div class="section" id="focus" style="background: var(--off);">
+  <div class="section-inner">
+    <p class="section-label">What I work on</p>
+    <h2 class="section-title">Focus Areas</h2>
+    <div class="focus-grid">
+      <div class="focus-card">
+        <div class="focus-accent a-blue"></div>
+        <h3>GPU Infrastructure</h3>
+        <p>Homelab node, DCGM, driver stack</p>
       </div>
-      <div class="area">
-        <div class="area-name">Inference Runtimes</div>
-        <div class="area-desc">vLLM internals, KV cache, batching</div>
+      <div class="focus-card">
+        <div class="focus-accent a-violet"></div>
+        <h3>Inference Runtimes</h3>
+        <p>vLLM internals, KV cache, batching</p>
       </div>
-      <div class="area">
-        <div class="area-name">Benchmarking</div>
-        <div class="area-desc">GuideLLM sweeps, A/B configs</div>
+      <div class="focus-card">
+        <div class="focus-accent a-pink"></div>
+        <h3>Benchmarking</h3>
+        <p>GuideLLM sweeps, A/B configs</p>
       </div>
-      <div class="area">
-        <div class="area-name">Observability</div>
-        <div class="area-desc">Prometheus, Grafana, PromQL, DCGM</div>
+      <div class="focus-card">
+        <div class="focus-accent a-cyan"></div>
+        <h3>Observability</h3>
+        <p>Prometheus, Grafana, PromQL, DCGM</p>
       </div>
-      <div class="area">
-        <div class="area-name">Memory Engineering</div>
-        <div class="area-desc">KV offload, LMCache, quantization</div>
+      <div class="focus-card">
+        <div class="focus-accent a-yellow"></div>
+        <h3>Memory Engineering</h3>
+        <p>KV offload, LMCache, quantization</p>
       </div>
-      <div class="area">
-        <div class="area-name">Distributed Inference</div>
-        <div class="area-desc">Parallelism, NCCL, disaggregated P/D</div>
+      <div class="focus-card">
+        <div class="focus-accent a-grad"></div>
+        <h3>Distributed Inference</h3>
+        <p>Parallelism, NCCL, disaggregated P/D</p>
       </div>
     </div>
-  </section>
+  </div>
+</div>
 
-  <div class="rule"><span class="rule-mark">repository</span></div>
-
-  <section style="margin-bottom:64px;">
+<!-- REPOSITORY -->
+<div class="section" id="repository" style="background: var(--white);">
+  <div class="section-inner">
+    <p class="section-label">Repository</p>
+    <h2 class="section-title">Content & Docs</h2>
     <div class="links">
       <a class="link-row" href="papers/">
         <div class="link-left">
@@ -453,19 +502,18 @@
         <span class="arrow">→</span>
       </a>
     </div>
-  </section>
+  </div>
+</div>
 
-  <footer>
-    <div>
-      <div class="footer-name">Diego Bardella</div>
-      <div class="footer-meta">Inference Engineering · Casale Monferrato, IT</div>
-    </div>
-    <div class="footer-links">
-      <a href="https://linkedin.com/in/diegobardella" target="_blank">LinkedIn</a>
-      <a href="https://github.com/dielabs" target="_blank">GitHub</a>
-    </div>
-  </footer>
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Dielabs</span>
+  <p>Diego Bardella · Inference Engineering · Casale Monferrato, IT</p>
+  <div class="footer-links">
+    <a href="https://linkedin.com/in/diegobardella" target="_blank">LinkedIn</a>
+    <a href="https://github.com/dielabs" target="_blank">GitHub</a>
+  </div>
+</footer>
 
-</main>
 </body>
 </html>
