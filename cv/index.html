@@ -1,0 +1,706 @@
+---
+layout: default
+title: CV
+---
+
+<style>
+  /* ── CV-SPECIFIC OVERRIDES ── */
+
+  .cv-hero {
+    padding: 2.5rem 0 2rem;
+    border-bottom: 1.5px solid var(--border);
+    margin-bottom: 3rem;
+  }
+
+  .cv-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 5vw, 60px);
+    line-height: 1.0;
+    letter-spacing: 0.03em;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+
+  .cv-role {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, var(--blue), var(--violet));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.2rem;
+  }
+
+  .cv-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .cv-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .cv-meta-item:hover { color: var(--blue); }
+
+  .cv-meta-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--blue); flex-shrink: 0;
+  }
+
+  .cv-summary {
+    font-size: 0.93rem;
+    color: var(--muted);
+    line-height: 1.9;
+    border-left: 2px solid var(--blue);
+    padding-left: 1.2rem;
+    max-width: 680px;
+  }
+
+  /* ── SECTION HEADERS ── */
+  .cv-section {
+    margin-bottom: 3rem;
+  }
+
+  .cv-section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 0.5rem;
+  }
+
+  .cv-section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    letter-spacing: 0.04em;
+    color: var(--text);
+    margin-bottom: 1.4rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── FOCUS BADGES ── */
+  .badge-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 0.5rem;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.77rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    background: var(--off);
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .badge-dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position: relative;
+    padding-left: 1.6rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 0;
+    width: 1.5px;
+    background: var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2.4rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -1.6rem;
+    top: 7px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--blue);
+    border: 2px solid var(--white);
+    box-shadow: 0 0 0 1.5px var(--blue);
+  }
+
+  .timeline-header {
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-company {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.25rem;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    margin-bottom: 0.1rem;
+  }
+
+  .timeline-role {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, var(--blue), var(--violet));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .timeline-period {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .timeline-period .present {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #3db86a;
+    font-weight: 600;
+  }
+  .timeline-period .present::before {
+    content: '';
+    display: inline-block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #3db86a;
+    animation: pulse 2s infinite;
+  }
+
+  .timeline-body {
+    font-size: 0.87rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-top: 0.7rem;
+  }
+
+  .timeline-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 0.8rem;
+  }
+
+  .tag {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: rgba(0,87,255,0.07);
+    color: var(--blue);
+    border: 1px solid rgba(0,87,255,0.15);
+  }
+
+  /* ── FRAMEWORKS ── */
+  .framework-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5px;
+    background: var(--border);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .framework-card {
+    background: var(--white);
+    padding: 1.6rem 1.8rem;
+  }
+
+  .framework-accent {
+    width: 28px; height: 3px;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+  }
+
+  .framework-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .framework-desc {
+    font-size: 0.83rem;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  /* ── CERTS / PUBLICATIONS ── */
+  .list-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5px;
+    background: var(--border);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .list-row {
+    background: var(--white);
+    padding: 1rem 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    text-decoration: none;
+    color: var(--text);
+    transition: background 0.2s;
+  }
+  .list-row:hover { background: var(--off); }
+
+  .list-row-left { display: flex; align-items: center; gap: 1rem; }
+
+  .list-row-idx {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    min-width: 20px;
+  }
+
+  .list-row-title {
+    font-size: 0.87rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .list-row-sub {
+    font-size: 0.77rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .list-row-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(0,87,255,0.07);
+    color: var(--blue);
+    border: 1px solid rgba(0,87,255,0.15);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .list-row-badge.green {
+    background: rgba(61,184,106,0.08);
+    color: #2a9a55;
+    border-color: rgba(61,184,106,0.25);
+  }
+
+  /* ── LINKS ROW ── */
+  .cv-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 0.5rem;
+  }
+
+  .cv-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 18px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    background: var(--off);
+    color: var(--text);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .cv-link-btn:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+
+  @media (max-width: 600px) {
+    .framework-grid { grid-template-columns: 1fr; }
+    .cv-meta { gap: 0.8rem; }
+  }
+</style>
+
+<!-- HERO -->
+<div class="cv-hero">
+  <div class="cv-name">Diego Bardella</div>
+  <div class="cv-role">AI Inference Engineering &nbsp;·&nbsp; Infrastructure &amp; Systems</div>
+  <div class="cv-meta">
+    <span class="cv-meta-item">
+      <span class="cv-meta-dot"></span>
+      Casale Monferrato, IT
+    </span>
+    <a class="cv-meta-item" href="https://linkedin.com/in/diegobardella" target="_blank">
+      <span class="cv-meta-dot"></span>
+      linkedin.com/in/diegobardella
+    </a>
+    <a class="cv-meta-item" href="https://substack.com/@diegobardella" target="_blank">
+      <span class="cv-meta-dot"></span>
+      Substack
+    </a>
+  </div>
+  <p class="cv-summary">
+    15+ years of enterprise infrastructure — VMware, Nutanix, NetApp, Dell, TelCo datacenter — reoriented around GPU-accelerated AI inference engineering. Currently building the operational discipline around LLM serving: runtimes, memory management, throughput optimization, distributed inference, and observability. I understand systems by building, measuring, and documenting them.
+  </p>
+</div>
+
+<!-- FOCUS AREAS -->
+<div class="cv-section">
+  <div class="cv-section-label">Expertise</div>
+  <div class="cv-section-title">Focus Areas</div>
+  <div class="badge-grid">
+    <span class="badge"><span class="badge-dot" style="background:var(--blue)"></span>GPU Inference Engineering</span>
+    <span class="badge"><span class="badge-dot" style="background:var(--violet)"></span>vLLM · LMCache</span>
+    <span class="badge"><span class="badge-dot" style="background:var(--pink)"></span>KV Cache Mechanics</span>
+    <span class="badge"><span class="badge-dot" style="background:var(--cyan)"></span>Benchmarking · GuideLLM</span>
+    <span class="badge"><span class="badge-dot" style="background:var(--blue)"></span>Observability · Prometheus · Grafana · DCGM</span>
+    <span class="badge"><span class="badge-dot" style="background:var(--violet)"></span>Distributed Inference · TP · DP · NCCL</span>
+    <span class="badge"><span class="badge-dot" style="background:#f0b800"></span>CPU Inference · NUMA-Aware Architecture</span>
+    <span class="badge"><span class="badge-dot" style="background:var(--muted)"></span>VMware vSphere · vSAN · NSX</span>
+    <span class="badge"><span class="badge-dot" style="background:var(--muted)"></span>Nutanix · NetApp · Dell PowerEdge</span>
+    <span class="badge"><span class="badge-dot" style="background:var(--muted)"></span>Presales · Solution Architecture</span>
+  </div>
+</div>
+
+<!-- FRAMEWORKS -->
+<div class="cv-section">
+  <div class="cv-section-label">Original Work</div>
+  <div class="cv-section-title">Frameworks Developed</div>
+  <div class="framework-grid">
+    <div class="framework-card">
+      <div class="framework-accent" style="background: linear-gradient(90deg, var(--blue), var(--violet))"></div>
+      <div class="framework-name">Inference Stack Model (ISM)</div>
+      <p class="framework-desc">7-layer model (L0–L6) mapping every component in an LLM serving stack, from hardware substrate to application interface.</p>
+    </div>
+    <div class="framework-card">
+      <div class="framework-accent" style="background: linear-gradient(90deg, var(--violet), var(--pink))"></div>
+      <div class="framework-name">Inference Mastery Model (IMM)</div>
+      <p class="framework-desc">Competency framework (levels A–G) for inference engineering skills, covering hardware, runtime, optimization, and observability domains.</p>
+    </div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<div class="cv-section">
+  <div class="cv-section-label">Experience</div>
+  <div class="cv-section-title">Work History</div>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-header">
+        <div class="timeline-company">Dielabs</div>
+        <div class="timeline-role">AI Inference Engineering Lab</div>
+        <div class="timeline-period">
+          Jan 2026 — <span class="present">Present</span>
+        </div>
+      </div>
+      <div class="timeline-body">
+        Personal inference engineering homelab on a Dell PowerEdge R730 + RTX 4070 Super node. Daily work on LLM serving operations, architecture benchmarking (SN / TP / DP), KV cache optimization, and full observability stack. Original papers and frameworks published on the lab site.
+      </div>
+      <div class="timeline-tags">
+        <span class="tag">vLLM</span>
+        <span class="tag">LMCache</span>
+        <span class="tag">NUMA-Aware Inference</span>
+        <span class="tag">GuideLLM</span>
+        <span class="tag">Prometheus</span>
+        <span class="tag">Grafana</span>
+        <span class="tag">DCGM</span>
+        <span class="tag">Docker</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-header">
+        <div class="timeline-company">Elmec Informatica</div>
+        <div class="timeline-role">Senior Presales Engineer — Technology Group</div>
+        <div class="timeline-period">May 2025 — Jan 2026 · 9 months</div>
+      </div>
+      <div class="timeline-body">
+        End-to-end datacenter and data protection solution design. Full presales lifecycle: technical discovery, performance analysis (RVTools, LiveOptics, Nutanix Sizer), multi-vendor stack selection, commercial strategy, and deal registration.
+      </div>
+      <div class="timeline-tags">
+        <span class="tag">VMware</span>
+        <span class="tag">Nutanix</span>
+        <span class="tag">NetApp</span>
+        <span class="tag">HPE</span>
+        <span class="tag">Dell</span>
+        <span class="tag">HCI</span>
+        <span class="tag">Data Protection</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-header">
+        <div class="timeline-company">Capgemini Engineering</div>
+        <div class="timeline-role">Technical Authority — Telco Cloud Infrastructure</div>
+        <div class="timeline-period">Mar 2024 — Apr 2025 · 1 yr 2 mo</div>
+      </div>
+      <div class="timeline-body">
+        Bridging deep technical expertise and the presales domain for VMware/TelCo Cloud bids. Led internal technical community with bi-monthly sessions, AMA and Tech Talks. Technical escalation support, talent acquisition interviews, and emerging technology exploration for business opportunities.
+      </div>
+      <div class="timeline-tags">
+        <span class="tag">VMware</span>
+        <span class="tag">TelCo Cloud</span>
+        <span class="tag">Technical Leadership</span>
+        <span class="tag">Presales</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-header">
+        <div class="timeline-company">Dell Technologies</div>
+        <div class="timeline-role">Technical Presales — Datacenter Solutions</div>
+        <div class="timeline-period">Dec 2019 — Feb 2024 · 4 yr 3 mo</div>
+      </div>
+      <div class="timeline-body">
+        Inside technical presales (TSR) for TelCo and datacenter providers. Solution architecture design across servers, composable infrastructure, HCI, and networking. Delivered technical presentations at Dell Technologies Forum. Built internal VCF nested lab and hands-on VxRail lab used for client demos.
+      </div>
+      <div class="timeline-tags">
+        <span class="tag">Dell PowerEdge</span>
+        <span class="tag">VxRail</span>
+        <span class="tag">VCF</span>
+        <span class="tag">HCI</span>
+        <span class="tag">MX7000</span>
+        <span class="tag">AI Infrastructure</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-header">
+        <div class="timeline-company">CDS — Hewlett Packard Enterprise</div>
+        <div class="timeline-role">Infrastructure &amp; Virtualization Engineer — Vodafone</div>
+        <div class="timeline-period">Oct 2018 — Dec 2019 · 1 yr 3 mo</div>
+      </div>
+      <div class="timeline-body">
+        System integrator for the Vodafone NFV infrastructure project. VMware NFV datacenter (ESXi 6.5, NSX 6.3, vCloud Director). Full deployment lifecycle: multisite validated designs, Provider/Org VDC configuration, NSX L2/L3 segmentation, VNF onboarding.
+      </div>
+      <div class="timeline-tags">
+        <span class="tag">VMware NSX</span>
+        <span class="tag">vCloud Director</span>
+        <span class="tag">NFV</span>
+        <span class="tag">vSphere</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-header">
+        <div class="timeline-company">Altran</div>
+        <div class="timeline-role">VMware Consultant — TIM World Class Center</div>
+        <div class="timeline-period">Jun 2017 — Nov 2018 · 1 yr 6 mo</div>
+      </div>
+      <div class="timeline-body">
+        NFV Solution Verification at Telecom Italia Lab. Multi-vendor VNF compliance and configuration, vSphere and NSX maintenance and advanced troubleshooting across ~100 hosts. Cross-country collaboration via Altran World Class Center (Advanced Network).
+      </div>
+      <div class="timeline-tags">
+        <span class="tag">VMware vSphere</span>
+        <span class="tag">NSX</span>
+        <span class="tag">NFV</span>
+        <span class="tag">VNF Testing</span>
+        <span class="tag">vRealize Automation</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-header">
+        <div class="timeline-company">Earlier Experience</div>
+        <div class="timeline-role">System Administrator · IT Infrastructure Manager</div>
+        <div class="timeline-period">2001 — 2017</div>
+      </div>
+      <div class="timeline-body">
+        16 years across SMB and enterprise environments: VMware and Microsoft infrastructure design, Veeam backup, SAN management, multi-site AD, firewall configuration (Sonicwall, Endian), and MSP-style operations across 60+ customers. Roles at REISER Srl, Updatech Snc, Gruppo Diffusioni Grafiche Editoriali.
+      </div>
+      <div class="timeline-tags">
+        <span class="tag">VMware ESXi</span>
+        <span class="tag">Active Directory</span>
+        <span class="tag">Veeam</span>
+        <span class="tag">SAN</span>
+        <span class="tag">MSP</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CERTIFICATIONS -->
+<div class="cv-section">
+  <div class="cv-section-label">Credentials</div>
+  <div class="cv-section-title">Certifications &amp; Training</div>
+  <div class="list-rows">
+    <div class="list-row">
+      <div class="list-row-left">
+        <span class="list-row-idx">01</span>
+        <div>
+          <div class="list-row-title">NVIDIA Certified Associate — AI in the Data Center</div>
+          <div class="list-row-sub">NVIDIA · 2025</div>
+        </div>
+      </div>
+      <span class="list-row-badge">Active</span>
+    </div>
+    <div class="list-row">
+      <div class="list-row-left">
+        <span class="list-row-idx">02</span>
+        <div>
+          <div class="list-row-title">NVIDIA NCP-AII</div>
+          <div class="list-row-sub">NVIDIA Certified Professional — AI Infrastructure &amp; Operations</div>
+        </div>
+      </div>
+      <span class="list-row-badge green">In Progress</span>
+    </div>
+    <div class="list-row">
+      <div class="list-row-left">
+        <span class="list-row-idx">03</span>
+        <div>
+          <div class="list-row-title">vSAN Specialist</div>
+          <div class="list-row-sub">VMware</div>
+        </div>
+      </div>
+      <span class="list-row-badge">Active</span>
+    </div>
+    <div class="list-row">
+      <div class="list-row-left">
+        <span class="list-row-idx">04</span>
+        <div>
+          <div class="list-row-title">VTSP — VMware Cloud Foundation 4.0</div>
+          <div class="list-row-sub">VMware</div>
+        </div>
+      </div>
+      <span class="list-row-badge">Active</span>
+    </div>
+    <div class="list-row">
+      <div class="list-row-left">
+        <span class="list-row-idx">05</span>
+        <div>
+          <div class="list-row-title">NetApp Accredited Hybrid Cloud Associate</div>
+          <div class="list-row-sub">NetApp</div>
+        </div>
+      </div>
+      <span class="list-row-badge">Active</span>
+    </div>
+    <div class="list-row">
+      <div class="list-row-left">
+        <span class="list-row-idx">06</span>
+        <div>
+          <div class="list-row-title">AI Infrastructure and Operations Fundamentals</div>
+          <div class="list-row-sub">NVIDIA Official Course · Jan 2025</div>
+        </div>
+      </div>
+      <span class="list-row-badge">Completed</span>
+    </div>
+    <div class="list-row">
+      <div class="list-row-left">
+        <span class="list-row-idx">07</span>
+        <div>
+          <div class="list-row-title">Kubernetes and Cloud Native Essentials (LFS250)</div>
+          <div class="list-row-sub">Linux Foundation · Dec 2024</div>
+        </div>
+      </div>
+      <span class="list-row-badge">Completed</span>
+    </div>
+    <div class="list-row">
+      <div class="list-row-left">
+        <span class="list-row-idx">08</span>
+        <div>
+          <div class="list-row-title">Nutanix Hybrid Cloud Fundamentals 6.5</div>
+          <div class="list-row-sub">Nutanix University · Dec 2024</div>
+        </div>
+      </div>
+      <span class="list-row-badge">Completed</span>
+    </div>
+  </div>
+</div>
+
+<!-- PUBLICATIONS -->
+<div class="cv-section">
+  <div class="cv-section-label">Writing</div>
+  <div class="cv-section-title">Publications &amp; Lab Papers</div>
+  <div class="list-rows">
+    <a class="list-row" href="/papers/cpu-inference-architecture-comparison" target="_blank">
+      <div class="list-row-left">
+        <span class="list-row-idx">01</span>
+        <div>
+          <div class="list-row-title">CPU Inference Architecture Comparison</div>
+          <div class="list-row-sub">SN / TP / DP benchmark on Dell R730 with vLLM · Dielabs · Mar 2026</div>
+        </div>
+      </div>
+      <span class="list-row-badge">Lab Paper</span>
+    </a>
+    <a class="list-row" href="/papers/kv-cache-offloading-research" target="_blank">
+      <div class="list-row-left">
+        <span class="list-row-idx">02</span>
+        <div>
+          <div class="list-row-title">KV Cache Offloading Research</div>
+          <div class="list-row-sub">LMCache benchmark on RTX 4070 Super · Dielabs</div>
+        </div>
+      </div>
+      <span class="list-row-badge">Lab Paper</span>
+    </a>
+    <a class="list-row" href="/papers/inference-engineering-manual" target="_blank">
+      <div class="list-row-left">
+        <span class="list-row-idx">03</span>
+        <div>
+          <div class="list-row-title">Inference Engineering Manual</div>
+          <div class="list-row-sub">Comprehensive LLM inference stack reference · Dielabs</div>
+        </div>
+      </div>
+      <span class="list-row-badge">Lab Paper</span>
+    </a>
+    <a class="list-row" href="https://substack.com/@diegobardella" target="_blank">
+      <div class="list-row-left">
+        <span class="list-row-idx">04</span>
+        <div>
+          <div class="list-row-title">Substack</div>
+          <div class="list-row-sub">AI infrastructure and human connections · substack.com/@diegobardella</div>
+        </div>
+      </div>
+      <span class="list-row-badge">Blog</span>
+    </a>
+  </div>
+</div>
+
+<!-- LINKS -->
+<div class="cv-section">
+  <div class="cv-section-label">Connect</div>
+  <div class="cv-section-title">Links</div>
+  <div class="cv-links">
+    <a class="cv-link-btn" href="https://linkedin.com/in/diegobardella" target="_blank">↗ LinkedIn</a>
+    <a class="cv-link-btn" href="https://github.com/dielabs" target="_blank">↗ GitHub</a>
+    <a class="cv-link-btn" href="https://substack.com/@diegobardella" target="_blank">↗ Substack</a>
+    <a class="cv-link-btn" href="/">← Back to Lab</a>
+  </div>
+</div>
