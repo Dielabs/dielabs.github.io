@@ -11,6 +11,9 @@ Technical papers and long-form research notes produced from real lab work at Die
 
 ## Documents
 
+### [The Inference Operating Envelope](inference-operating-envelope.md)
+Latency vs throughput crossover point analysis for LLM inference systems. Defines the crossover point (Cp) as the concurrency level where latency cost exceeds throughput gain, and the safety margin as the memory configuration that determines failure behavior. Together they form the Inference Operating Envelope — a framework for dimensioning any inference deployment.
+
 ### [CPU Inference Architecture Comparison](cpu-inference-architecture-comparison.md)
 Benchmark and analysis of three LLM sharding architectures (Single-Node, Tensor Parallel, Data Parallel) on a Dell PowerEdge R730 dual-socket server with vLLM. Identifies the TP anti-pattern on QPI, the DP crossover point at ~6 concurrent requests, and demonstrates the structural isomorphism between NUMA-aware CPU inference and GPU distributed inference.
 
