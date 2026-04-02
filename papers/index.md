@@ -5,23 +5,23 @@ layout: default
 
 # Papers
 
-Technical papers and long-form research notes produced from real lab work at Dielabs.
+Technical papers produced from real lab work at Dielabs. Each paper documents original findings from hands-on experimentation with LLM inference systems.
 
 ---
 
 ## Documents
 
-### [The Inference Operating Envelope](inference-operating-envelope.md)
-Latency vs throughput crossover point analysis for LLM inference systems. Defines the crossover point (Cp) as the concurrency level where latency cost exceeds throughput gain, and the safety margin as the memory configuration that determines failure behavior. Together they form the Inference Operating Envelope — a framework for dimensioning any inference deployment.
+### [When Good GPUs Produce Bad Tokens](when-good-gpus-produce-bad-tokens.md)
+Degenerative decoding loops in vLLM: diagnosis, three-plane framework, and cross-model comparison (Qwen2.5-7B vs Mistral-7B). Identifies sampling entropy collapse and model-specific coherence thresholds.
 
-### [CPU Inference Architecture Comparison](cpu-inference-architecture-comparison.md)
-Benchmark and analysis of three LLM sharding architectures (Single-Node, Tensor Parallel, Data Parallel) on a Dell PowerEdge R730 dual-socket server with vLLM. Identifies the TP anti-pattern on QPI, the DP crossover point at ~6 concurrent requests, and demonstrates the structural isomorphism between NUMA-aware CPU inference and GPU distributed inference.
+### [When Offloading Doesn't Offload](when-offloading-doesnt-offload.md)
+Experimental investigation of KV cache offloading mechanisms in vLLM 0.15.1 on consumer hardware. Reveals three distinct mechanisms commonly confused under one term. Demonstrates that scheduler tuning outperforms offloading by orders of magnitude.
 
-### [Inference Engineering Manual](inference-engineering-manual.md)
-A comprehensive technical manual covering the full inference stack: memory wall physics, KV cache economics, batching strategies, parallelism, and deployment topologies. Targeting infrastructure professionals transitioning into AI inference engineering.
+### [What CPUs Teach About GPU Inference](what-cpus-teach-about-gpu-inference.md)
+Benchmark of SN / TP-2 / DP-2 architectures on Dell PowerEdge R730 with vLLM. Proves the CPU-GPU isomorphism: distributed inference patterns are general principles, not GPU artifacts. Identifies TP as anti-pattern on slow interconnects.
 
-### [KV Cache Offloading Research](kv-cache-offloading-research.md)
-Research and benchmark findings on KV cache CPU offloading with LMCache on an RTX 4070 Super. Covers A/B comparison methodology, configuration mechanics, and performance impact analysis.
+### [Finding the Crossover Point](finding-the-crossover-point.md)
+Systematic benchmark of RTX 4070 Super with Llama 3.1 8B via vLLM. Two-phase methodology (sweep + concurrent) to identify the crossover point where latency cost exceeds throughput gain. Defines the Inference Operating Envelope.
 
 ---
 

@@ -1,54 +1,37 @@
 # Dielabs
 
-**Dielabs** is my personal engineering lab focused on AI inference infrastructure.
+**Dielabs** is a personal engineering lab focused on AI inference infrastructure.
 
-The goal of the lab is to explore, test and document how modern inference systems behave in real environments, with a strong focus on infrastructure, runtime behavior and performance.
+The goal is to explore, test and document how modern inference systems behave in real environments, with a strong focus on infrastructure, runtime behavior and performance.
 
-Rather than focusing on model training or data science, Dielabs investigates the operational and infrastructural side of AI systems.
-
----
-
-## Main areas of exploration
-
-- GPU infrastructure
-- AI inference systems
-- runtime and serving stacks
-- benchmarking and performance analysis
-- observability and infrastructure engineering
+Rather than focusing on model training or data science, Dielabs investigates the operational and infrastructural side of AI systems — from GPU memory physics to scheduler tuning, from distributed parallelism patterns to cost-per-token economics.
 
 ---
 
-## Repository structure
+## Repository Structure
 
-### Knowledge Base
-Conceptual explanations and technical notes related to inference systems.
+### [Papers](papers/)
+Original technical papers from real lab work. Topics include degenerative decoding analysis, KV cache offloading investigation, CPU-GPU inference isomorphism, and crossover point benchmarking.
 
-### Benchmarks
-Performance experiments and benchmark artifacts.
+### [Manuals](manuals/)
+Reference manuals covering operational inference engineering knowledge — KV cache mechanics, vLLM tuning, Prometheus metrics.
 
-### Stack
-Infrastructure configurations used in Dielabs experiments.
+### [Frameworks](frameworks/)
+Proprietary conceptual models for reasoning about inference systems: the L0–L6 diagnostic framework, the A–G technology model, and the Artifact/Startup/Request parameter topology.
 
-### Papers
-Technical papers and long-form research notes.
-
-### Assets
-Diagrams, screenshots and visual material.
-
-### CV
-Public professional profile material.
+### [CV](cv/)
+Public professional profile.
 
 ---
 
 ## Philosophy
 
-Dielabs is built around this idea
+**Understanding systems by building, measuring and documenting them.**
 
-**understanding systems by building, measuring and documenting them.**
+Every finding published here comes from hands-on experimentation on real hardware — RTX 4070 Super, Dell PowerEdge R730, vLLM, Prometheus, Grafana. No synthetic benchmarks, no theoretical-only analysis.
 
 ---
 
 ## Author
 
-Diego Bardella
-
+Diego Bardella — [dielabs.github.io](https://dielabs.github.io)
