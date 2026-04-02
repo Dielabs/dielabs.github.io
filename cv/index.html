@@ -213,6 +213,33 @@ title: CV
     margin-bottom: 0.8rem;
   }
 
+  .timeline-sub {
+    margin-top: 1.2rem;
+    padding-left: 1rem;
+    border-left: 1.5px dashed var(--border);
+  }
+
+  .timeline-sub-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+
+  .timeline-sub-period {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+
+  .timeline-sub-body {
+    font-size: 0.84rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 0.6rem;
+  }
+
   .timeline-tags {
     display: flex;
     flex-wrap: wrap;
@@ -416,7 +443,7 @@ title: CV
 <!-- ── HERO ── -->
 <div class="cv-hero">
   <div class="cv-name">Diego Bardella</div>
-  <div class="cv-role">AI Inference Engineering &nbsp;·&nbsp; Presales Solution Architecture &nbsp;·&nbsp; Datacenters &amp; Human Connections</div>
+  <div class="cv-role">Datacenter Architect &nbsp;·&nbsp; Inference Engineer &nbsp;·&nbsp; NVIDIA AI Infrastructure Certification Apprentice</div>
   <div class="cv-meta">
     <span class="cv-meta-item"><span class="cv-meta-dot"></span>Casale Monferrato (AL), IT</span>
     <a class="cv-meta-item" href="https://linkedin.com/in/diegobardella" target="_blank"><span class="cv-meta-dot"></span>linkedin.com/in/diegobardella</a>
@@ -424,9 +451,9 @@ title: CV
     <a class="cv-meta-item" href="https://www.credly.com/users/diegobardella" target="_blank"><span class="cv-meta-dot"></span>Credly</a>
   </div>
   <p class="cv-summary">
-    I started in my rural hometown studying certifications, learning by breaking and fixing systems, then I moved into real TelCo datacenters in Turin and Milan. Those years shaped both my technical and personal growth: complex projects, talented people, deep troubleshooting, and the occasional 3 a.m. rollback.<br><br>
-    I followed my flow and joined a top hardware vendor as a System Engineer, designing and presenting server architectures at scale within a high-performance, strongly aligned and caring team. After deciding to leave Milan, I moved to a leading Managed Service Provider, working on a Tier IV datacenter and designing multi-vendor infrastructures across compute, storage, virtualization, and data protection, managing the full presales lifecycle end-to-end.<br><br>
-    Today I'm transforming my homelab into an AI inference engineering lab running on a PowerEdge R730 and a dedicated RTX 4070 Super GPU node. I design, benchmark, and optimize LLM serving workloads daily using vLLM, LMCache, Docker, and a full Prometheus/Grafana/DCGM observability stack.<br><br>
+    I started in my rural hometown studying certifications, learning by breaking and fixing systems, then I moved into real TelCo datacenters in Turin and Milan. Those years shaped both my technical and personal growth: complex projects, talented peoples, deep troubleshooting, and the occasional 3 a.m. rollback.<br><br>
+    I followed my flow joined a top hardware vendor as a System Engineer, designing and presenting server architectures at scale within a high-performance, strongly aligned and caring team of people. After deciding to leave Milan, I moved to a leading Managed Service Provider, working on a Tier IV datacenter and designing multi-vendor infrastructures across compute, storage, virtualization, and data protection, managing the full presales lifecycle end-to-end.<br><br>
+    Today I'm transforming my homelab into an AI inference engineering lab running on a PowerEdge R730 and a dedicated RTX 4070 Super GPU node. I design, benchmark, and optimize LLM serving workloads daily using vLLM, LMCache, Docker, GuideLLM, and a full Prometheus/Grafana/DCGM observability stack.<br><br>
     Curiosity and human connections guide both my work and my personal journey.
   </p>
 </div>
@@ -463,12 +490,11 @@ title: CV
     <span class="badge"><span class="badge-dot" style="background:#6a6a8a"></span>Executive Presentations · Public Speaking</span>
     <div style="width:100%;font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;margin-top:12px;">Soft Skills</div>
     <span class="badge"><span class="badge-dot" style="background:var(--violet)"></span>Ownership</span>
+    <span class="badge"><span class="badge-dot" style="background:var(--violet)"></span>Team Mentoring</span>
     <span class="badge"><span class="badge-dot" style="background:var(--violet)"></span>Analytical Thinking</span>
     <span class="badge"><span class="badge-dot" style="background:var(--violet)"></span>Technical Storytelling</span>
-    <span class="badge"><span class="badge-dot" style="background:var(--violet)"></span>Curiosity</span>
-    <span class="badge"><span class="badge-dot" style="background:var(--violet)"></span>Emotional Intelligence</span>
-    <span class="badge"><span class="badge-dot" style="background:var(--violet)"></span>Getting Things Done</span>
-    <span class="badge"><span class="badge-dot" style="background:var(--violet)"></span>Positive Attitude</span>
+    <span class="badge"><span class="badge-dot" style="background:var(--violet)"></span>Public Speaking</span>
+    <span class="badge"><span class="badge-dot" style="background:var(--violet)"></span>Executive-Level Presentations</span>
     <span class="badge"><span class="badge-dot" style="background:var(--violet)"></span>Empathy</span>
   </div>
 </div>
@@ -499,22 +525,35 @@ title: CV
 
     <div class="timeline-item present">
       <div class="timeline-company">Dielabs</div>
-      <div class="timeline-role">AI Inference Engineering Lab — Founder</div>
-      <div class="timeline-period">Jan 2026 — <span class="present-badge">Present</span></div>
-      <div class="timeline-body">
-        Personal inference engineering homelab on a Dell PowerEdge R730 + RTX 4070 Super node. Daily work on LLM serving operations, architecture benchmarking (SN / TP / DP parallelism), KV cache optimization, NUMA-aware CPU inference, and full observability stack. Original papers and frameworks published at dielabs.github.io.
+      <div class="timeline-role">AI Inference Engineering Lab</div>
+      <div class="timeline-period">Jan 2026 — <span class="present-badge">Present</span> · 4 mos</div>
+
+      <div class="timeline-sub">
+        <div class="timeline-sub-title">Homelab — NVIDIA AI Infrastructure</div>
+        <div class="timeline-sub-period">Jan 2026 — Present · @Home</div>
+        <div class="timeline-sub-body">
+          Hands-on AI inference engineering lab where I design, deploy, break, and benchmark LLM serving infrastructure on-prem. LLM serving operations: deploying and optimizing open-source models on GPU hardware, fine tuning and configurations of inference server with memory and cache management for real-world performance. Benchmarking across multiple model families and inference servers with controlled methodology. Production-grade monitoring with full observability stack tracking inference and hardware KPIs. Building proprietary study frameworks for diagnosing inference issues mapped to the right infrastructure layer.
+        </div>
+        <div class="timeline-tags">
+          <span class="tag">vLLM</span><span class="tag">LMCache</span><span class="tag">GuideLLM</span><span class="tag">Docker/Portainer</span><span class="tag">Prometheus/Grafana</span><span class="tag">NVIDIA CUDA Stack</span><span class="tag">Hardware Infrastructure Tuning</span>
+        </div>
       </div>
-      <div class="timeline-tags">
-        <span class="tag">vLLM</span><span class="tag">LMCache</span><span class="tag">NUMA Inference</span><span class="tag">GuideLLM</span><span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">DCGM</span><span class="tag">Docker</span><span class="tag">Dell R730</span><span class="tag">RTX 4070 Super</span>
+
+      <div class="timeline-sub" style="margin-top:1.4rem;">
+        <div class="timeline-sub-title">Professional Development — Career Break</div>
+        <div class="timeline-sub-period">Jan 2026 — Present</div>
+        <div class="timeline-sub-body">
+          Happy volunteer career break focused on technical specialization in AI infrastructure. After several years in fast-paced, delivery-driven presales roles, I chose to temporarily step back to rebuild technical depth through focused study and hands-on experimentation, realigning my career path with my passions and expanding my architectural skills with AI infrastructure. Following a structured learning path with the final objective of achieving the NVIDIA NCP-AII professional certification. Practical experience and validation grounded in a homelab environment where AI infrastructure concepts are proven and tested.
+        </div>
       </div>
     </div>
 
     <div class="timeline-item">
       <div class="timeline-company">Elmec Informatica</div>
-      <div class="timeline-role">Senior Presales Engineer — Technology Group</div>
-      <div class="timeline-period">May 2025 — Jan 2026 · 9 months · Varese / Remote</div>
+      <div class="timeline-role">Senior Presales System Engineer</div>
+      <div class="timeline-period">May 2025 — Feb 2026 · 10 mos · Greater Varese Metropolitan Area · Hybrid</div>
       <div class="timeline-body">
-        End-to-end datacenter and data protection solution design across the full presales lifecycle: technical discovery, performance analysis (RVTools, LiveOptics, Nutanix Sizer, NetApp Fusion), multi-vendor stack selection, commercial strategy, pricing, deal registration, and final customer presentation. Designed 3-tier, hyperconverged, and stretched infrastructures based on workload, RPO/RTO, and budget. <em>Invited to deliver a lecture on IT infrastructure at Elmec College.</em>
+        Designed end-to-end datacenter and data protection architectures across 3-tier, hyperconverged, and stretched cluster topologies. Deep-dived into workload analysis, performance constraints, capacity requirements, and RPO/RTO targets to define the right multi-vendor stack (VMware, Nutanix, NetApp, HPE, Dell, Commvault, Veeam). Technical discovery and assessment using RVTools, LiveOptics, Nutanix Sizer, and vendor specifications to validate capacity, performance, and scalability. Also managed the commercial presales dimension including pricing and deal strategy.
       </div>
       <div class="timeline-tags">
         <span class="tag">VMware</span><span class="tag">Nutanix</span><span class="tag">NetApp</span><span class="tag">HPE</span><span class="tag">Dell</span><span class="tag">Commvault</span><span class="tag">Veeam</span><span class="tag">HCI</span><span class="tag">Stretched Cluster</span><span class="tag">Data Protection</span>
@@ -524,12 +563,12 @@ title: CV
     <div class="timeline-item">
       <div class="timeline-company">Capgemini Engineering</div>
       <div class="timeline-role">Technical Authority — Telco Cloud Infrastructure</div>
-      <div class="timeline-period">Feb 2024 — May 2025 · 1 yr 2 mo · Milan / Remote</div>
+      <div class="timeline-period">Mar 2024 — Apr 2025 · 1 yr 2 mos · Milan · Hybrid</div>
       <div class="timeline-body">
-        Technical-presales bridge for VMware and TelCo Cloud bids and tenders. Led internal technical community (bi-monthly sessions, AMA, Tech Talks with live homelab demos). Technical escalation, talent acquisition, emerging technology scouting. <em>Technical speech at Capgemini EMEA with 200+ attendees on nested Homelabs.</em>
+        As a Technical Authority, my role bridged deep technical expertise and the presales domain, reducing the gap between hands-on technology and business decisions. Explored emerging technologies — including AI infrastructure and inference workloads — conducting internal demos and assessing market trends. Contributed to bids and tenders for VMware and Telco Cloud infrastructures, designing strategic solutions aligned with client needs. Provided technical escalation support, stepping in to resolve critical or time-sensitive challenges in client projects. Led the technical community through bi-monthly knowledge-sharing sessions, organized AMA sessions and Tech Talks, often leveraging my homelab for hands-on demonstrations. Played an active role in talent acquisition, conducting technical interviews and evaluating candidates. <em>Technical speech at Capgemini EMEA with 200+ attendees on nested Homelabs.</em>
       </div>
       <div class="timeline-tags">
-        <span class="tag">VMware</span><span class="tag">TelCo Cloud</span><span class="tag">Technical Leadership</span><span class="tag">Community Building</span><span class="tag">Presales</span>
+        <span class="tag">VMware</span><span class="tag">TelCo Cloud</span><span class="tag">AI Infrastructure</span><span class="tag">Technical Leadership</span><span class="tag">Community Building</span><span class="tag">Presales</span><span class="tag">Talent Acquisition</span>
       </div>
     </div>
 
@@ -849,5 +888,3 @@ title: CV
     <a class="cv-link-btn" href="/">← Back to Lab</a>
   </div>
 </div>
-
-
