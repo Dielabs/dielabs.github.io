@@ -434,6 +434,11 @@ title: CV
   }
   .cv-link-btn:hover { border-color: var(--blue); color: var(--blue); }
 
+  @keyframes avail-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.4); }
+  }
+
   @media (max-width: 640px) {
     .two-col { grid-template-columns: 1fr; gap: 2rem; }
     .framework-grid { grid-template-columns: 1fr; }
@@ -456,11 +461,11 @@ title: CV
     Today I'm transforming my homelab into an AI inference engineering lab running on a PowerEdge R730 and a dedicated RTX 4070 Super GPU node. I design, benchmark, and optimize LLM serving workloads daily using vLLM, LMCache, Docker, GuideLLM, and a full Prometheus/Grafana/DCGM observability stack.<br><br>
     Curiosity and human connections guide both my work and my personal journey.
   </p>
-  <div class="cv-quote">&ldquo;Plans are nothing; planning is everything.&rdquo; &mdash; D. Eisenhower</div>
+  <div class="cv-quote"><strong>Preferred quote</strong><br>&ldquo;Plans are useless, but planning is indispensable.&rdquo; &mdash; D. Eisenhower</div>
   <div class="badge-grid" style="margin-top:1.2rem;">
-    <div style="width:100%;font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue);margin-bottom:4px;">Ready For</div>
-    <span class="badge"><span class="badge-dot" style="background:#3db86a"></span>Immediately Available</span>
-    <span class="badge"><span class="badge-dot" style="background:#3db86a"></span>Open to Relocate &mdash; Italy &amp; Europe</span>
+    <div style="width:100%;font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue);margin-bottom:4px;">Availability</div>
+    <span class="badge" style="font-size:0.84rem;padding:7px 18px;"><span class="badge-dot" style="background:#3db86a;width:8px;height:8px;animation:avail-pulse 2s ease-in-out infinite;"></span>Immediately Available</span>
+    <span class="badge" style="font-size:0.84rem;padding:7px 18px;"><span class="badge-dot" style="background:#3db86a;width:8px;height:8px;animation:avail-pulse 2s ease-in-out infinite;"></span>Open to Relocate &mdash; Italy &amp; Europe</span>
   </div>
 </div>
 
