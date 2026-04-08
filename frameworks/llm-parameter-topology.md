@@ -76,7 +76,7 @@ This level is pure Inference Engineering.
 
 ### Memory and Capacity
 
-**`max_model_len`** Maximum context manageable by the server: `prompt + output ≤ max_model_len`. Primary ceiling for memory and compatibility. One of the first parameters to calculate during capacity planning.
+**`max_model_len`** Maximum context manageable by the server: `prompt + output ≤ max_model_len`. Primary ceiling for memory and compatibility. One of the first parameters to calculate during capacity planning. Lowering it protects sustainable throughput: each sequence consumes fewer KV cache blocks, freeing capacity for more concurrent sequences. Set once based on workload profile and left fixed — unlike `max_num_seqs`, it is not a runtime tuning lever.
 
 **`gpu_memory_utilization`** (or equivalent) Percentage of VRAM the server can use. Directly influences: KV cache size and sustainable concurrency.
 
@@ -86,7 +86,7 @@ This level is pure Inference Engineering.
 
 ### Concurrency and Scheduling
 
-**`max_num_seqs`** Maximum number of simultaneous requests in the batch. Influences latency under load and throughput.
+**`max_num_seqs`** Maximum number of simultaneous requests in the batch. This is the primary operational lever for choosing between a latency-first or throughput-first deployment profile. Lowering it protects per-request latency (less GPU contention per decode step) at the cost of aggregate throughput. Raising it increases throughput but degrades individual latency. The optimal value maps directly to the Crossover Point (Cp) identified by the Benchmarking Protocol: set at or below Cp for latency-first, above Cp for throughput-first. See [Benchmarking Protocol — Operational Tuning](../frameworks/benchmarking-protocol.md#operational-tuning-latency-vs-throughput-levers).
 
 **`max_num_batched_tokens`** Token limit processable in the same batch. Trade-off: TTFT ↔ throughput. On engines like vLLM, this parameter can transform a "slow" server into a powerhouse without touching the model or the request.
 

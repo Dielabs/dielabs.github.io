@@ -20,6 +20,9 @@ A competency framework (Layers A–G) mapping what an inference engineer needs t
 ### [LLM Parameter Topology](llm-parameter-topology.md)
 A structured framework for understanding where every LLM parameter lives: Artifact, Startup, or Request. Covers the full parameter flow from model weights to runtime enforcement, with conflict zones and troubleshooting tables.
 
+### [Benchmarking Protocol](benchmarking-protocol.md)
+A three-phase LLM inference validation methodology (Sweep, Concurrent, SLO Mapping) built on GuideLLM. Identifies the Crossover Point between latency and throughput, and produces a Capacity Card for each deployment configuration.
+
 ---
 
 *All frameworks are original Dielabs work by Diego Bardella.*
