@@ -867,24 +867,6 @@ title: CV
   </div>
 </div>
 
-
-<!-- ── ARCHITECTURES ── -->
-<div class="cv-section">
-  <div class="cv-section-label">Architecture References</div>
-  <div class="cv-section-title">Architectures</div>
-  <div class="list-rows">
-    <a class="list-row" href="/architectures/inference-workload-architectures">
-      <div class="list-row-left">
-        <span class="list-row-idx">01</span>
-        <div>
-          <div class="list-row-title">Inference Workload Architectures</div>
-          <div class="list-row-sub">GPU fabric &middot; NVIDIA communication libraries &middot; Network critical path &middot; Parallelism strategies (DP/TP/PP/EP) &middot; Dielabs</div>
-        </div>
-      </div>
-      <span class="pill pill-violet">Architecture Ref</span>
-    </a>
-  </div>
-</div>
 <!-- ── PUBLICATIONS ── -->
 <div class="cv-section">
   <div class="cv-section-label">Writing</div>

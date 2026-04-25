@@ -89,9 +89,8 @@
   <a class="nav-logo" href="/">Dielabs</a>
   <ul class="nav-links">
     <li><a href="/papers/">Papers</a></li>
-    <li><a href="/manuals/">Manuals</a></li>
     <li><a href="/frameworks/">Frameworks</a></li>
-    <li><a href="/architectures/">Architectures</a></li>
+    <li><a href="/manuals/">Manuals</a></li>
     <li><a href="/cv/">CV</a></li>
   </ul>
 </nav>
@@ -108,7 +107,7 @@
 <div class="stats-bar">
   <div class="stat"><div class="stat-number">4</div><div class="stat-label">Research Papers</div></div>
   <div class="stat"><div class="stat-number">4</div><div class="stat-label">Frameworks</div></div>
-  <div class="stat"><div class="stat-number">1</div><div class="stat-label">Architecture Reference</div></div>
+  <div class="stat"><div class="stat-number">L0–L6</div><div class="stat-label">Diagnostic Model</div></div>
   <div class="stat"><div class="stat-number">2</div><div class="stat-label">Hardware Platforms</div></div>
 </div>
 <div class="section" style="background: var(--white);"><div class="section-inner">
@@ -134,10 +133,9 @@
   <p class="section-label">Repository</p><h2 class="section-title">Content & Docs</h2>
   <div class="links">
     <a class="link-row" href="papers/"><div class="link-left"><span class="link-index">01</span><div><div class="link-title">Papers</div><div class="link-desc">Original research — decoding analysis, offloading, CPU-GPU isomorphism, crossover point</div></div></div><span class="arrow">→</span></a>
-    <a class="link-row" href="manuals/"><div class="link-left"><span class="link-index">02</span><div><div class="link-title">Manuals</div><div class="link-desc">Reference manuals — inference engineering and KV cache management</div></div></div><span class="arrow">→</span></a>
-    <a class="link-row" href="frameworks/"><div class="link-left"><span class="link-index">03</span><div><div class="link-title">Frameworks</div><div class="link-desc">Conceptual models — L0–L6 diagnostics, technology model, parameter topology, benchmarking protocol</div></div></div><span class="arrow">→</span></a>
-    <a class="link-row" href="architectures/"><div class="link-left"><span class="link-index">04</span><div><div class="link-title">Architectures</div><div class="link-desc">Architectural references — GPU fabric, NVIDIA communication libraries, network critical path, parallelism strategies</div></div></div><span class="arrow">→</span></a>
-    <a class="link-row" href="cv/"><div class="link-left"><span class="link-index">05</span><div><div class="link-title">CV</div><div class="link-desc">Professional profile</div></div></div><span class="arrow">→</span></a>
+    <a class="link-row" href="manuals/"><div class="link-left"><span class="link-index">02</span><div><div class="link-title">Manuals</div><div class="link-desc">Reference manuals — KV cache mechanics, vLLM tuning, Prometheus metrics</div></div></div><span class="arrow">→</span></a>
+    <a class="link-row" href="frameworks/"><div class="link-left"><span class="link-index">03</span><div><div class="link-title">Frameworks</div><div class="link-desc">Conceptual models — L0–L6 diagnostics, technology model, parameter topology</div></div></div><span class="arrow">→</span></a>
+    <a class="link-row" href="cv/"><div class="link-left"><span class="link-index">04</span><div><div class="link-title">CV</div><div class="link-desc">Professional profile</div></div></div><span class="arrow">→</span></a>
   </div>
 </div></div>
 <div style="text-align:center;padding:3rem 3rem 2rem;">
