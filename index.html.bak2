@@ -114,9 +114,9 @@
 <div class="section" style="background: var(--white);"><div class="section-inner">
   <p class="section-label">About</p><h2 class="section-title">The Lab</h2>
   <div class="about-text">
-    <p>Dielabs investigates how architectures shape workload behavior in AI systems. Focused on the layers that make inference a service: model sharding, runtime configuration, KV cache lifecycle &mdash; and the system behavior they produce, from latency and throughput dynamics to performance under load.</p>
-    <p>I design, benchmark, and validate inference architectures to understand performance, trade-offs, and real-world limits &mdash; and turn these findings into practical engineering frameworks for day 0&ndash;1 operations, including capacity planning and workload deployment.</p>
-    <p>Built on 15+ years of enterprise infrastructure experience (VMware, vCloud, Nutanix, NetApp), now fully focused on GPU-accelerated inference stacks and the operational discipline required to run them at scale.</p>
+    <p>Dielabs investigates the operational and infrastructural side of AI systems. No training pipelines, no data science &mdash; only the layers that make inference real: runtimes, memory, throughput, observability, and system behavior under load.</p>
+    <p>I design, measure, and compare architectures &mdash; to understand performance, trade-offs, and limits.</p>
+    <p>Built on 15+ years of enterprise infrastructure experience &mdash; VMware, vCloud, Nutanix, NetApp &mdash; and now fully focused on GPU-accelerated inference stacks and the engineering discipline required to operate them at scale.</p>
   </div>
 </div></div>
 <div class="section" id="focus" style="background: var(--off);"><div class="section-inner">
