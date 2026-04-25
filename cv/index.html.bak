@@ -449,7 +449,7 @@ title: CV
 <!-- ── HERO ── -->
 <div class="cv-hero">
   <div class="cv-name">Diego Bardella</div>
-  <div class="cv-role">Bridging Datacenter Infrastructure &amp; LLM Serving &nbsp;·&nbsp; Model Parallelism &nbsp;·&nbsp; vLLM Tuning &nbsp;·&nbsp; KV Cache Lifecycle &nbsp;·&nbsp; Observability</div>
+  <div class="cv-role">Datacenter Architect &nbsp;·&nbsp; AI Infrastructure Lover &nbsp;·&nbsp; NVIDIA AI Infrastructure Certification Apprentice</div>
   <div class="cv-meta">
     <span class="cv-meta-item"><span class="cv-meta-dot"></span>Casale Monferrato (AL), IT</span>
     <a class="cv-meta-item" href="https://linkedin.com/in/diegobardella" target="_blank"><span class="cv-meta-dot"></span>linkedin.com/in/diegobardella</a>
@@ -457,10 +457,10 @@ title: CV
     <a class="cv-meta-item" href="https://www.credly.com/users/diego-bardella/badges#credly" target="_blank"><span class="cv-meta-dot"></span>Credly</a>
   </div>
   <p class="cv-summary">
-    Infrastructure Architect with 15+ years across both sides of a datacenter &mdash; delivery and presales. My lucky path crossed TelCo NFV datacenters, Managed Service Providers, and enterprise on-premises private clouds.<br><br>
-    Now I'm looking under the hood of AI workloads with Dielabs, a personal research lab where I study, design, and benchmark LLM serving on the vLLM engine with a full observability stack. I focus on understanding how AI workloads behave in production and how to design the most efficient infrastructure around them.<br><br>
-    Looking for an Architect or Technical Presales role where deep infrastructure knowledge could meet AI serving &mdash; whether facing the rack or facing the customer.<br><br>
-    Driven by curiosity and human connections.
+    I started in my rural hometown studying certifications, learning by breaking and fixing systems, then I moved into real TelCo datacenters in Turin and Milan. Those years shaped both my technical and personal growth: complex projects, talented peoples, deep troubleshooting, and the occasional 3 a.m. rollback.<br><br>
+    I followed my flow joined a top hardware vendor as a System Engineer, designing and presenting server architectures at scale within a high-performance, strongly aligned and caring team of people. After deciding to leave Milan, I moved to a leading Managed Service Provider, working on a Tier IV datacenter and designing multi-vendor infrastructures across compute, storage, virtualization, and data protection, managing the full presales lifecycle end-to-end.<br><br>
+    Today I'm transforming my homelab into an AI inference engineering lab running on a PowerEdge R730 and a dedicated RTX 4070 Super GPU node. I design, benchmark, and optimize LLM serving workloads daily using vLLM, LMCache, Docker, GuideLLM, and a full Prometheus/Grafana/DCGM observability stack.<br><br>
+    Curiosity and human connections guide both my work and my personal journey.
   </p>
   <div class="cv-quote"><strong>Preferred quote</strong><br>&ldquo;Plans are useless, but planning is indispensable.&rdquo; &mdash; D. Eisenhower</div>
   <div class="badge-grid" style="margin-top:1.2rem;">
@@ -547,7 +547,7 @@ title: CV
         <div class="timeline-sub-title">Homelab — NVIDIA AI Infrastructure</div>
         <div class="timeline-sub-period">Jan 2026 — Present · @Home</div>
         <div class="timeline-sub-body">
-          Hands-on AI inference engineering lab where I study, design, benchmark, and break LLM serving infrastructure on-prem. Focus areas: LLM serving operations &mdash; deploying and optimizing open-source models on GPU hardware, with deep tuning of inference servers, memory layout, and KV cache management for production performance. Benchmark-driven validation &mdash; testing settings, policies, and engines across multiple model families with controlled methodology. Production-grade monitoring &mdash; full observability stack tracking the metrics that matter for inference quality and reliability (inference and hardware KPIs). Developing original frameworks to plan capacity, deploy inference workloads, and isolate issues across the serving layers.
+          Hands-on AI inference engineering lab where I design, deploy, break, and benchmark LLM serving infrastructure on-prem. LLM serving operations: deploying and optimizing open-source models on GPU hardware, fine tuning and configurations of inference server with memory and cache management for real-world performance. Benchmarking across multiple model families and inference servers with controlled methodology. Production-grade monitoring with full observability stack tracking inference and hardware KPIs. Building proprietary study frameworks for diagnosing inference issues mapped to the right infrastructure layer.
         </div>
         <div class="timeline-tags">
           <span class="tag">vLLM</span><span class="tag">LMCache</span><span class="tag">GuideLLM</span><span class="tag">Docker/Portainer</span><span class="tag">Prometheus/Grafana</span><span class="tag">NVIDIA CUDA Stack</span><span class="tag">Hardware Infrastructure Tuning</span>
@@ -558,7 +558,7 @@ title: CV
         <div class="timeline-sub-title">Professional Development — Career Break</div>
         <div class="timeline-sub-period">Jan 2026 — Present</div>
         <div class="timeline-sub-body">
-          Happy career break focused on technical specialization in AI infrastructure. After several years in fast-paced, delivery-driven presales roles, I chose to temporarily step back to rebuild technical depth through focused study and hands-on experimentation, realigning my career path with my passions and expanding my architectural skills with AI infrastructure. Following a structured learning path with the final objective of achieving the NVIDIA NCP-AII professional certification. Practical experience and validation grounded in a homelab environment where AI infrastructure concepts are proven and tested.
+          Happy volunteer career break focused on technical specialization in AI infrastructure. After several years in fast-paced, delivery-driven presales roles, I chose to temporarily step back to rebuild technical depth through focused study and hands-on experimentation, realigning my career path with my passions and expanding my architectural skills with AI infrastructure. Following a structured learning path with the final objective of achieving the NVIDIA NCP-AII professional certification. Practical experience and validation grounded in a homelab environment where AI infrastructure concepts are proven and tested.
         </div>
       </div>
     </div>
