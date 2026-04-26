@@ -158,7 +158,7 @@ The network enters the critical path when a communication is required to proceed
 This happens in three main scenarios, each tied to a parallelism strategy or architectural pattern described in other parts of this document:
 
 - **Tensor Parallelism (§20):** nodes have to synchronize with all-reduce at every layer. Crucial distinction: if TP is confined to an intra-node NVLink domain, communication happens on the fabric (§2) — not on the network — and is not a bottleneck. If TP extends inter-node (InfiniBand, Ethernet, QPI), the actual network enters the critical path at every step of the forward pass, for every token.
-- **Disaggregated serving (KB-DIS-001):** the KV cache produced by the prefill node has to be transferred to the decode node before generation can start. The transfer is blocking.
+- **Disaggregated serving:** the KV cache produced by the prefill node has to be transferred to the decode node before generation can start. The transfer is blocking.
 - **Expert Parallelism on MoE models (§22):** token-to-expert routing generates all-to-all traffic between nodes. The pattern scales worse than TP's all-reduce because each node potentially communicates with every other, and the volume depends on dynamic router decisions — therefore less predictable.
 
 When the network is **not** in the critical path — typically in pure Data Parallelism (§19), where each replica is independent — it serves only to distribute requests and collect responses. In that case the network choice has negligible impact on inference latency.
@@ -399,7 +399,7 @@ A model could technically fit on a single device but leave almost no room for th
 
 Disaggregating prefill/decode is not a parallelism strategy in the traditional sense, but an architectural pattern that changes how strategies are applied. Prefill workers can use aggressive TP on compute-intensive GPUs, while decode workers use GPUs optimized for memory bandwidth. The KV cache is transferred via **NIXL**/GPUDirect RDMA. The network is in the critical path for cache transfer (§13).
 
-This pattern is treated in detail in a dedicated reference (KB-DIS-001 — Disaggregated Serving). It is referenced here because it interacts directly with parallelism and fabric choices.
+This pattern is covered in detail in a separate document on disaggregated inference. It is mentioned here because it interacts directly with parallelism and fabric choices.
 
 ### 27. Serving-engine constraints
 
