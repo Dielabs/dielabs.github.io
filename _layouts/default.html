@@ -243,6 +243,21 @@
       padding: 3px 10px;
       border-radius: 999px;
       border: 1px solid var(--border);
+      text-decoration: none;
+      display: inline-block;
+      transition: color 0.2s, background 0.2s, border-color 0.2s, transform 0.15s;
+    }
+    a.private-pill { cursor: pointer; }
+    a.private-pill:hover {
+      color: var(--white);
+      background: var(--blue);
+      border-color: var(--blue);
+      transform: translateY(-1px);
+    }
+    a.private-pill::after {
+      content: " \2197";
+      letter-spacing: 0;
+      font-weight: 600;
     }
     .private-card .private-desc {
       color: var(--muted);
