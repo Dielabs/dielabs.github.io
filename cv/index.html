@@ -509,39 +509,6 @@ title: CV
   </div>
 </div>
 
-<!-- ── FRAMEWORKS ── -->
-<div class="cv-section">
-  <div class="cv-section-label">Original Work</div>
-  <div class="cv-section-title">Frameworks Developed</div>
-  <div class="framework-grid">
-    <div class="framework-card">
-      <div class="framework-accent" style="background:linear-gradient(90deg,var(--blue),var(--violet))"></div>
-      <div class="framework-name">Inference Stack Model (ISM)</div>
-      <p class="framework-desc">7-layer model (L0–L6) mapping every component in an LLM serving stack, from hardware substrate to application interface.</p>
-    </div>
-    <div class="framework-card">
-      <div class="framework-accent" style="background:linear-gradient(90deg,var(--violet),var(--pink))"></div>
-      <div class="framework-name">Inference Mastery Model (IMM)</div>
-      <p class="framework-desc">Competency framework (levels A–G) for inference engineering skills across hardware, runtime, optimization, and observability domains.</p>
-    </div>
-    <div class="framework-card">
-      <div class="framework-accent" style="background:linear-gradient(90deg,var(--pink),var(--blue))"></div>
-      <div class="framework-name">LLM Parameter Topology</div>
-      <p class="framework-desc">Where every LLM parameter lives: Artifact, Startup, or Request. Covers the parameter flow, enforcement hierarchy, conflict zones and troubleshooting tables.</p>
-    </div>
-    <div class="framework-card">
-      <div class="framework-accent" style="background:linear-gradient(90deg,var(--blue),var(--pink))"></div>
-      <div class="framework-name">LLM Inference Sizing in 10 Steps</div>
-      <p class="framework-desc">From business need to validated deployment. Separates customer inputs (use case, workload, SLO) from architectural response (sizing, runtime, hardware, stack). Closes the loop with benchmark and conscious scaling.</p>
-    </div>
-    <div class="framework-card">
-      <div class="framework-accent" style="background:linear-gradient(90deg,var(--violet),var(--blue))"></div>
-      <div class="framework-name">Observability KPI</div>
-      <p class="framework-desc">Monitoring, diagnostics and incident response framework on vLLM + Prometheus + Grafana + DCGM. Golden metrics, Observed vs Compute throughput, percentile statistics, diagnostic tree from symptom to root cause.</p>
-    </div>
-  </div>
-</div>
-
 <!-- ── EXPERIENCE ── -->
 <div class="cv-section">
   <div class="cv-section-label">Experience</div>
@@ -884,91 +851,6 @@ title: CV
   </div>
 </div>
 
-
-<!-- ── ARCHITECTURES ── -->
-<div class="cv-section">
-  <div class="cv-section-label">Architecture References</div>
-  <div class="cv-section-title">Architectures</div>
-  <div class="list-rows">
-    <a class="list-row" href="/architectures/inference-workload-architectures">
-      <div class="list-row-left">
-        <span class="list-row-idx">01</span>
-        <div>
-          <div class="list-row-title">Inference Workload Architectures</div>
-          <div class="list-row-sub">GPU fabric &middot; NVIDIA communication libraries &middot; Network critical path &middot; Parallelism strategies (DP/TP/PP/EP) &middot; Dielabs</div>
-        </div>
-      </div>
-      <span class="pill pill-violet">Architecture Ref</span>
-    </a>
-    <a class="list-row" href="/architectures/disaggregated-inference">
-      <div class="list-row-left">
-        <span class="list-row-idx">02</span>
-        <div>
-          <div class="list-row-title">Disaggregated Inference</div>
-          <div class="list-row-sub">Prefill/decode separation &middot; KV cache transfer over RDMA &middot; NIC vs DPU &middot; KV pooling tiers &middot; Decision framework &middot; Dielabs</div>
-        </div>
-      </div>
-      <span class="pill pill-violet">Architecture Ref</span>
-    </a>
-    <a class="list-row" href="/architectures/cpu-gpu-memory-topology">
-      <div class="list-row-left">
-        <span class="list-row-idx">03</span>
-        <div>
-          <div class="list-row-title">CPU-GPU Memory Topology for AI Inference</div>
-          <div class="list-row-sub">Unified vs coherent &middot; PCIe / NVLink-C2C / SoC fabric &middot; KV cache offload mechanisms &middot; Data placement &middot; GH200 / Spark / MI300A &middot; Dielabs</div>
-        </div>
-      </div>
-      <span class="pill pill-violet">Architecture Ref</span>
-    </a>
-  </div>
-</div>
-<!-- ── PUBLICATIONS ── -->
-<div class="cv-section">
-  <div class="cv-section-label">Writing</div>
-  <div class="cv-section-title">Publications &amp; Lab Papers</div>
-  <div class="list-rows">
-    <a class="list-row" href="/papers/when-good-gpus-produce-bad-tokens">
-      <div class="list-row-left">
-        <span class="list-row-idx">01</span>
-        <div>
-          <div class="list-row-title">When Good GPUs Produce Bad Tokens</div>
-          <div class="list-row-sub">Loop narrativo e decoding degenerativo in vLLM &middot; Qwen2.5-7B &middot; Mistral-7B &middot; RTX 4070 Super &middot; Dielabs</div>
-        </div>
-      </div>
-      <span class="pill pill-blue">Lab Paper</span>
-    </a>
-    <a class="list-row" href="/papers/when-offloading-doesnt-offload">
-      <div class="list-row-left">
-        <span class="list-row-idx">02</span>
-        <div>
-          <div class="list-row-title">When Offloading Doesn't Offload</div>
-          <div class="list-row-sub">KV Cache Offloading in vLLM 0.15.1 &middot; RTX 4070 Super &middot; PCIe 4.0 &middot; Dielabs</div>
-        </div>
-      </div>
-      <span class="pill pill-blue">Lab Paper</span>
-    </a>
-    <a class="list-row" href="/papers/what-cpus-teach-about-gpu-inference">
-      <div class="list-row-left">
-        <span class="list-row-idx">03</span>
-        <div>
-          <div class="list-row-title">What CPUs Teach About GPU Inference</div>
-          <div class="list-row-sub">NUMA-Aware parallel architectures on Dell R730 &middot; SN / TP / DP benchmark &middot; vLLM &middot; Dielabs</div>
-        </div>
-      </div>
-      <span class="pill pill-blue">Lab Paper</span>
-    </a>
-    <a class="list-row" href="/papers/the-shifting-bottleneck">
-      <div class="list-row-left">
-        <span class="list-row-idx">04</span>
-        <div>
-          <div class="list-row-title">The Shifting Bottleneck</div>
-          <div class="list-row-sub">KV capacity vs memory bandwidth &middot; Qwen3-8B-AWQ &middot; RTX 4070 Super &middot; FP8 KV cache &middot; GuideLLM &middot; Dielabs</div>
-        </div>
-      </div>
-      <span class="pill pill-blue">Lab Paper</span>
-    </a>
-  </div>
-</div>
 
 <!-- ── LINKS ── -->
 <div class="cv-section">
