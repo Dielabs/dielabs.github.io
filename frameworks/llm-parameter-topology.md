@@ -86,7 +86,11 @@ This level is pure Inference Engineering.
 
 ### Concurrency and Scheduling
 
-**`max_num_seqs`** Maximum number of simultaneous requests in the batch. This is the primary operational lever for choosing between a latency-first or throughput-first deployment profile. Lowering it protects per-request latency (less GPU contention per decode step) at the cost of aggregate throughput. Raising it increases throughput but degrades individual latency. The optimal value maps directly to the Crossover Point (Cp) identified by the Benchmarking Protocol: set at or below Cp for latency-first, above Cp for throughput-first. See [Benchmarking Protocol — Operational Tuning](../frameworks/benchmarking-protocol.md#operational-tuning-latency-vs-throughput-levers).
+**`max_num_seqs`** Maximum number of sequences the continuous batching scheduler can keep active (resident) simultaneously in the engine. This is the primary lever to balance latency and throughput.
+
+Lowering it protects latency: fewer active sequences mean less pressure on the KV cache and less GPU contention during decode steps, but aggregate throughput drops. Raising it increases throughput at the cost of latency; beyond a certain threshold VRAM saturates, forcing preemption or sequence swap with non-linear degradations.
+
+The Crossover Point (Cp) — the concurrency at which the system transitions from latency-first to throughput-first behavior — guides tuning: below Cp → latency-first, above Cp → throughput-first. The correspondence between external concurrency and active sequences in the scheduler is not 1:1 (it depends on the input/output length distribution), so the value must be validated empirically against the target workload.
 
 **`max_num_batched_tokens`** Token limit processable in the same batch. Trade-off: TTFT ↔ throughput. On engines like vLLM, this parameter can transform a "slow" server into a powerhouse without touching the model or the request.
 

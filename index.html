@@ -78,9 +78,22 @@
     .footer-links { display: flex; gap: 1.5rem; }
     .footer-links a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .footer-links a:hover { color: var(--blue); }
+    .fwset-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5px; background: var(--border); border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .fwset-card { background: var(--white); padding: 1.6rem 1.3rem; transition: background 0.25s; position: relative; display: flex; flex-direction: column; min-height: 220px; }
+    .fwset-card:hover { background: var(--off); }
+    .fwset-card:hover .fwset-title { color: var(--blue); }
+    .fwset-card:hover .fwset-step { color: var(--blue); }
+    .fwset-step { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.4rem; transition: color 0.2s; }
+    .fwset-accent { width: 28px; height: 3px; border-radius: 2px; margin-bottom: 0.9rem; background: linear-gradient(90deg, var(--blue), var(--violet)); }
+    .fwset-stage { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue); margin-bottom: 0.4rem; }
+    .fwset-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.05rem; line-height: 1.15; letter-spacing: 0.04em; color: var(--text); margin-bottom: 0.6rem; transition: color 0.2s; }
+    .fwset-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.55; flex-grow: 1; }
+    .fwset-link { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; margin-top: 0.9rem; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s, gap 0.2s; }
+    .fwset-card:hover .fwset-link { color: var(--blue); gap: 8px; }
+    .fwset-pitch { font-size: 0.95rem; color: var(--muted); max-width: 720px; line-height: 1.75; margin-bottom: 2.5rem; font-style: italic; border-left: 2px solid var(--blue); padding-left: 14px; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     .hero-content { animation: fadeIn 0.7s ease both; }
-    @media (max-width: 768px) { nav { padding: 0 1.5rem; } .nav-links { display: none; } .hero, .section { padding-left: 1.5rem; padding-right: 1.5rem; } h1 { white-space: normal; font-size: clamp(32px, 9vw, 56px); } .sub { white-space: normal; } .stats-bar { gap: 2rem; padding: 1.5rem; } .focus-grid { grid-template-columns: 1fr 1fr; } footer { flex-direction: column; } }
+    @media (max-width: 1024px) { .fwset-grid { grid-template-columns: repeat(3, 1fr); } } @media (max-width: 768px) { nav { padding: 0 1.5rem; } .nav-links { display: none; } .hero, .section { padding-left: 1.5rem; padding-right: 1.5rem; } h1 { white-space: normal; font-size: clamp(32px, 9vw, 56px); } .sub { white-space: normal; } .stats-bar { gap: 2rem; padding: 1.5rem; } .focus-grid { grid-template-columns: 1fr 1fr; } .fwset-grid { grid-template-columns: 1fr 1fr; } footer { flex-direction: column; } }
     @media (max-width: 480px) { .focus-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -107,7 +120,7 @@
 </section>
 <div class="stats-bar">
   <div class="stat"><div class="stat-number">4</div><div class="stat-label">Research Papers</div></div>
-  <div class="stat"><div class="stat-number">4</div><div class="stat-label">Frameworks</div></div>
+  <div class="stat"><div class="stat-number">5</div><div class="stat-label">Frameworks</div></div>
   <div class="stat"><div class="stat-number">2</div><div class="stat-label">Architecture References</div></div>
   <div class="stat"><div class="stat-number">2</div><div class="stat-label">Hardware Platforms</div></div>
 </div>
@@ -117,6 +130,52 @@
     <p>Dielabs investigates how architectures shape workload behavior in AI systems. Focused on the layers that make inference a service: model sharding, runtime configuration, KV cache lifecycle &mdash; and the system behavior they produce, from latency and throughput dynamics to performance under load.</p>
     <p>I design, benchmark, and validate inference architectures to understand performance, trade-offs, and real-world limits &mdash; and turn these findings into practical engineering frameworks for day 0&ndash;1 operations, including capacity planning and workload deployment.</p>
     <p>Built on 15+ years of enterprise infrastructure experience (VMware, vCloud, Nutanix, NetApp), now fully focused on GPU-accelerated inference stacks and the operational discipline required to run them at scale.</p>
+  </div>
+</div></div>
+<div class="section" id="frameworkset" style="background: var(--white);"><div class="section-inner">
+  <p class="section-label">Methodology</p><h2 class="section-title">Five Frameworks for the Full Inference Deployment Lifecycle</h2>
+  <p class="fwset-pitch">From a business need to a system in production: a framework set that turns LLM inference deployment into a sequence of named, defensible decisions &mdash; each anchored in lab evidence, not vendor slides.</p>
+  <div class="fwset-grid">
+    <a class="fwset-card" href="/frameworks/inference-sizing-10-steps" style="text-decoration:none;color:inherit;">
+      <div class="fwset-step">01</div>
+      <div class="fwset-accent"></div>
+      <div class="fwset-stage">Sizing</div>
+      <div class="fwset-title">Inference Sizing in 10 Steps</div>
+      <div class="fwset-desc">From business need to validated deployment. Separates customer inputs from architectural response. The conversation framework.</div>
+      <span class="fwset-link">Read &rarr;</span>
+    </a>
+    <a class="fwset-card" href="/frameworks/inference-technology-model" style="text-decoration:none;color:inherit;">
+      <div class="fwset-step">02</div>
+      <div class="fwset-accent"></div>
+      <div class="fwset-stage">Competence</div>
+      <div class="fwset-title">Inference Technology Model</div>
+      <div class="fwset-desc">A&ndash;G layers mapping the skills required to operate inference: pipeline, engines, memory, optimization, distribution, measurement, production.</div>
+      <span class="fwset-link">Read &rarr;</span>
+    </a>
+    <a class="fwset-card" href="/frameworks/llm-parameter-topology" style="text-decoration:none;color:inherit;">
+      <div class="fwset-step">03</div>
+      <div class="fwset-accent"></div>
+      <div class="fwset-stage">Configuration</div>
+      <div class="fwset-title">LLM Parameter Topology</div>
+      <div class="fwset-desc">Where every parameter lives: Artifact, Startup, or Request. The control surface for tuning, with conflict zones and enforcement hierarchy.</div>
+      <span class="fwset-link">Read &rarr;</span>
+    </a>
+    <a class="fwset-card" href="/frameworks/inference-diagnostic-framework" style="text-decoration:none;color:inherit;">
+      <div class="fwset-step">04</div>
+      <div class="fwset-accent"></div>
+      <div class="fwset-stage">Diagnostics</div>
+      <div class="fwset-title">Inference Diagnostic Framework</div>
+      <div class="fwset-desc">L0&ndash;L6 model locating any problem to a precise architectural layer. From hardware substrate to client edge.</div>
+      <span class="fwset-link">Read &rarr;</span>
+    </a>
+    <a class="fwset-card" href="/frameworks/observability-kpi" style="text-decoration:none;color:inherit;">
+      <div class="fwset-step">05</div>
+      <div class="fwset-accent"></div>
+      <div class="fwset-stage">Operations</div>
+      <div class="fwset-title">Observability KPI</div>
+      <div class="fwset-desc">Monitoring, diagnostics and incident response on vLLM + Prometheus + Grafana + DCGM. Golden metrics, percentile statistics, runbook.</div>
+      <span class="fwset-link">Read &rarr;</span>
+    </a>
   </div>
 </div></div>
 <div class="section" id="focus" style="background: var(--off);"><div class="section-inner">
@@ -133,9 +192,9 @@
 <div class="section" id="repository" style="background: var(--white);"><div class="section-inner">
   <p class="section-label">Repository</p><h2 class="section-title">Content & Docs</h2>
   <div class="links">
-    <a class="link-row" href="papers/"><div class="link-left"><span class="link-index">01</span><div><div class="link-title">Papers</div><div class="link-desc">Original research — decoding analysis, offloading, CPU-GPU isomorphism, crossover point</div></div></div><span class="arrow">→</span></a>
+    <a class="link-row" href="papers/"><div class="link-left"><span class="link-index">01</span><div><div class="link-title">Papers</div><div class="link-desc">Original research — decoding analysis, offloading, CPU-GPU isomorphism, shifting bottleneck</div></div></div><span class="arrow">→</span></a>
     <a class="link-row" href="manuals/"><div class="link-left"><span class="link-index">02</span><div><div class="link-title">Manuals</div><div class="link-desc">Reference manuals — inference engineering and KV cache management</div></div></div><span class="arrow">→</span></a>
-    <a class="link-row" href="frameworks/"><div class="link-left"><span class="link-index">03</span><div><div class="link-title">Frameworks</div><div class="link-desc">Conceptual models — L0–L6 diagnostics, technology model, parameter topology, benchmarking protocol</div></div></div><span class="arrow">→</span></a>
+    <a class="link-row" href="frameworks/"><div class="link-left"><span class="link-index">03</span><div><div class="link-title">Frameworks</div><div class="link-desc">Conceptual models — L0–L6 diagnostics, technology model, parameter topology, sizing methodology, observability</div></div></div><span class="arrow">→</span></a>
     <a class="link-row" href="architectures/"><div class="link-left"><span class="link-index">04</span><div><div class="link-title">Architectures</div><div class="link-desc">Architectural references — GPU fabric, NVIDIA communication libraries, network critical path, parallelism strategies</div></div></div><span class="arrow">→</span></a>
     <a class="link-row" href="cv/"><div class="link-left"><span class="link-index">05</span><div><div class="link-title">CV</div><div class="link-desc">Professional profile</div></div></div><span class="arrow">→</span></a>
   </div>

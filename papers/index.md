@@ -20,8 +20,8 @@ Experimental investigation of KV cache offloading mechanisms in vLLM 0.15.1 on c
 ### [What CPUs Teach About GPU Inference](what-cpus-teach-about-gpu-inference.md)
 Benchmark of SN / TP-2 / DP-2 architectures on Dell PowerEdge R730 with vLLM. Proves the CPU-GPU isomorphism: distributed inference patterns are general principles, not GPU artifacts. Identifies TP as anti-pattern on slow interconnects.
 
-### [Finding the Crossover Point](finding-the-crossover-point.md)
-Systematic benchmark of RTX 4070 Super with Llama 3.1 8B via vLLM. Two-phase methodology (sweep + concurrent) to identify the crossover point where latency cost exceeds throughput gain. Defines the Inference Operating Envelope.
+### [The Shifting Bottleneck](the-shifting-bottleneck.md)
+Three benchmarks on a single RTX 4070 Super with Qwen3-8B-AWQ via vLLM. Shows how the binding constraint moves from KV capacity (FP16, prompt-heavy) to a higher KV ceiling (FP8) to memory bandwidth (FP8, chat-like). A methodology for inference sizing that starts from workload and SLO.
 
 ---
 

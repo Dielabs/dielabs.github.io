@@ -526,8 +526,18 @@ title: CV
     </div>
     <div class="framework-card">
       <div class="framework-accent" style="background:linear-gradient(90deg,var(--pink),var(--blue))"></div>
-      <div class="framework-name">Benchmarking Protocol</div>
-      <p class="framework-desc">Three-phase LLM inference validation (Sweep, Concurrent, SLO Mapping) via GuideLLM. Identifies the Crossover Point and produces a Capacity Card for each deployment.</p>
+      <div class="framework-name">LLM Parameter Topology</div>
+      <p class="framework-desc">Where every LLM parameter lives: Artifact, Startup, or Request. Covers the parameter flow, enforcement hierarchy, conflict zones and troubleshooting tables.</p>
+    </div>
+    <div class="framework-card">
+      <div class="framework-accent" style="background:linear-gradient(90deg,var(--blue),var(--pink))"></div>
+      <div class="framework-name">LLM Inference Sizing in 10 Steps</div>
+      <p class="framework-desc">From business need to validated deployment. Separates customer inputs (use case, workload, SLO) from architectural response (sizing, runtime, hardware, stack). Closes the loop with benchmark and conscious scaling.</p>
+    </div>
+    <div class="framework-card">
+      <div class="framework-accent" style="background:linear-gradient(90deg,var(--violet),var(--blue))"></div>
+      <div class="framework-name">Observability KPI</div>
+      <p class="framework-desc">Monitoring, diagnostics and incident response framework on vLLM + Prometheus + Grafana + DCGM. Golden metrics, Observed vs Compute throughput, percentile statistics, diagnostic tree from symptom to root cause.</p>
     </div>
   </div>
 </div>
@@ -927,12 +937,12 @@ title: CV
       </div>
       <span class="pill pill-blue">Lab Paper</span>
     </a>
-    <a class="list-row" href="/papers/finding-the-crossover-point">
+    <a class="list-row" href="/papers/the-shifting-bottleneck">
       <div class="list-row-left">
         <span class="list-row-idx">04</span>
         <div>
-          <div class="list-row-title">Finding the Crossover Point</div>
-          <div class="list-row-sub">Latency vs throughput crossover &middot; Llama 3.1 8B AWQ &middot; RTX 4070 Super &middot; GuideLLM &middot; Dielabs</div>
+          <div class="list-row-title">The Shifting Bottleneck</div>
+          <div class="list-row-sub">KV capacity vs memory bandwidth &middot; Qwen3-8B-AWQ &middot; RTX 4070 Super &middot; FP8 KV cache &middot; GuideLLM &middot; Dielabs</div>
         </div>
       </div>
       <span class="pill pill-blue">Lab Paper</span>

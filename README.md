@@ -11,13 +11,13 @@ Rather than focusing on model training or data science, Dielabs investigates the
 ## Repository Structure
 
 ### [Papers](papers/)
-Original technical papers from real lab work. Topics include degenerative decoding analysis, KV cache offloading investigation, CPU-GPU inference isomorphism, and crossover point benchmarking.
+Original technical papers from real lab work. Topics include degenerative decoding analysis, KV cache offloading investigation, CPU-GPU inference isomorphism, and bottleneck migration in capacity sizing.
 
 ### [Manuals](manuals/)
 Reference manuals covering operational inference engineering knowledge — KV cache mechanics, vLLM tuning, Prometheus metrics.
 
 ### [Frameworks](frameworks/)
-Proprietary conceptual models for reasoning about inference systems: the L0–L6 diagnostic framework, the A–G technology model, and the Artifact/Startup/Request parameter topology.
+Proprietary conceptual models for reasoning about inference systems: the L0–L6 diagnostic framework, the A–G technology model, the Artifact/Startup/Request parameter topology, a 10-step sizing methodology, and an observability KPI framework for incident response.
 
 ### [CV](cv/)
 Public professional profile.
