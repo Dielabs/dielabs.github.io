@@ -5,14 +5,14 @@ layout: default
 
 # Frameworks
 
-Proprietary frameworks for reasoning about LLM inference systems. These define the conceptual models used throughout the lab to structure analysis, diagnostics and engineering work.
+Proprietary frameworks for reasoning about LLM inference systems. These define the conceptual models used throughout the lab to structure analysis, design and engineering work.
 
 ---
 
 ## Documents
 
-### [Inference Diagnostic Framework](inference-diagnostic-framework.md)
-A 7-layer architectural model (L0–L6) mapping every component involved in serving an LLM — from physical hardware to the client application. Used to understand system boundaries, ownership and root-cause analysis.
+### [The LLM Inference Stack Model](inference-stack-model.md)
+A layered model of an LLM inference system, from physical hardware (L0) to the client (L6). Each layer does one thing and enables the one above. The conceptual map used across the lab to reason about where every component sits and how dependencies flow.
 
 ### [Inference Technology Model](inference-technology-model.md)
 A competency framework (Layers A–G) mapping what an inference engineer needs to know and operate. Maps skills rather than components — deliberately cuts across multiple L-layers.
