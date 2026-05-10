@@ -19,9 +19,6 @@ Reference manuals covering operational inference engineering knowledge — KV ca
 ### [Frameworks](frameworks/)
 Proprietary conceptual models for reasoning about inference systems: the L0–L6 diagnostic framework, the A–G technology model, the Artifact/Startup/Request parameter topology, a 10-step sizing methodology, and an observability KPI framework for incident response.
 
-### [CV](cv/)
-Public professional profile.
-
 ---
 
 ## Philosophy
