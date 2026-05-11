@@ -5,7 +5,7 @@ title: "Observability KPI"
 
 # Observability KPI — Monitoring, Diagnostics and Incident Response for LLM Inference Systems
 
-**Version 1.2**
+**Version 1.3**
 
 Stack: vLLM + Prometheus + Grafana + DCGM Exporter + Node Exporter + LMCache
 
@@ -17,15 +17,25 @@ ISM scope: L0 (Hardware) → L4b (GPU Workload Optimization)
 
 ## 1. The Golden Metrics Glossary
 
-Three metrics define the user experience and the health of the inference system.
+Four metrics define the user experience and the health of the inference system.
 
 | Metric | Full Name | LLM Phase | Description |
 |---|---|---|---|
-| **TTFT** | Time To First Token | Prefill | Reaction time. The engine processes the prompt and generates the first token. Depends on prompt length and GPU availability. |
-| **ITL** | Inter-Token Latency | Decode | Time between one token and the next. Determines the fluidity perceived by the user. Depends on model weight and the active batch. |
-| **E2E** | End-to-End Latency | Total | Total time from HTTP request to last token. Includes queuing, prefill, decode and network overhead. |
+| **TTFT** | Time To First Token | Prefill | Reaction time. The engine processes the prompt and generates the first token. Depends on prompt length, GPU availability and — under load — queue time before admission to the batch. |
+| **ITL** | Inter-Token Latency | Decode | Time between one token and the next during the decode of an in-flight request. Determines the fluidity perceived by the user. Depends on model weight and the density of the current batch. Does not see queue or prefill. |
+| **TPOT** | Time Per Output Token | Per-request (total) | Average cost per token computed over the total lifetime of the request, defined as `E2E / output_tokens` (GuideLLM convention). Includes queue, prefill and decode. The metric most commonly used in contractual SLAs. |
+| **E2E** | End-to-End Latency | Total | Total time from HTTP request to the last token. Includes queuing, prefill, decode and network overhead. |
 
-Note: **TPOT** is the average ITL of a single request — the per-request decode-side counterpart of system-level ITL.
+### TPOT vs ITL — Which Metric for Which Purpose
+
+Both are per-request metrics, but they measure different segments of the request lifetime:
+
+- **ITL** is the interval between consecutive tokens *during* the decode of a request already in-flight in the batch. It does not include queue or prefill. It is a **system metric observed per-request**: it tells how fast decode runs when the request is actually executing.
+- **TPOT** is the average cost per token computed over the entire lifetime of the request. It includes queue, prefill and decode. It is a **user-facing per-request metric**: it tells how fast that user perceived the tokens arriving on average.
+
+At empty queue (c=1), TPOT ≈ ITL because TTFT is dominated by prefill compute alone — small and stable. Under saturated load, ITL stays flat because it only measures in-flight decode, while TPOT grows because it includes TTFT, and TTFT under saturation is dominated by queue time of requests waiting for admission to the batch.
+
+**Which to use:** for operational monitoring, use ITL — it is the native metric exposed by vLLM, and it isolates decode behavior from scheduling and queue noise. For contractual SLAs, use TPOT, because it corresponds to what the end user perceives. The PromQL queries in §5 measure ITL; the Sizing KB covers in detail when to use one or the other during requirements gathering.
 
 ### Supporting Metrics
 
@@ -40,6 +50,15 @@ Note: **TPOT** is the average ITL of a single request — the per-request decode
 | **LMCache Hit Rate** | Ratio of cache hits to total queries (external prefix cache) | Indicates KV cache offloading effectiveness. Low hit rate = the cache is not serving, investigate prompt patterns. |
 | **Observed Throughput** | Effective tokens/sec observed (prompt + generation separated) | Real end-to-end throughput, includes scheduling and queuing overhead. |
 | **Compute Throughput** | Pure compute tokens/sec (prefill and decode separated) | Raw GPU throughput, isolated from overhead. The delta with Observed Throughput reveals the system overhead. |
+
+### Per-Request vs System Metrics
+
+A distinction that comes back useful during diagnostics:
+
+- **Per-request metrics** — one measurement for each served request. Across a population of requests, distributions (p50, p95, p99) are then computed. They are: TTFT, ITL, TPOT, E2E, output_tokens, input_tokens.
+- **System metrics** — one measurement per time interval or per instantaneous state, aggregated across all in-flight requests. They are: throughput in tok/s, RPS, Waiting/Running/Preempted Requests, KV Cache Usage, GPU Utilization.
+
+When an SLO says "TTFT p95 < 1s", it means that the 95th percentile of the TTFT distribution measured across all requests in the observation period must stay below 1 second.
 
 ---
 
@@ -154,6 +173,8 @@ Operational table for incident response. Cross-reference symptoms to identify th
 | **Low LMCache Hit Rate** (< 0.3) with high KV Cache | The external cache is not serving. Prompts have insufficient prefix overlap. | L3 | Check prompt patterns — if very different from each other, prefix cache is ineffective. Evaluate whether LMCache is configured correctly. |
 | **Observed Throughput << Compute Throughput** | High system overhead (scheduling, queuing, preemption). | L3+L4a | The GPU has free capacity but the system is not using it. Check waiting requests, preemption, continuous batching configuration. |
 
+> **Note on TPOT vs ITL diagnostics:** if an external benchmark report (e.g. GuideLLM) shows TPOT rising under load while ITL in the Prometheus dashboards stays stable, this is not an inconsistency: ITL measures in-flight decode, TPOT includes the queue time accumulated in TTFT. The divergence is the expected symptom of queue saturation — use the tree above starting from TTFT and Waiting Requests.
+
 ---
 
 ## 5. Operational PromQL Queries for Grafana
@@ -168,6 +189,8 @@ The current dashboard uses the following conventions:
 - **Instance:** All vLLM queries filter by `instance="192.168.4.250:8000"`.
 
 ### Golden Metrics Dashboard
+
+> **Important on panel labels:** the native metric exposed by vLLM is `inter_token_latency_seconds`, i.e. ITL — not TPOT. Label the panels as "ITL p99 / p50" (not "TPOT"). To measure TPOT, it must be computed from E2E and output_tokens, and it is not exposed directly by vLLM as a histogram.
 
 **TTFT p99:**
 
@@ -381,7 +404,7 @@ Operational workflow when an alert is received or an anomaly is noticed.
 │  ITL high, TTFT low   → GPU bottleneck                    │
 │                          DCGM GPU Util + quantization.    │
 ├───────────────────────────────────────────────────────────┤
-│  Everything high       → Total saturation                  │
+│  Everything high      → Total saturation                  │
 │                          Reduce load immediately.         │
 └───────────────────────────────────────────────────────────┘
 ```

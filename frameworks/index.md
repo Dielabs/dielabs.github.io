@@ -24,7 +24,7 @@ A structured framework for understanding where every LLM parameter lives: Artifa
 A 10-step methodology that goes from a business need to an empirically validated inference deployment. Distinguishes customer inputs (use case, workload, SLO) from architectural response (model, sizing, runtime, hardware, stack) and closes the loop with benchmark and conscious scaling.
 
 ### [Observability KPI](observability-kpi.md)
-A monitoring, diagnostics and incident response framework for LLM inference systems built on vLLM + Prometheus + Grafana + DCGM. Covers the golden metrics (TTFT, ITL, E2E), Observed vs Compute throughput, percentile statistics, diagnostic tree from symptom to root cause, and operational PromQL queries.
+A monitoring, diagnostics and incident response framework for LLM inference systems built on vLLM + Prometheus + Grafana + DCGM. Covers the golden metrics (TTFT, ITL, TPOT, E2E), the TPOT vs ITL distinction, Observed vs Compute throughput, percentile statistics, diagnostic tree from symptom to root cause, and operational PromQL queries.
 
 ---
 
