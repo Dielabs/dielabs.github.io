@@ -37,6 +37,25 @@ At empty queue (c=1), TPOT ≈ ITL because TTFT is dominated by prefill compute 
 
 **Which to use:** for operational monitoring, use ITL — it is the native metric exposed by vLLM, and it isolates decode behavior from scheduling and queue noise. For contractual SLAs, use TPOT, because it corresponds to what the end user perceives. The PromQL queries in §5 measure ITL; the Sizing KB covers in detail when to use one or the other during requirements gathering.
 
+### TPOT vs E2E — Same Measurement, Different Reading
+
+TPOT and E2E are not independent metrics: they are linked by a fixed relationship.
+
+```
+TPOT = E2E / output_tokens
+```
+
+Both describe the same physical event — the lifetime of a single request — but expressed in different units. E2E reads it as a total duration (seconds), TPOT reads it as a rate (seconds per token). Knowing one plus the output length gives the other automatically.
+
+The reason both exist is that they answer different questions:
+
+- **E2E** — "How long do I wait in total?" Relevant for short outputs and chat-style replies, where the user perceives the response as a single block.
+- **TPOT** — "How fast do the tokens arrive on average?" Relevant for long outputs and streaming generation, where the user starts reading before the response is complete and judges the flow rather than the total wait.
+
+The discriminant is output length. For a ~50-token reply, the user perceives "fast or slow" as a single value — E2E is the right reading. For a ~2000-token reply, the user is already reading while generation continues — TPOT becomes the meaningful metric.
+
+**SLA implication:** an SLA on TPOT and an SLA on E2E are not interchangeable. TPOT commits to a sustainable token rate; E2E commits to a maximum completion time. Under queue saturation, TPOT degrades more gently than E2E for long outputs, because the queue time is spread over many tokens. For mixed workloads (chat + summarization), a dual-SLA formulation is often more appropriate than a single number — for example: *"E2E p95 < X for responses ≤ 200 tokens, TPOT p95 < Y for responses > 200 tokens"*.
+
 ### Supporting Metrics
 
 | Metric | Description | Why It Matters |
