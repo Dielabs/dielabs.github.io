@@ -92,6 +92,13 @@
     .fwset-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.55; flex-grow: 1; }
     .fwset-link { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; margin-top: 0.9rem; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s, gap 0.2s; }
     .fwset-card:hover .fwset-link { color: var(--blue); gap: 8px; }
+    .fwset-card--gold { border: 1.5px solid #E0A82E; background: #FFFDF5; box-shadow: inset 0 0 0 1px rgba(224,168,46,0.18), 0 4px 18px rgba(224,168,46,0.12); }
+    .fwset-card--gold:hover { background: #FBF3DC; }
+    .fwset-card--gold .fwset-accent { background: linear-gradient(90deg, #E0A82E, #F4C95B); }
+    .fwset-card--gold .fwset-stage { color: #B07D14; }
+    .fwset-card--gold:hover .fwset-step { color: #B07D14; }
+    .fwset-card--gold:hover .fwset-title { color: #8A6310; }
+    .fwset-card--gold:hover .fwset-link { color: #B07D14; }
     .fwset-pitch { font-size: 0.95rem; color: var(--muted); max-width: 720px; line-height: 1.75; margin-bottom: 2.5rem; font-style: italic; border-left: 2px solid var(--blue); padding-left: 14px; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     .hero-content { animation: fadeIn 0.7s ease both; }
@@ -157,7 +164,7 @@
       <div class="fwset-desc">Layered model of an LLM inference system, from physical hardware (L0) to the client (L6). Each layer enables the one above.</div>
       <span class="fwset-link">Read &rarr;</span>
     </a>
-    <a class="fwset-card" href="/frameworks/from-idea-to-production" style="text-decoration:none;color:inherit;">
+    <a class="fwset-card fwset-card--gold" href="/frameworks/from-idea-to-production" style="text-decoration:none;color:inherit;">
       <div class="fwset-step">02</div>
       <div class="fwset-accent"></div>
       <div class="fwset-stage">Sizing</div>
