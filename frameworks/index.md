@@ -20,8 +20,8 @@ A competency framework (Layers A–G) mapping what an inference engineer needs t
 ### [LLM Parameter Topology](llm-parameter-topology.md)
 A structured framework for understanding where every LLM parameter lives: Artifact, Startup, or Request. Covers the full parameter flow from model weights to runtime enforcement, with conflict zones and troubleshooting tables.
 
-### [LLM Inference Sizing in 10 Steps](inference-sizing-10-steps.md)
-A 10-step methodology that goes from a business need to an empirically validated inference deployment. Distinguishes customer inputs (use case, workload, SLO) from architectural response (model, sizing, runtime, hardware, stack) and closes the loop with benchmark and conscious scaling.
+### [From Idea to Production](from-idea-to-production.md)
+An 11-step methodology that goes from a business need to an empirically validated inference deployment. Distinguishes customer inputs (use case, workload, traffic, SLO) from the architectural response (model, sizing, runtime, hardware, stack) and closes the loop with benchmark and conscious scaling.
 
 ### [Observability KPI](observability-kpi.md)
 A monitoring, diagnostics and incident response framework for LLM inference systems built on vLLM + Prometheus + Grafana + DCGM. Covers the golden metrics (TTFT, ITL, TPOT, E2E), the TPOT vs ITL distinction, Observed vs Compute throughput, percentile statistics, diagnostic tree from symptom to root cause, and operational PromQL queries.
