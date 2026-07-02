@@ -4,15 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dielabs — AI Infrastructure Engineering</title>
-  <meta name="description" content="Dielabs is a hands-on AI inference engineering lab: LLM serving architectures designed, benchmarked and observed on real hardware. Frameworks for sizing, capacity planning and deployment." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://dielabs.github.io/" />
-  <meta property="og:site_name" content="Dielabs" />
-  <meta property="og:title" content="Dielabs — AI Infrastructure Engineering" />
-  <meta property="og:description" content="AI inference engineering lab: LLM serving architectures designed, benchmarked and observed on real hardware. Lab evidence, not vendor slides." />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Dielabs — AI Infrastructure Engineering" />
-  <meta name="twitter:description" content="AI inference engineering lab: LLM serving architectures designed, benchmarked and observed on real hardware." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
   <style>
@@ -77,7 +68,7 @@
     .focus-card { background: var(--white); padding: 2rem; transition: background 0.25s; position: relative; }
     .focus-card:hover { background: var(--off); }
     .focus-accent { width: 36px; height: 3px; border-radius: 2px; margin-bottom: 1.2rem; }
-    .a-blue { background: var(--blue); } .a-violet { background: var(--violet); } .a-pink { background: var(--pink); } .a-cyan { background: var(--cyan); } .a-yellow { background: #f0b800; } .a-grad { background: linear-gradient(90deg, var(--blue), var(--violet)); } .a-grad2 { background: linear-gradient(90deg, var(--violet), var(--pink)); }
+    .a-blue { background: var(--blue); } .a-violet { background: var(--violet); } .a-pink { background: var(--pink); } .a-cyan { background: var(--cyan); } .a-yellow { background: #f0b800; } .a-grad { background: linear-gradient(90deg, var(--blue), var(--violet)); }
     .focus-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.04em; color: var(--text); margin-bottom: 0.5rem; }
     .focus-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
     .links { display: flex; flex-direction: column; gap: 1.5px; background: var(--border); border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; }
@@ -140,14 +131,14 @@
     <p class="sub">Personal Engineering Lab · Casale Monferrato, IT</p>
     <p class="tagline">Understanding systems by building, measuring and documenting them.<br>Powered by caffeine and reboots.</p>
     <div class="status"><span class="dot" style="background:#5A9A3E;"></span> GPU Node 32 GB RAM &middot; RTX 4070 Super 12 GB VRAM &middot; Dell PowerEdge R730 Dual Socket 128 GB RAM</div>
-    <div class="status" style="margin-top:8px;"><span class="dot" style="background:var(--blue);"></span> vLLM &middot; NVIDIA Dynamo &middot; LMCache &middot; GuideLLM &middot; Prometheus &middot; Grafana &middot; Loki &middot; Tempo &middot; Docker</div>
+    <div class="status" style="margin-top:8px;"><span class="dot" style="background:var(--blue);"></span> vLLM &middot; LMCache &middot; GuideLLM &middot; Prometheus &middot; Grafana &middot; Docker</div>
   </div>
 </section>
 <div class="stats-bar">
   <div class="stat"><div class="stat-number">4</div><div class="stat-label">Research Papers</div></div>
   <div class="stat"><div class="stat-number">5</div><div class="stat-label">Frameworks</div></div>
   <div class="stat"><div class="stat-number">3</div><div class="stat-label">Architecture References</div></div>
-  <div class="stat"><div class="stat-number">15+</div><div class="stat-label">GuideLLM Benchmark Runs</div></div>
+  <div class="stat"><div class="stat-number">2</div><div class="stat-label">Hardware Platforms</div></div>
 </div>
 <div class="section" style="background: var(--white);"><div class="section-inner">
   <p class="section-label">About</p><h2 class="section-title">The Lab</h2>
@@ -166,7 +157,6 @@
     <div class="focus-card"><div class="focus-accent a-cyan"></div><h3>Observability</h3><p>Prometheus, Grafana, PromQL, DCGM</p></div>
     <div class="focus-card"><div class="focus-accent a-yellow"></div><h3>Memory Engineering</h3><p>KV offload, LMCache, quantization</p></div>
     <div class="focus-card"><div class="focus-accent a-grad"></div><h3>Distributed Inference</h3><p>TP/DP patterns, NUMA, CPU-GPU isomorphism</p></div>
-    <div class="focus-card" style="grid-column:1/-1;"><div class="focus-accent a-grad2"></div><h3>Disaggregated Serving</h3><p>Prefill/decode separation &mdash; NVIDIA Dynamo, NIXL, KV cache transfer</p></div>
   </div>
 </div></div>
 <div class="section" id="frameworkset" style="background: var(--white);"><div class="section-inner">
