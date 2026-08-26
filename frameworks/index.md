@@ -26,6 +26,9 @@ An 11-step methodology that goes from a business need to an empirically validate
 ### [Observability KPI](observability-kpi.md)
 A monitoring, diagnostics and incident response framework for LLM inference systems built on vLLM + Prometheus + Grafana + DCGM. Covers the golden metrics (TTFT, ITL, TPOT, E2E), the TPOT vs ITL distinction, Observed vs Compute throughput, percentile statistics, diagnostic tree from symptom to root cause, and operational PromQL queries.
 
+### [Workload Characterization in Disaggregation](workload-characterization-disaggregation.md)
+Seven discovery questions about the workload (ISL/OSL, prefix reuse, multi-turn, arrival pattern, SLO, multi-model, growth) and the architectural decision each answer supports in the Disaggregation OS. Read this before sizing a disaggregated deployment without traffic data.
+
 ---
 
 *All frameworks are original Dielabs work by Diego Bardella.*

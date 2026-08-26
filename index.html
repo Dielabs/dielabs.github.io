@@ -71,7 +71,7 @@
     .section-desc { font-size: 0.95rem; color: var(--muted); max-width: 540px; line-height: 1.75; margin-bottom: 2.5rem; }
     .about-text p { font-size: 0.95rem; color: var(--muted); line-height: 1.9; max-width: 640px; }
     .about-text p + p { margin-top: 12px; }
-    .focus-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: var(--border); border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .focus-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5px; background: var(--border); border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; }
     .focus-card { background: var(--white); padding: 2rem; transition: background 0.25s; position: relative; }
     .focus-card:hover { background: var(--off); }
     .focus-accent { width: 36px; height: 3px; border-radius: 2px; margin-bottom: 1.2rem; }
@@ -94,7 +94,7 @@
     .footer-links { display: flex; gap: 1.5rem; }
     .footer-links a { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .footer-links a:hover { color: var(--blue); }
-    .fwset-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5px; background: var(--border); border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .fwset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: var(--border); border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; }
     .fwset-card { background: var(--white); padding: 1.6rem 1.3rem; transition: background 0.25s; position: relative; display: flex; flex-direction: column; min-height: 220px; }
     .fwset-card:hover { background: var(--off); }
     .fwset-card:hover .fwset-title { color: var(--blue); }
@@ -116,7 +116,7 @@
     .fwset-pitch { font-size: 0.95rem; color: var(--muted); max-width: 720px; line-height: 1.75; margin-bottom: 2.5rem; font-style: italic; border-left: 2px solid var(--blue); padding-left: 14px; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     .hero-content { animation: fadeIn 0.7s ease both; }
-    @media (max-width: 1024px) { .fwset-grid { grid-template-columns: repeat(3, 1fr); } } @media (max-width: 768px) { nav { padding: 0 1.5rem; } .nav-links { display: none; } .hero, .section { padding-left: 1.5rem; padding-right: 1.5rem; } h1 { white-space: normal; font-size: clamp(32px, 9vw, 56px); } .sub { white-space: normal; } .stats-bar { gap: 2rem; padding: 1.5rem; } .focus-grid { grid-template-columns: 1fr 1fr; } .fwset-grid { grid-template-columns: 1fr 1fr; } footer { flex-direction: column; } }
+    @media (max-width: 1024px) { .fwset-grid { grid-template-columns: repeat(2, 1fr); } } @media (max-width: 768px) { nav { padding: 0 1.5rem; } .nav-links { display: none; } .hero, .section { padding-left: 1.5rem; padding-right: 1.5rem; } h1 { white-space: normal; font-size: clamp(32px, 9vw, 56px); } .sub { white-space: normal; } .stats-bar { gap: 2rem; padding: 1.5rem; } .focus-grid { grid-template-columns: 1fr 1fr; } .fwset-grid { grid-template-columns: 1fr 1fr; } footer { flex-direction: column; } }
     @media (max-width: 480px) { .focus-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -134,39 +134,36 @@
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div><div class="orb orb-4"></div>
   <div class="hero-content">
     <h1>AI Infrastructure <em>Engineering</em></h1>
-    <p class="sub">Personal Engineering Lab · Casale Monferrato, IT</p>
-    <p class="tagline">Understanding systems by building, measuring and documenting them.<br>Powered by caffeine and reboots.</p>
+    <p class="tagline">Delivering the right AI architecture for your workload.<br>Powered by caffeine and reboots.</p>
     <div class="status"><span class="dot" style="background:#5A9A3E;"></span> GPU Node 32 GB RAM &middot; RTX 4070 Super 12 GB VRAM &middot; Dell PowerEdge R730 Dual Socket 128 GB RAM</div>
-    <div class="status" style="margin-top:8px;"><span class="dot" style="background:var(--blue);"></span> vLLM &middot; NVIDIA Dynamo &middot; LMCache &middot; GuideLLM &middot; Prometheus &middot; Grafana &middot; Loki &middot; Tempo &middot; Docker</div>
+    <div class="status" style="margin-top:8px;"><span class="dot" style="background:var(--blue);"></span> NVIDIA CUDA stack &middot; Docker &middot; OpenWebUI &middot; vLLM &middot; LMCache &middot; GuideLLM &middot; Prometheus &middot; Grafana &middot; Hybrid Infrastructure API (Neoclouds + Local GPUs)</div>
   </div>
 </section>
 <div class="stats-bar">
   <div class="stat"><div class="stat-number">4</div><div class="stat-label">Research Papers</div></div>
-  <div class="stat"><div class="stat-number">5</div><div class="stat-label">Frameworks</div></div>
+  <div class="stat"><div class="stat-number">6</div><div class="stat-label">Frameworks</div></div>
   <div class="stat"><div class="stat-number">3</div><div class="stat-label">Architecture References</div></div>
   <div class="stat"><div class="stat-number">15+</div><div class="stat-label">GuideLLM Benchmark Runs</div></div>
 </div>
 <div class="section" style="background: var(--white);"><div class="section-inner">
   <p class="section-label">About</p><h2 class="section-title">The Lab</h2>
   <div class="about-text">
-    <p>Dielabs investigates how architectures shape workload behavior in AI systems. Focused on the layers that make inference a service &mdash; runtime, serving stack, and hardware &amp; fabric &mdash; and the system behavior they produce, from latency and throughput dynamics to capacity under load.</p>
+    <p>Dielabs investigates how architectures shape workload behavior in AI systems. Focused on the layers that make inference a service &mdash; runtime, serving stack, hardware &amp; fabric &mdash; and the system behavior they produce, from latency and throughput dynamics to capacity under load.</p>
     <p>I design, benchmark, and validate inference architectures to map performance, trade-offs, and real-world limits &mdash; and turn these findings into opinionated frameworks for day 0&ndash;1 decisions: sizing, capacity planning, and workload deployment.</p>
-    <p>Built on a background in enterprise datacenter and presales engineering, now fully focused on GPU-accelerated inference stacks and the operational discipline required to run them at scale.</p>
+    <p>Then I help organizations translate these frameworks into production-ready decisions: what to deploy, where, and at what scale, minimizing cost and risk without compromising on performance.</p>
   </div>
 </div></div>
 <div class="section" id="focus" style="background: var(--off);"><div class="section-inner">
   <p class="section-label">What I work on</p><h2 class="section-title">Focus Areas</h2>
   <div class="focus-grid">
-    <div class="focus-card"><div class="focus-accent a-blue"></div><h3>Lab Infrastructure</h3><p>GPU node, DCGM, driver stack</p></div>
-    <div class="focus-card"><div class="focus-accent a-violet"></div><h3>Inference Runtimes</h3><p>vLLM internals, batching, quantization</p></div>
-    <div class="focus-card"><div class="focus-accent a-pink"></div><h3>Benchmarking</h3><p>GuideLLM sweeps, crossover analysis</p></div>
-    <div class="focus-card"><div class="focus-accent a-cyan"></div><h3>Observability</h3><p>Prometheus, Grafana, DCGM</p></div>
-    <div class="focus-card"><div class="focus-accent a-yellow"></div><h3>KV Cache Engineering</h3><p>Offload &amp; tiering, LMCache, prefill/decode split &mdash; Dynamo, NIXL</p></div>
-    <div class="focus-card"><div class="focus-accent a-grad"></div><h3>Distributed Inference</h3><p>TP/DP patterns, NUMA, CPU-GPU isomorphism</p></div>
+    <div class="focus-card"><div class="fwset-step">01</div><div class="focus-accent a-blue"></div><h3>Frameworks &amp; Methodology</h3><p>Developing custom frameworks for capacity planning, workload deployment, and issue isolation across serving layers</p></div>
+    <div class="focus-card"><div class="fwset-step">02</div><div class="focus-accent a-violet"></div><h3>LLM Serving Operations</h3><p>Deploying and optimizing open-source models on GPU/CPU platforms &mdash; vLLM deep tuning, infrastructure layout, model parallelism, KV cache management</p></div>
+    <div class="focus-card"><div class="fwset-step">03</div><div class="focus-accent a-pink"></div><h3>Benchmark-Driven Validation</h3><p>Evaluating deployment behavior under pressure through controlled, repeatable testing &mdash; finding the sweet spot</p></div>
+    <div class="focus-card"><div class="fwset-step">04</div><div class="focus-accent a-cyan"></div><h3>Production-Grade Observability</h3><p>Building monitoring stacks exposing the metrics that define inference SLOs: TTFT, ITL, throughput, KV cache utilization, GPU saturation</p></div>
   </div>
 </div></div>
 <div class="section" id="frameworkset" style="background: var(--white);"><div class="section-inner">
-  <p class="section-label">Methodology</p><h2 class="section-title">Five Frameworks for the Inference Lifecycle</h2>
+  <p class="section-label">Methodology</p><h2 class="section-title">Six Frameworks for the Inference Lifecycle</h2>
   <p class="fwset-pitch">From a business need to a system in production: a framework set that turns LLM inference deployment into a sequence of named, defensible decisions &mdash; each anchored in lab evidence, not vendor slides.</p>
   <div class="fwset-grid">
     <a class="fwset-card" href="/frameworks/inference-stack-model" style="text-decoration:none;color:inherit;">
@@ -207,6 +204,14 @@
       <div class="fwset-stage">Operations</div>
       <div class="fwset-title">Observability KPI</div>
       <div class="fwset-desc">Monitoring, diagnostics and incident response on vLLM + Prometheus + Grafana + DCGM. Golden metrics, percentile statistics, runbook.</div>
+      <span class="fwset-link">Read &rarr;</span>
+    </a>
+    <a class="fwset-card" href="/frameworks/workload-characterization-disaggregation" style="text-decoration:none;color:inherit;">
+      <div class="fwset-step">06</div>
+      <div class="fwset-accent"></div>
+      <div class="fwset-stage">Discovery</div>
+      <div class="fwset-title">Workload Characterization in Disaggregation</div>
+      <div class="fwset-desc">Seven discovery questions on the workload (ISL/OSL, prefix reuse, multi-turn, arrival pattern, SLO, multi-model, growth) mapped to Disaggregation OS decisions.</div>
       <span class="fwset-link">Read &rarr;</span>
     </a>
   </div>
