@@ -23,6 +23,9 @@ Benchmark of SN / TP-2 / DP-2 architectures on Dell PowerEdge R730 with vLLM. Pr
 ### [The Shifting Bottleneck](the-shifting-bottleneck.md)
 Three benchmarks on a single RTX 4070 Super with Qwen3-8B-AWQ via vLLM. Shows how the binding constraint moves from KV capacity (FP16, prompt-heavy) to a higher KV ceiling (FP8) to memory bandwidth (FP8, chat-like). A methodology for inference sizing that starts from workload and SLO.
 
+### [Testing Is the Product](testing-is-the-product.md)
+A manifesto for on-premise inference due diligence, built from a public case study: a viral four-node DGX Spark deployment and the four hundred comments it drew. Extracts eleven principles, an eight-question qualification checklist, and a five-axis acceptance protocol (performance, quality, resilience, operations, governance).
+
 ---
 
 *All content is original Dielabs work by Diego Bardella.*
