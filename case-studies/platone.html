@@ -174,6 +174,7 @@
     border:1px solid var(--line); border-radius:999px; padding:3px 9px; letter-spacing:.01em;
   }
   .card.feature .desc{font-size:12.5px; color:var(--text-dim); margin:0; line-height:1.55;}
+  .desc-2col{display:grid; grid-template-columns:1fr 1fr; gap:0 24px; align-items:start;}
 
   .framing-head{margin-bottom:14px;}
   .framing-head .eyebrow{margin-bottom:8px;}
@@ -241,6 +242,7 @@
     .decisions-grid{grid-template-columns:1fr;}
     .incidents-grid{grid-template-columns:1fr;}
     .features-grid{grid-template-columns:1fr;}
+    .desc-2col{grid-template-columns:1fr;}
     .fbranch{grid-template-columns:1fr; gap:3px 0;}
     .fcond{border-left:none; padding-left:0;}
     .roadmap-item{grid-template-columns:1fr; gap:4px;}
@@ -451,10 +453,12 @@
         <p class="desc"><em>Grounded</em> (default) offers a web search when the knowledge base falls short. <em>Hybrid</em> lets the user choose between a web search or an opinion. <em>Advisor</em> only ever offers an opinion. <em>Strict</em> never offers anything beyond the documents — on a corpus of certified procedures, even the offer itself would be a risk, so it abstains cleanly instead. The coverage check is the same across policies; only the available options change.</p>
       </div>
 
-      <div class="card feature">
+      <div class="card feature" style="grid-column:1/-1;">
         <h4>Pronunciation control — an editor for how acronyms are said</h4>
+        <div class="desc-2col">
         <p class="desc">A voice assistant on a technical corpus has to say things like ST36, MTC, or a company's own product codes out loud, and a speech model left alone will mangle them. A deterministic layer — no LLM in the path — rewrites them into a pronounceable form before synthesis, from a per-corpus map, a global map, and an automatic rule that ships <em>off</em> because it measured worse than doing nothing.</p>
-        <p class="desc" style="margin-top:10px;">The part worth stealing is the editor built around it. The right rendering of an acronym cannot be derived from a rule — it is a judgment about how a word sounds — so the admin page lets you type a rendering and hear it immediately, one row at a time, and change it until it is right. Populating that map is seeded automatically: the acronyms were already extracted at ingest to help the speech-to-text model <em>recognise</em> them, and the same vocabulary is exactly what the speech synthesiser needs to <em>pronounce</em> them. One extraction, two opposite ends of the pipeline. Like the trust policy and the persona, the map travels with the knowledge base and is read per sentence, with no restart.</p>
+        <p class="desc">The part worth stealing is the editor built around it. The right rendering of an acronym cannot be derived from a rule — it is a judgment about how a word sounds — so the admin page lets you type a rendering and hear it immediately, one row at a time, and change it until it is right. Populating that map is seeded automatically: the acronyms were already extracted at ingest to help the speech-to-text model <em>recognise</em> them, and the same vocabulary is exactly what the speech synthesiser needs to <em>pronounce</em> them. One extraction, two opposite ends of the pipeline. Like the trust policy and the persona, the map travels with the knowledge base and is read per sentence, with no restart.</p>
+        </div>
       </div>
 
       <div class="card feature" style="grid-column:1/-1;">
