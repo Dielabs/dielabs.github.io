@@ -130,7 +130,6 @@
     <li><a href="/manuals/">Manuals</a></li>
     <li><a href="/architectures/">Architectures</a></li>
     <li><a href="/papers/">Papers</a></li>
-    <li><a href="/case-studies/">Case Studies</a></li>
     <li><a class="nav-cv" href="https://www.kickresume.com/cv/4b8kvR/" target="_blank">CV &#8599;</a></li>
   </ul>
 </nav>
@@ -144,7 +143,6 @@
   </div>
 </section>
 <div class="stats-bar">
-  <div class="stat"><div class="stat-number">1</div><div class="stat-label">Production Case Study</div></div>
   <div class="stat"><div class="stat-number">5</div><div class="stat-label">Research Papers</div></div>
   <div class="stat"><div class="stat-number">6</div><div class="stat-label">Frameworks</div></div>
   <div class="stat"><div class="stat-number">3</div><div class="stat-label">Architecture References</div></div>
@@ -224,11 +222,10 @@
 <div class="section" id="repository" style="background: var(--white);"><div class="section-inner">
   <p class="section-label">Repository</p><h2 class="section-title">Content & Docs</h2>
   <div class="links">
-    <a class="link-row" href="case-studies/"><div class="link-left"><span class="link-index">01</span><div><div class="link-title">Case Studies</div><div class="link-desc">Applied systems, shipped — Platone, a hybrid edge/cloud voice AI, with the architecture decisions and incidents behind it</div></div></div><span class="arrow">→</span></a>
-    <a class="link-row" href="frameworks/"><div class="link-left"><span class="link-index">02</span><div><div class="link-title">Frameworks</div><div class="link-desc">Conceptual models — inference stack anatomy, technology model, parameter topology, sizing methodology, observability, workload characterization</div></div></div><span class="arrow">→</span></a>
-    <a class="link-row" href="manuals/"><div class="link-left"><span class="link-index">03</span><div><div class="link-title">Manuals</div><div class="link-desc">Reference manuals — inference engineering and KV cache management</div></div></div><span class="arrow">→</span></a>
-    <a class="link-row" href="architectures/"><div class="link-left"><span class="link-index">04</span><div><div class="link-title">Architectures</div><div class="link-desc">Architectural references — GPU fabric, NVIDIA communication libraries, network critical path, parallelism strategies</div></div></div><span class="arrow">→</span></a>
-    <a class="link-row" href="papers/"><div class="link-left"><span class="link-index">05</span><div><div class="link-title">Papers</div><div class="link-desc">Original research — decoding analysis, offloading, CPU-GPU isomorphism, shifting bottleneck</div></div></div><span class="arrow">→</span></a>
+    <a class="link-row" href="frameworks/"><div class="link-left"><span class="link-index">01</span><div><div class="link-title">Frameworks</div><div class="link-desc">Conceptual models — inference stack anatomy, technology model, parameter topology, sizing methodology, observability, workload characterization</div></div></div><span class="arrow">→</span></a>
+    <a class="link-row" href="manuals/"><div class="link-left"><span class="link-index">02</span><div><div class="link-title">Manuals</div><div class="link-desc">Reference manuals — inference engineering and KV cache management</div></div></div><span class="arrow">→</span></a>
+    <a class="link-row" href="architectures/"><div class="link-left"><span class="link-index">03</span><div><div class="link-title">Architectures</div><div class="link-desc">Architectural references — GPU fabric, NVIDIA communication libraries, network critical path, parallelism strategies</div></div></div><span class="arrow">→</span></a>
+    <a class="link-row" href="papers/"><div class="link-left"><span class="link-index">04</span><div><div class="link-title">Papers</div><div class="link-desc">Original research — decoding analysis, offloading, CPU-GPU isomorphism, shifting bottleneck</div></div></div><span class="arrow">→</span></a>
   </div>
 </div></div>
 <div style="text-align:center;padding:3rem 3rem 2rem;">
