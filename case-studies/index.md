@@ -1,11 +1,11 @@
 ---
-title: Case Studies
+title: POCs
 layout: default
 ---
 
-# Case Studies
+# POCs
 
-Applied systems designed, built and shipped at Dielabs — where the frameworks meet a real deployment. Each case study documents the architecture decisions, the measured trade-offs behind them, and the incidents solved along the way.
+Applied systems designed, built and shipped at Dielabs — where the frameworks meet a real deployment. Each POC documents the architecture decisions, the measured trade-offs behind them, and the incidents solved along the way.
 
 ---
 
