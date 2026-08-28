@@ -148,6 +148,7 @@
   /* ---------- Cards ---------- */
   .cards{display:grid; gap:14px;}
   .outcomes-grid{grid-template-columns:1fr 1fr 1fr;}
+  .policies-grid{grid-template-columns:repeat(4,1fr);}
   .decisions-grid{grid-template-columns:1fr 1fr;}
   .incidents-grid{grid-template-columns:1fr 1fr;}
   .card{
@@ -224,6 +225,7 @@
     .hero h1{font-size:40px;}
     .stack-grid{grid-template-columns:1fr;}
     .outcomes-grid{grid-template-columns:1fr;}
+    .policies-grid{grid-template-columns:1fr;}
     .decisions-grid{grid-template-columns:1fr;}
     .incidents-grid{grid-template-columns:1fr;}
     .features-grid{grid-template-columns:1fr;}
@@ -273,8 +275,8 @@
 
   <!-- HOW IT ANSWERS -->
   <section class="framing">
-    <div class="sec-head"><span class="num">01</span><h2>How it decides to answer</h2></div>
-    <p class="lead">A naive RAG retrieves the top matches and pastes them into the prompt, even when they don't answer the question. Platone checks coverage first, and asks permission before going beyond the documents.</p>
+    <div class="sec-head"><span class="num">01</span><h2>How Platone's enhanced RAG works</h2></div>
+    <p class="lead">A naive RAG retrieves the top matches and pastes them into the prompt, even when they don't answer the question. Platone checks coverage first.</p>
 
     <div class="pipeline">
       <div class="stage client"><span class="role">Turn</span><span class="name">Question + history</span></div>
@@ -300,19 +302,43 @@
       </div>
       <div class="card">
         <h4>Not covered</h4>
-        <p class="desc">Retries once with a broader search. Still nothing → asks before offering a web search or an opinion.</p>
+        <p class="desc">Retries once with a broader search. Still nothing → what happens next depends on the KB's trust policy.</p>
       </div>
     </div>
-    <p class="lead" style="margin:10px 0 0; font-size:13px;">On &quot;not covered&quot;, Platone can still answer &mdash; via a web search or an opinion. Whether one or both are offered depends on the KB's trust policy (see Features).</p>
 
     <div class="boundary-note">
       <b>Not agentic.</b> This cascade is fixed application logic — not the model calling its own tools — so every path is deterministic, logged, and reproducible.
     </div>
   </section>
 
+  <!-- RESPONSE POLICIES -->
+  <section class="policies">
+    <div class="sec-head"><span class="num">02</span><h2>Response policies</h2></div>
+    <p class="lead">On "not covered", Platone can still answer &mdash; via a web search or an opinion. Which of the two, or neither, is on the table is a property of the knowledge base, not a global setting.</p>
+
+    <div class="cards policies-grid">
+      <div class="card">
+        <h4>Grounded</h4>
+        <p class="desc">Offers a web search. Never an opinion. Default policy.</p>
+      </div>
+      <div class="card">
+        <h4>Hybrid</h4>
+        <p class="desc">Offers both &mdash; web search or opinion. The user picks one.</p>
+      </div>
+      <div class="card">
+        <h4>Advisor</h4>
+        <p class="desc">Offers an opinion. Never searches the web.</p>
+      </div>
+      <div class="card">
+        <h4>Strict</h4>
+        <p class="desc">No offer of any kind &mdash; abstains cleanly. Even the offer itself is a risk on some corpora.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ARCHITECTURE -->
   <section class="architecture">
-    <div class="sec-head"><span class="num">02</span><h2>Architecture — hybrid by design</h2></div>
+    <div class="sec-head"><span class="num">03</span><h2>Architecture — hybrid by design</h2></div>
     <p class="lead">Latency-critical and privacy-sensitive stages run on the edge GPU; reasoning-heavy generation runs on cloud EU inference. Raw audio never leaves the edge — only text crosses the boundary.</p>
 
     <div class="pipeline">
@@ -345,19 +371,14 @@
 
   <!-- FEATURES -->
   <section class="features">
-    <div class="sec-head"><span class="num">03</span><h2>Features</h2></div>
-    <p class="lead">Every knowledge base carries two independent settings: <strong style="color:var(--text)">trust policy</strong> (how far Platone can go for an answer) and <strong style="color:var(--text)">persona</strong> (how it says it). Both live with the corpus, read per turn, no restart.</p>
+    <div class="sec-head"><span class="num">04</span><h2>Features</h2></div>
+    <p class="lead">Persona sets how Platone talks; the KB's trust policy (previous section) sets how far it can go. Neither is hard-coded &mdash; both live with the corpus, read per turn, no restart.</p>
 
     <div class="cards features-grid">
       <div class="card">
         <h4>Persona — how it's said</h4>
         <div class="chip-row"><span class="chip">tecnico</span><span class="chip">divulgativo</span><span class="chip">consulenziale</span></div>
         <p class="desc">Same grounding, sources and coverage gate across all three — persona changes phrasing, never sourcing.</p>
-      </div>
-      <div class="card">
-        <h4>Trust policy — how far it's allowed to go</h4>
-        <div class="chip-row"><span class="chip">grounded</span><span class="chip">hybrid</span><span class="chip">advisor</span><span class="chip">strict</span></div>
-        <p class="desc">From always offering a web search down to never offering anything beyond the documents — useful when even the offer itself is a risk (e.g. certified procedures).</p>
       </div>
       <div class="card">
         <h4>Pronunciation control</h4>
@@ -380,7 +401,7 @@
 
   <!-- STACK -->
   <section class="stack">
-    <div class="sec-head"><span class="num">04</span><h2>Technology stack</h2></div>
+    <div class="sec-head"><span class="num">05</span><h2>Technology stack</h2></div>
     <div class="stack-grid">
       <div class="stack-col edge-col">
         <h3>Edge node</h3>
@@ -416,7 +437,7 @@
 
   <!-- DECISIONS -->
   <section class="decisions">
-    <div class="sec-head"><span class="num">05</span><h2>Key architectural decisions</h2></div>
+    <div class="sec-head"><span class="num">06</span><h2>Key architectural decisions</h2></div>
     <div class="cards decisions-grid">
 
       <div class="card decision">
@@ -452,7 +473,7 @@
 
   <!-- PROBLEMS SOLVED -->
   <section class="incidents">
-    <div class="sec-head"><span class="num">06</span><h2>Problems solved</h2></div>
+    <div class="sec-head"><span class="num">07</span><h2>Problems solved</h2></div>
     <div class="cards incidents-grid">
 
       <div class="card incident">
@@ -488,7 +509,7 @@
 
   <!-- ROADMAP -->
   <section class="roadmap">
-    <div class="sec-head"><span class="num">07</span><h2>What's next</h2></div>
+    <div class="sec-head"><span class="num">08</span><h2>What's next</h2></div>
     <div class="roadmap-list">
       <div class="roadmap-item">
         <h4>Pronunciation lexicon <span style="color:var(--text-faint);font-weight:400;">(soon)</span></h4>
@@ -511,7 +532,7 @@
 
   <!-- MEASURED RESULTS -->
   <section class="results">
-    <div class="sec-head"><span class="num">08</span><h2>Some measured results</h2></div>
+    <div class="sec-head"><span class="num">09</span><h2>Some measured results</h2></div>
     <p class="lead">Measured on the corpus indexed at the time of testing, not on a benchmark suite.</p>
     <div class="metrics" aria-label="Measured results">
       <div class="metric"><span class="v">~0.1s</span><span class="l">expert TTFT, p50</span></div>
