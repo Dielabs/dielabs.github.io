@@ -288,6 +288,7 @@
       <div class="stage gate"><span class="role">Cloud</span><span class="name">Coverage check</span></div>
     </div>
 
+    <p class="lead" style="margin-bottom:10px;">The coverage check returns one of three verdicts:</p>
     <div class="cards outcomes-grid">
       <div class="card">
         <h4>Covered</h4>
@@ -302,6 +303,7 @@
         <p class="desc">Retries once with a broader search. Still nothing → asks before offering a web search or an opinion.</p>
       </div>
     </div>
+    <p class="lead" style="margin:10px 0 0; font-size:13px;">Which of those two &mdash; web, opinion, or both &mdash; is on the table depends on the KB's trust policy (see Features).</p>
 
     <div class="boundary-note">
       <b>Not agentic.</b> This cascade is fixed application logic — not the model calling its own tools — so every path is deterministic, logged, and reproducible.
