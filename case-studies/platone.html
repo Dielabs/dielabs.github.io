@@ -57,12 +57,8 @@
   .hero .subtitle{
     font-size:18px; color:var(--text-dim); margin:8px 0 16px; max-width:640px; font-weight:400;
   }
-  .hero .meta{
-    font-size:13px; color:var(--text-faint); margin:0 0 18px;
-  }
-  .hero .meta b{color:var(--text-dim); font-weight:500;}
   .thesis{
-    font-size:15.5px; color:var(--text); margin:0; max-width:660px;
+    font-size:15.5px; margin:0; max-width:660px;
     border-left:2px solid var(--edge); padding-left:16px; font-style:italic; color:#D8D4C9;
   }
   .capabilities{
@@ -84,16 +80,14 @@
   .metric .l{font-size:11px; color:var(--text-faint); letter-spacing:.02em;}
 
   /* ---------- Sections ---------- */
-  section{margin-top:96px;}
+  section{margin-top:48px;}
   .sec-head{display:flex; align-items:baseline; gap:12px; margin-bottom:14px;}
   .sec-head .num{
     font-family:var(--mono); font-size:12px; color:var(--text-faint); border:1px solid var(--line);
     border-radius:4px; padding:2px 6px;
   }
-  .sec-head h2{font-size:22px; font-weight:600;}
-  .lead{color:var(--text-dim); font-size:14.5px; max-width:700px; margin:0 0 26px;}
-  .lead .edge-text{color:var(--edge-text); font-weight:600; font-style:normal;}
-  .lead .cloud-text{color:var(--cloud-text); font-weight:600; font-style:normal;}
+  .sec-head h2{font-size:21px; font-weight:600;}
+  .lead{color:var(--text-dim); font-size:14.5px; max-width:700px; margin:0 0 20px;}
 
   /* ---------- Pipeline diagram ---------- */
   .pipeline{
@@ -111,6 +105,7 @@
   .stage.edge .role{color:var(--edge-text);}
   .stage.cloud{border-color:var(--cloud); background:var(--cloud-soft);}
   .stage.cloud .role{color:var(--cloud-text);}
+  .stage.gate{border-color:var(--text-dim);}
   .conn{
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     font-family:var(--mono); font-size:10px; color:var(--text-faint); min-width:34px; gap:2px;
@@ -152,103 +147,53 @@
 
   /* ---------- Cards ---------- */
   .cards{display:grid; gap:14px;}
+  .outcomes-grid{grid-template-columns:1fr 1fr 1fr;}
   .decisions-grid{grid-template-columns:1fr 1fr;}
   .incidents-grid{grid-template-columns:1fr 1fr;}
   .card{
-    border:1px solid var(--line); border-radius:8px; padding:18px 20px; background:var(--panel);
+    border:1px solid var(--line); border-radius:8px; padding:16px 18px; background:var(--panel);
   }
-  .card h4{font-family:var(--sans); font-size:14.5px; font-weight:600; color:var(--text); margin:0 0 12px; line-height:1.35;}
-  .card .row{margin-bottom:9px; font-size:12.5px; color:var(--text-dim);}
+  .card h4{font-family:var(--sans); font-size:14px; font-weight:600; color:var(--text); margin:0 0 10px; line-height:1.35;}
+  .card .row{margin-bottom:7px; font-size:12.5px; color:var(--text-dim);}
   .card .row:last-child{margin-bottom:0;}
   .card .tag{
     font-family:var(--mono); font-size:9.5px; letter-spacing:.08em; color:var(--text-faint);
-    display:block; margin-bottom:3px; text-transform:uppercase;
+    display:inline; margin-right:6px; text-transform:uppercase;
   }
   .card.decision .tag.result{color:var(--edge-text);}
   .card.incident .tag.fix{color:var(--cloud-text);}
+  .card .desc{font-size:12.5px; color:var(--text-dim); margin:0; line-height:1.5;}
 
   .features-grid{grid-template-columns:1fr 1fr;}
-  .chip-row{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;}
+  .chip-row{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;}
   .chip{
     font-family:var(--mono); font-size:10.5px; color:var(--text-dim); background:var(--panel-2);
     border:1px solid var(--line); border-radius:999px; padding:3px 9px; letter-spacing:.01em;
   }
-  .card.feature .desc{font-size:12.5px; color:var(--text-dim); margin:0; line-height:1.55;}
-  .desc-2col{display:grid; grid-template-columns:1fr 1fr; gap:0 24px; align-items:start;}
-
-  .framing-head{margin-bottom:14px;}
-  .framing-head .eyebrow{margin-bottom:8px;}
-  .framing-head h2{font-size:20px; font-weight:600;}
-  .stage.gate{border-color:var(--text-dim);}
-  .flow{
-    border:1px solid var(--line); border-radius:8px; background:var(--panel);
-    padding:18px 20px; margin:0 0 24px;
-  }
-  .fband{padding-bottom:32px; margin-bottom:32px; border-bottom:1px dashed var(--line);}
-  .fband:last-child{border-bottom:none; padding-bottom:0; margin-bottom:0;}
-  .fband-head{
-    font-family:var(--mono); font-size:12px; letter-spacing:.11em; text-transform:uppercase;
-    color:var(--text-faint); margin-bottom:10px;
-  }
-  .fchain{display:flex; flex-wrap:wrap; align-items:center; gap:6px;}
-  .fnode{
-    font-family:var(--mono); font-size:11.5px; border:1px solid var(--line); background:var(--panel-2);
-    border-radius:5px; padding:6px 9px; color:var(--text-dim);
-  }
-  .fnode.gate{border-color:var(--text-faint); color:var(--text);}
-  .fa{font-family:var(--mono); color:var(--text-faint); font-size:13px;}
-  .fbranch{display:grid; grid-template-columns:132px 1fr; gap:8px 12px; margin-top:11px;}
-  .fcond{
-    font-family:var(--mono); font-size:10.5px; color:var(--text-faint); line-height:1.5;
-    border-left:2px solid var(--line); padding-left:9px;
-  }
-  .fcond.on-edge{border-left-color:var(--edge);}
-  .fcond.on-cloud{border-left-color:var(--cloud);}
-  .fout{font-size:12.5px; color:var(--text-dim); line-height:1.5;}
-  .fout b{color:var(--text); font-weight:600;}
-  .fnote{
-    font-size:11.5px; color:var(--text-faint); margin-top:11px; font-style:italic;
-  }
 
   .lesson{
-    margin-top:16px; font-size:13px; color:#D8D4C9; font-style:italic;
+    margin-top:14px; font-size:13px; color:#D8D4C9; font-style:italic;
     border-left:2px solid var(--cloud); padding:10px 16px; background:var(--panel); border-radius:0 6px 6px 0;
   }
 
   /* ---------- Roadmap ---------- */
   .roadmap-list{display:flex; flex-direction:column; gap:0;}
   .roadmap-item{
-    display:grid; grid-template-columns:170px 1fr; gap:20px; padding:16px 0;
+    display:grid; grid-template-columns:190px 1fr; gap:20px; padding:14px 0;
     border-top:1px solid var(--line);
   }
   .roadmap-item:last-child{border-bottom:1px solid var(--line);}
-  .roadmap-item h4{font-family:var(--sans); font-size:14px; font-weight:600; color:var(--text); margin:0;}
-  .roadmap-item p{margin:6px 0 0; font-size:13px; color:var(--text-dim);}
+  .roadmap-item h4{font-family:var(--sans); font-size:13.5px; font-weight:600; color:var(--text); margin:0;}
+  .roadmap-item p{margin:4px 0 0; font-size:13px; color:var(--text-dim);}
 
   footer{
-    margin-top:56px; padding-top:20px; border-top:1px solid var(--line);
+    margin-top:48px; padding-top:20px; border-top:1px solid var(--line);
     display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
     font-size:12px; color:var(--text-faint); font-family:var(--mono);
   }
   footer a{color:var(--text-dim); text-decoration:none;}
   footer a:hover{color:var(--cloud-text);}
   footer .foot-links{display:flex; gap:16px;}
-
-  /* ---------- Responsive ---------- */
-  @media (max-width:820px){
-    .page{padding:40px 22px;}
-    .hero h1{font-size:40px;}
-    .stack-grid{grid-template-columns:1fr;}
-    .decisions-grid{grid-template-columns:1fr;}
-    .incidents-grid{grid-template-columns:1fr;}
-    .features-grid{grid-template-columns:1fr;}
-    .desc-2col{grid-template-columns:1fr;}
-    .fbranch{grid-template-columns:1fr; gap:3px 0;}
-    .fcond{border-left:none; padding-left:0;}
-    .roadmap-item{grid-template-columns:1fr; gap:4px;}
-    .pipeline{flex-direction:column; align-items:stretch;}
-    .conn{flex-direction:row; min-width:0; padding:2px 0 2px 14px;}
-  }
 
   /* ---------- Site nav ---------- */
   .site-nav{
@@ -273,6 +218,20 @@
     .site-nav .links{display:none;}
   }
 
+  /* ---------- Responsive ---------- */
+  @media (max-width:820px){
+    .page{padding:40px 22px;}
+    .hero h1{font-size:40px;}
+    .stack-grid{grid-template-columns:1fr;}
+    .outcomes-grid{grid-template-columns:1fr;}
+    .decisions-grid{grid-template-columns:1fr;}
+    .incidents-grid{grid-template-columns:1fr;}
+    .features-grid{grid-template-columns:1fr;}
+    .roadmap-item{grid-template-columns:1fr; gap:4px;}
+    .pipeline{flex-direction:column; align-items:stretch;}
+    .conn{flex-direction:row; min-width:0; padding:2px 0 2px 14px;}
+  }
+
   /* ---------- Print ---------- */
   @media print{
     @page{margin:14mm;}
@@ -283,7 +242,7 @@
     }
     .page{padding:0; max-width:none;}
     .hero h1{color:#1B1E24;}
-    section{margin-top:30px; page-break-inside:avoid;}
+    section{margin-top:26px; page-break-inside:avoid;}
     .metrics, .stack-col, .card, .stage, .roadmap-item{page-break-inside:avoid;}
     .thesis{color:#3A3D42;}
     .site-nav{display:none;}
@@ -307,105 +266,52 @@
   <header class="hero">
     <div class="eyebrow">Case Study — AI Infrastructure</div>
     <h1>Platone</h1>
-    <p class="subtitle">A hybrid edge / cloud voice assistant, grounded on a technical knowledge base.</p>
-    <p class="capabilities">Beyond answering from the knowledge base, it can search the web or give an unguarded opinion on request — only after a spoken "yes" — and switch register (technical, plain‑language, or consultative) per knowledge base.</p>
-    <p class="thesis">Component placement, model choice per role, and fallback behavior are decided from measured results — not defaults or vendor reputation.</p>
+    <p class="subtitle">Platone is a hybrid inference architecture RAG with edge/cloud placement measured against latency, cost, and privacy for each component.</p>
+    <p class="capabilities">Retrieval is hybrid and reranked, with coverage judged before every answer — not retrieve-and-paste. When the documents fall short, it says so rather than guessing, and only escalates to a web search or an unguarded opinion after an explicit spoken "yes". Tone and acronym pronunciation are set per knowledge base, and the user can talk over it mid-answer.</p>
+    <p class="thesis">Component placement, model choice, and fallback behavior are decided from measured results — not defaults or vendor reputation.</p>
   </header>
 
-
-  <!-- RAG FRAMING -->
+  <!-- HOW IT ANSWERS -->
   <section class="framing">
-    <div class="sec-head"><span class="num">01</span><h2>An evolved RAG — not just retrieve, then generate</h2></div>
+    <div class="sec-head"><span class="num">01</span><h2>How it decides to answer</h2></div>
+    <p class="lead">A naive RAG retrieves the top matches and pastes them into the prompt, even when they don't answer the question. Platone checks coverage first, and asks permission before going beyond the documents.</p>
 
-    <div class="flow">
-
-      <div class="fband">
-        <div class="fband-head">1 · Retrieve — three steps a naive RAG does not have</div>
-        <div class="fchain">
-          <span class="fnode">Question + history</span>
-          <span class="fa">→</span>
-          <span class="fnode">Rewrite</span>
-          <span class="fa">→</span>
-          <span class="fnode">Hybrid search</span>
-          <span class="fa">→</span>
-          <span class="fnode">Cross-encoder rerank</span>
-          <span class="fa">→</span>
-          <span class="fnode gate">Score gate, τ = 0.1</span>
-        </div>
-        <div class="fbranch">
-          <div class="fcond on-edge">REWRITE</div>
-          <div class="fout"><b>Turns a follow-up into a question that stands on its own.</b> In speech, people drop the subject: "and how long does that take?" carries no searchable term at all. Sent to a vector database as-is, it retrieves noise. The rewrite reads the conversation so far and restores what was left implicit — the entity, the constraint, the language — producing a query that can be searched without the conversation attached.</div>
-          <div class="fcond on-edge">HYBRID SEARCH</div>
-          <div class="fout"><b>Two retrieval methods, because each fails where the other works.</b> Semantic search matches meaning, so it finds the right passage even when the wording is different — but it blurs exact tokens, and a part number or an acronym is only itself. Keyword search matches those literally and is useless on paraphrase. Both run on every query and their results are merged, so a question can be answered whether it was asked in the corpus's words or the user's.</div>
-          <div class="fcond on-edge">RERANK</div>
-          <div class="fout"><b>Re-reads the shortlist with the question in hand.</b> Retrieval compares the question to passages that were indexed long before it was asked, so it is fast but approximate. The reranker takes only the surviving candidates and scores each one against the actual question, catching passages that merely look topical. What reaches the gate is a re-ordered shortlist, not raw search output.</div>
-          <div class="fcond">SCORE GATE</div>
-          <div class="fout"><b>One number decides which of two very different paths the turn takes.</b> Everything after this point — whether the model is asked to answer, to judge, or to try again — depends on whether the best candidate clears the threshold.</div>
-        </div>
-      </div>
-
-      <div class="fband">
-        <div class="fband-head">2 · Above the threshold — the model states its own coverage</div>
-        <div class="fout" style="margin-bottom:2px;">The expert model declares coverage as the first line of its answer. The marker is never spoken aloud; the labels below are the literal Italian strings the code matches on, kept here as they appear in the source.</div>
-        <div class="fbranch">
-          <div class="fcond on-edge">COPERTO</div>
-          <div class="fout"><b>Grounded answer</b>, streamed from the documents.</div>
-          <div class="fcond on-edge">PARZIALE</div>
-          <div class="fout"><b>Grounded answer on what is covered</b>, with an offer appended for the rest.</div>
-          <div class="fcond on-cloud">NON_COPERTO</div>
-          <div class="fout">No KB answer — the question is on topic but genuinely absent from the context. <b>Goes to the offer stage</b> instead of returning a partial answer.</div>
-          <div class="fcond">marker missing</div>
-          <div class="fout">Answers anyway — <b>fail-open, grounded-first</b>. An ambiguous marker never causes silence. This holds in every trust policy, including <em>strict</em>: the retrieved context did clear the threshold, so the fallback is a grounded answer, not an abstention.</div>
-        </div>
-      </div>
-
-      <div class="fband">
-        <div class="fband-head">3 · Below the threshold — domain judge, then a second attempt</div>
-        <div class="fbranch">
-          <div class="fcond">off-domain</div>
-          <div class="fout"><b>Abstain.</b> No second attempt: a low score plus an unrelated question is not worth another round-trip.</div>
-          <div class="fcond on-edge">in-domain</div>
-          <div class="fout"><b>Second pass.</b> A constrained rewrite, then the same retrieval re-read with the numeric gate switched off (τ = −1), and the expert judges semantically whether the context answers the question — covered gives a grounded answer, <code>NON_COPERTO</code> goes to the offer stage.</div>
-        </div>
-        <p class="fnote">The score is dropped on the second pass on purpose: a cross-encoder measures similarity between query and text, not whether the text answers the question. An honest rewrite could improve grounding while lowering the score; keyword stuffing did the opposite.</p>
-      </div>
-
-      <div class="fband">
-        <div class="fband-head">4 · Offer and consent — which capability is available is set per KB, in the trust policy</div>
-        <div class="fchain" style="margin-bottom:4px;">
-          <span class="fnode">grounded → web only</span>
-          <span class="fnode">hybrid → web or opinion</span>
-          <span class="fnode">advisor → opinion only</span>
-          <span class="fnode">strict → no offer, abstain</span>
-        </div>
-        <div class="fout" style="margin-bottom:9px;">Web search and opinion are the same two capabilities described under Features — available on request at any time. Here they surface as a fallback specifically because the KB fell short; the trust policy decides which ones are on the table.</div>
-        <div class="fout" style="margin-top:9px;">The offer is spoken and lives exactly one turn. On the next turn an explicit choice runs that branch, a "no" closes it, and anything else is discarded and treated as a new question. A generic "yes" against a double offer is ambiguous, so Platone asks which one rather than picking for the user.</div>
-        <div class="fbranch">
-          <div class="fcond on-cloud">web</div>
-          <div class="fout">The rewriter builds a search query, the search engine returns already-extracted page content, and the answer <b>opens by declaring it came from the internet</b>. The engine is a one-line setting with no automatic runtime fallback: if the configured one fails, the turn says so and stops rather than silently degrading to a different engine.</div>
-          <div class="fcond on-cloud">opinion</div>
-          <div class="fout">A separate advisor model answers, using the retrieved context as background to reason from rather than as a constraint, and <b>opens by declaring it is not from the documents</b>.</div>
-          <div class="fcond">branch empty</div>
-          <div class="fout"><b>Abstain.</b> A chosen branch that produces nothing does not fall back to guessing.</div>
-        </div>
-      </div>
-
+    <div class="pipeline">
+      <div class="stage client"><span class="role">Turn</span><span class="name">Question + history</span></div>
+      <div class="conn"><span class="ar">→</span></div>
+      <div class="stage cloud"><span class="role">Cloud</span><span class="name">Rewrite → standalone query</span></div>
+      <div class="conn"><span class="ar">→</span></div>
+      <div class="stage edge"><span class="role">Edge</span><span class="name">Hybrid search</span></div>
+      <div class="conn"><span class="ar">→</span></div>
+      <div class="stage edge"><span class="role">Edge</span><span class="name">Rerank</span></div>
+      <div class="conn"><span class="ar">→</span></div>
+      <div class="stage gate"><span class="role">Cloud</span><span class="name">Coverage check</span></div>
     </div>
 
-    <p class="lead" style="margin-bottom:14px;">Platone keeps the familiar retrieve-then-generate shape, but rebuilds the decisions inside it. A naive RAG embeds a question, retrieves the top-k chunks, and pastes them into a prompt — even when those chunks do not actually answer it.</p>
-    <p class="lead" style="margin-bottom:18px;">Here, follow-ups are first rewritten into standalone queries; retrieval is hybrid and reranked; and coverage is explicitly judged before the system is allowed to answer. When the documents fall short, Platone does not silently improvise: it retries retrieval, then asks for consent before offering a web search or a clearly-labelled opinion.</p>
+    <div class="cards outcomes-grid">
+      <div class="card">
+        <h4>Covered</h4>
+        <p class="desc">Grounded answer, streamed straight from the documents.</p>
+      </div>
+      <div class="card">
+        <h4>Partial</h4>
+        <p class="desc">Answers what's covered, then offers to go further for the rest.</p>
+      </div>
+      <div class="card">
+        <h4>Not covered</h4>
+        <p class="desc">Retries once with a broader search. Still nothing → asks before offering a web search or an opinion.</p>
+      </div>
+    </div>
 
-
-    <div class="boundary-note" style="margin-top:20px;">
-      <b>Not agentic RAG.</b> The cascade above is application logic — an if/else path decided in code — not the model planning and calling its own tools. That was the preferred design regardless of model capability: every branch is deterministic, loggable, and reproducible after the fact, which an improvised tool-calling path is not.
+    <div class="boundary-note">
+      <b>Not agentic.</b> This cascade is fixed application logic — not the model calling its own tools — so every path is deterministic, logged, and reproducible.
     </div>
   </section>
 
   <!-- ARCHITECTURE -->
   <section class="architecture">
     <div class="sec-head"><span class="num">02</span><h2>Architecture — hybrid by design</h2></div>
-    <p class="lead">That cascade decides <em>what</em> Platone answers. Where each step of it actually runs is a separate decision, and the one that shapes the rest of the system.</p>
-    <p class="lead">Latency-critical and privacy-sensitive stages run on the edge GPU; reasoning-heavy generation runs on cloud EU inference. Raw audio never leaves the edge node: in a typical follow-up turn only text crosses the boundary, over two round trips — once to rewrite the question, once to generate the answer.</p>
+    <p class="lead">Latency-critical and privacy-sensitive stages run on the edge GPU; reasoning-heavy generation runs on cloud EU inference. Raw audio never leaves the edge — only text crosses the boundary.</p>
 
     <div class="pipeline">
       <div class="stage client"><span class="role">Client</span><span class="name">Mic · WebRTC</span></div>
@@ -426,51 +332,47 @@
     </div>
 
     <div class="legend">
-      <span><i class="dot edge"></i> Edge — RTX 4070 SUPER 12GB, Ubuntu 24.04, systemd</span>
+      <span><i class="dot edge"></i> Edge — RTX 4070 SUPER 12GB, Ubuntu 24.04</span>
       <span><i class="dot cloud"></i> Cloud — Regolo.ai, EU, OpenAI‑compatible</span>
     </div>
 
     <div class="boundary-note">
-      <b>Placement follows latency and privacy.</b> STT, embeddings, reranking, VAD and TTS run locally: deterministic latency, no raw audio sent externally. Query rewriting and answer generation run on cloud EU inference, where a larger model is worth the round-trip. Qdrant runs in k3s/containerd; the application itself runs as a plain systemd service.
+      <b>Placement follows latency and privacy.</b> STT, embeddings, reranking, VAD and TTS run locally with deterministic latency. Rewriting and generation run on cloud EU inference, where a larger model is worth the round-trip.
     </div>
   </section>
 
   <!-- FEATURES -->
   <section class="features">
-    <div class="sec-head"><span class="num">03</span><h2>Features — what it can say, and how</h2></div>
-    <p class="lead">Every knowledge base carries two independent settings: a <strong style="color:var(--text)">trust policy</strong> — how far Platone is allowed to go for an answer — and a <strong style="color:var(--text)">persona</strong> — how it says it. Neither is hard‑coded into the application; both live with the corpus and are read per turn, no restart required.</p>
+    <div class="sec-head"><span class="num">03</span><h2>Features</h2></div>
+    <p class="lead">Every knowledge base carries two independent settings: <strong style="color:var(--text)">trust policy</strong> (how far Platone can go for an answer) and <strong style="color:var(--text)">persona</strong> (how it says it). Both live with the corpus, read per turn, no restart.</p>
 
     <div class="cards features-grid">
-
-      <div class="card feature">
+      <div class="card">
         <h4>Persona — how it's said</h4>
         <div class="chip-row"><span class="chip">tecnico</span><span class="chip">divulgativo</span><span class="chip">consulenziale</span></div>
-        <p class="desc">Asked why a component sits where it does, <em>tecnico</em> names the constraint and cites the section; <em>divulgativo</em> explains what would break otherwise and spells out the acronyms; <em>consulenziale</em> frames it as a trade‑off and separates what the document states from what it implies. Grounding rules, citations and the coverage gate stay fixed across all three — persona changes phrasing, not sourcing. The default is a literally empty prompt fragment, so the validated baseline behaviour is unchanged byte for byte.</p>
+        <p class="desc">Same grounding, sources and coverage gate across all three — persona changes phrasing, never sourcing.</p>
       </div>
-
-      <div class="card feature">
+      <div class="card">
         <h4>Trust policy — how far it's allowed to go</h4>
         <div class="chip-row"><span class="chip">grounded</span><span class="chip">hybrid</span><span class="chip">advisor</span><span class="chip">strict</span></div>
-        <p class="desc"><em>Grounded</em> (default) offers a web search when the knowledge base falls short. <em>Hybrid</em> lets the user choose between a web search or an opinion. <em>Advisor</em> only ever offers an opinion. <em>Strict</em> never offers anything beyond the documents — on a corpus of certified procedures, even the offer itself would be a risk, so it abstains cleanly instead. The coverage check is the same across policies; only the available options change.</p>
+        <p class="desc">From always offering a web search down to never offering anything beyond the documents — useful when even the offer itself is a risk (e.g. certified procedures).</p>
       </div>
-
-      <div class="card feature" style="grid-column:1/-1;">
-        <h4>Pronunciation control — an editor for how acronyms are said</h4>
-        <div class="desc-2col">
-        <p class="desc">A voice assistant on a technical corpus has to say things like ST36, MTC, or a company's own product codes out loud, and a speech model left alone will mangle them. A deterministic layer — no LLM in the path — rewrites them into a pronounceable form before synthesis, from a per-corpus map, a global map, and an automatic rule that ships <em>off</em> because it measured worse than doing nothing.</p>
-        <p class="desc">The part worth stealing is the editor built around it. The right rendering of an acronym cannot be derived from a rule — it is a judgment about how a word sounds — so the admin page lets you type a rendering and hear it immediately, one row at a time, and change it until it is right. Populating that map is seeded automatically: the acronyms were already extracted at ingest to help the speech-to-text model <em>recognise</em> them, and the same vocabulary is exactly what the speech synthesiser needs to <em>pronounce</em> them. One extraction, two opposite ends of the pipeline. Like the trust policy and the persona, the map travels with the knowledge base and is read per sentence, with no restart.</p>
-        </div>
+      <div class="card">
+        <h4>Pronunciation control</h4>
+        <p class="desc">A deterministic layer rewrites acronyms and product codes into a pronounceable form before synthesis. An admin page lets you type a rendering and hear it instantly, per knowledge base.</p>
       </div>
-
-      <div class="card feature" style="grid-column:1/-1;">
-        <h4>Beyond the knowledge base — web search and advisor</h4>
-        <p class="desc">Both are capabilities the user has to ask for, one turn at a time. A <b>web search</b> reads content extracted from the result pages, and the spoken answer opens by saying it came from the internet. An <b>advisor</b> turn steps outside the documents entirely and gives a reasoned opinion, using retrieved context as background rather than constraint, and opens by saying it is not from the documents. Which of the two is even on the table is set by the corpus trust policy; neither ever runs silently, and neither is ever blended into a documented answer.</p>
+      <div class="card">
+        <h4>Beyond the knowledge base</h4>
+        <p class="desc">Web search and "advisor" opinions are opt-in per turn, never blended into a documented answer, and always announce themselves as such.</p>
       </div>
-
+      <div class="card">
+        <h4>Barge-in — interrupt mid-answer</h4>
+        <p class="desc">Speaking over Platone cancels the answer stream immediately — wired by hand into the pipeline, not inherited from a stock service.</p>
+      </div>
     </div>
 
     <div class="boundary-note">
-      <b>Decision path is visible per turn.</b> A dedicated page shows the path a turn took — retrieval score, coverage verdict, domain judge, second pass, offer, user's choice — including branches not taken, with the reason why.
+      <b>Decision path is visible per turn.</b> A dedicated page shows the path a turn took — score, verdict, retries, offer, choice — including branches not taken.
     </div>
   </section>
 
@@ -483,7 +385,6 @@
         <span class="sub">RTX 4070 SUPER 12GB · Ubuntu 24.04</span>
         <ul>
           <li><span class="k">Orchestration</span><span class="v">FastAPI + Pipecat, systemd</span></li>
-          <li><span class="k">VAD</span><span class="v">Silero</span></li>
           <li><span class="k">STT</span><span class="v">Qwen3‑ASR‑1.7B</span></li>
           <li><span class="k">Embeddings</span><span class="v">bge‑m3, 1024‑dim</span></li>
           <li><span class="k">Reranker</span><span class="v">bge‑reranker‑v2‑m3</span></li>
@@ -504,9 +405,8 @@
         <h3>External / client</h3>
         <span class="sub">consent‑gated, no lock‑in</span>
         <ul>
-          <li><span class="k">Web search</span><span class="v">Tavily (default), DuckDuckGo</span></li>
+          <li><span class="k">Web search</span><span class="v">Tavily (default)</span></li>
           <li><span class="k">Client</span><span class="v">Browser, WebRTC P2P</span></li>
-          <li><span class="k">Access</span><span class="v">SSH tunnel, secure context</span></li>
         </ul>
       </div>
     </div>
@@ -519,30 +419,30 @@
 
       <div class="card decision">
         <h4>Model routing by workload</h4>
-        <div class="row"><span class="tag">Problem</span>Ingestion, expert answers and query rewriting have opposite needs — one is batch and cheap, one needs a low time‑to‑first‑token, one needs to stay anchored to entities.</div>
-        <div class="row"><span class="tag">Choice</span>Configurable per‑role routing instead of one model for everything. Non‑reasoning models for ingest and expert; a larger model reserved for rewrite; reasoning models excluded from low‑budget roles after they were found to silently burn their token budget on hidden "thinking" output.</div>
-        <div class="row"><span class="tag result">Result</span>Expert time‑to‑first‑token fell from 5–11s (initial reasoning model) to 0.15s p50.</div>
+        <div class="row"><span class="tag">Problem</span>Ingest, expert answers and rewriting have opposite needs.</div>
+        <div class="row"><span class="tag">Choice</span>Configurable per-role routing instead of one model for everything.</div>
+        <div class="row"><span class="tag result">Result</span>Expert response time fell from 5–11s to 0.15s p50.</div>
       </div>
 
       <div class="card decision">
-        <h4>Edge/cloud placement by latency and privacy</h4>
-        <div class="row"><span class="tag">Problem</span>Almost every stage could technically run in either place — where should the line actually go?</div>
-        <div class="row"><span class="tag">Choice</span>VAD, STT, retrieval and TTS stay on the edge GPU; rewrite and generation run on cloud EU inference, where a larger model is worth the round‑trip.</div>
-        <div class="row"><span class="tag result">Result</span>The same placement rule was reused for every feature added after the PoV.</div>
+        <h4>Edge/cloud placement by latency & privacy</h4>
+        <div class="row"><span class="tag">Problem</span>Almost every stage could technically run in either place.</div>
+        <div class="row"><span class="tag">Choice</span>Latency/privacy-sensitive stages stay on-edge; generation runs in the cloud.</div>
+        <div class="row"><span class="tag result">Result</span>Same rule reused for every feature added since.</div>
       </div>
 
       <div class="card decision">
-        <h4>External dependencies behind a one‑function interface</h4>
-        <div class="row"><span class="tag">Problem</span>LLM, STT and TTS providers change. A system wired directly to one of them is a system waiting to be rewritten.</div>
-        <div class="row"><span class="tag">Choice</span>One narrow function per capability — <code>transcribe()</code>, <code>synthesize()</code>, <code>expert_completion()</code> — with any provider swap confined to a single adapter file.</div>
-        <div class="row"><span class="tag result">Result</span>STT was swapped once and TTS four times — including a cloud excursion and a rollback — each time touching only its own adapter file.</div>
+        <h4>External dependencies behind one interface</h4>
+        <div class="row"><span class="tag">Problem</span>Providers change; wiring directly to one is fragile.</div>
+        <div class="row"><span class="tag">Choice</span>One function per capability — provider swap confined to one adapter file.</div>
+        <div class="row"><span class="tag result">Result</span>TTS swapped four times, STT once — pipeline untouched.</div>
       </div>
 
       <div class="card decision">
         <h4>Abstention as a shipped feature</h4>
-        <div class="row"><span class="tag">Problem</span>A system that always produces an answer — even a wrong one — isn't trustworthy in a technical‑support context.</div>
-        <div class="row"><span class="tag">Choice</span>A score‑gated coverage check plus an LLM‑as‑judge cascade (covered / partial / not covered); any escalation beyond the knowledge base needs explicit user consent.</div>
-        <div class="row"><span class="tag result">Result</span>Off‑topic questions abstained 5/5 even with web search enabled; the judge was tested on three conditions of 35 items each — genuine answers, wrong context, and answers with a single altered fact — and got all 105 judgments right.</div>
+        <div class="row"><span class="tag">Problem</span>Always answering — even wrong — isn't trustworthy for support.</div>
+        <div class="row"><span class="tag">Choice</span>Score-gated coverage check + judge cascade; escalation needs consent.</div>
+        <div class="row"><span class="tag result">Result</span>105/105 correct judge calls in testing.</div>
       </div>
 
     </div>
@@ -554,35 +454,34 @@
     <div class="cards incidents-grid">
 
       <div class="card incident">
-        <h4>Retrieval quietly collapsed on follow‑ups</h4>
-        <div class="row"><span class="tag">Symptom</span>Recall on conversational follow‑ups fell to near zero (R@3 0.01–0.02) while single‑shot questions still worked fine.</div>
-        <div class="row"><span class="tag">Root cause</span>The small local model rewriting follow‑ups into standalone queries kept dropping the entity under discussion, and occasionally switched language.</div>
-        <div class="row"><span class="tag fix">Fix</span>Moved rewriting to a larger cloud model with the full conversation window — R@3 on that follow-up set recovered to 0.975. Hard‑coding the current topic into every query was tested as a shortcut and rejected: it broke abstention by making unrelated questions match too.</div>
+        <h4>Retrieval collapsed on follow-ups</h4>
+        <div class="row"><span class="tag">Symptom</span>Recall on follow-ups fell to near zero.</div>
+        <div class="row"><span class="tag">Cause</span>The rewriting model kept dropping the topic entity.</div>
+        <div class="row"><span class="tag fix">Fix</span>Moved rewriting to a larger cloud model — recall back to 0.975.</div>
       </div>
 
       <div class="card incident">
-        <h4>The transcript quietly rewrote technical terms</h4>
-        <div class="row"><span class="tag">Symptom</span>English technical terms spoken inside Italian sentences came out as unrelated words, and retrieval then failed to match — no visible error, just an unjustified refusal to answer.</div>
-        <div class="row"><span class="tag">Root cause</span>The speech‑to‑text model was pinned to Italian, which "corrected" unfamiliar English terms instead of transcribing them.</div>
-        <div class="row"><span class="tag fix">Fix</span>Swapped in a code‑switching‑native ASR model behind the existing interface — the pipeline code didn't change, only the adapter.</div>
+        <h4>Transcript silently rewrote technical terms</h4>
+        <div class="row"><span class="tag">Symptom</span>English terms inside Italian speech came out wrong — no visible error, just failed retrieval.</div>
+        <div class="row"><span class="tag">Cause</span>STT pinned to Italian, "corrected" unfamiliar terms.</div>
+        <div class="row"><span class="tag fix">Fix</span>Swapped in a code-switching ASR model — pipeline untouched.</div>
       </div>
 
       <div class="card incident">
-        <h4>A faster voice engine failed without an error</h4>
-        <div class="row"><span class="tag">Symptom</span>During testing, the microphone level moved but nothing was ever transcribed — an easy failure to miss, since nothing crashed.</div>
-        <div class="row"><span class="tag">Root cause</span>A streaming TTS engine, measured at 0.101s time‑to‑first‑audio, shared the 12GB GPU with the ASR model; on the very first turn the ASR model ran out of memory, visible only in the service log.</div>
-        <div class="row"><span class="tag fix">Fix</span>Root‑caused instead of patched around. Findings were fully documented and the approach frozen for future, higher‑VRAM hardware rather than shipped broken.</div>
+        <h4>Faster voice engine failed silently</h4>
+        <div class="row"><span class="tag">Symptom</span>Mic worked, nothing got transcribed.</div>
+        <div class="row"><span class="tag">Cause</span>New TTS engine shared the 12GB GPU with STT — first turn ran out of memory.</div>
+        <div class="row"><span class="tag fix">Fix</span>Root-caused and documented; frozen for higher-VRAM hardware.</div>
       </div>
 
-
       <div class="card incident">
-        <h4>The web fallback returned thin answers</h4>
-        <div class="row"><span class="tag">Symptom</span>Turns that escalated to the web came back weak, on questions the open internet clearly covers.</div>
-        <div class="row"><span class="tag">Root cause</span>Not the one assumed. The opening hypothesis was that too few results were being read; a twenty-minute measurement showed the count was fine and the <em>depth</em> was the problem — the engine returned only its own preview text, never the page behind it.</div>
-        <div class="row"><span class="tag fix">Fix</span>Swapped to a search API that returns extracted page content: 10/10 against 8/10 on the same questions, median context per turn up from ~1,300 to ~2,100 characters, and search latency down from ~2.6s to 1.4s. Deliberately with no automatic fallback between engines — in a lab, silent degradation to a different engine hides the fault instead of showing it.</div>
+        <h4>Web fallback returned thin answers</h4>
+        <div class="row"><span class="tag">Symptom</span>Web-escalated turns came back weak.</div>
+        <div class="row"><span class="tag">Cause</span>Search engine returned only preview snippets, not full page content.</div>
+        <div class="row"><span class="tag fix">Fix</span>Switched engines — 10/10 vs 8/10 accuracy, latency down ~45%.</div>
       </div>
     </div>
-    <p class="lesson">Lesson: on shared cloud inference, latency is a moving target. A rewrite step once looked 10× slower than the day before; the cause was transient provider load, not a model limit. Re‑measure before concluding a component is the bottleneck.</p>
+    <p class="lesson">Lesson: on shared cloud inference, latency shifts with provider load — re-measure before blaming the model.</p>
   </section>
 
   <!-- ROADMAP -->
@@ -591,19 +490,19 @@
     <div class="roadmap-list">
       <div class="roadmap-item">
         <h4>Pronunciation lexicon <span style="color:var(--text-faint);font-weight:400;">(soon)</span></h4>
-        <p>The acronym guard is built and deterministic, but each knowledge base starts with an empty lexicon — a new corpus cannot yet pronounce its own domain codes. Populating it is manual by design: the right rendering is decided by ear against a preview, not derivable from a rule. Nearest to done, and a prerequisite for closing the acronym work behind it.</p>
+        <p>Each new knowledge base starts with an empty lexicon. Filling it is manual by design — the right rendering is judged by ear, not derivable from a rule.</p>
       </div>
       <div class="roadmap-item">
         <h4>Portability to Aruba Cloud <span style="color:var(--text-faint);font-weight:400;">(soon)</span></h4>
-        <p>Move edge inference (STT/TTS) to Aruba GPU on Demand and the application runtime to Aruba Cloud, with embeddings and reranking served remotely. Worth stating plainly: that last part is not a lift-and-shift but a change to the placement rule itself, and it lands on the most sensitive component. The local reranker was chosen because its normalised scores make the abstention threshold trustworthy, and a remote reranker with flat, uniformly high scores was rejected earlier for exactly that reason. So the migration has to be measured against abstention, not just latency. First step is a minimal Dockerfile, to validate portability independently of the infrastructure move.</p>
+        <p>Moving edge inference and runtime off-premise. The real risk sits with the reranker: its local, normalised scores are what make the abstention threshold trustworthy — a remote one was rejected earlier for returning flat scores.</p>
       </div>
       <div class="roadmap-item">
         <h4>Validating retrieval anchors</h4>
-        <p>An indexing bug meant LLM-generated Q&amp;A "anchors" were paid for at every ingest but never reached the index — and retrieval held up fine without them. Before re-enabling them, an A/B test on a separate collection will check whether they earn back their cost, measured on false-abstention rate rather than an internal score. Cheap to run, and it either removes a recurring ingest cost or justifies it.</p>
+        <p>An indexing bug meant AI-generated Q&A "anchors" never reached the index — retrieval held up fine without them. An A/B test will decide whether they're worth re-enabling.</p>
       </div>
       <div class="roadmap-item">
         <h4>Streaming voice <span style="color:var(--text-faint);font-weight:400;">(blocked on hardware)</span></h4>
-        <p>The current voice engine is synthesised in-process, sentence by sentence, and the chunks are concatenated. Serving the same voice model through a streaming inference server instead unlocks the streaming path the model natively has and the adapter does not use — and the gain is not only speed. Time-to-first-audio drops from ~2.2s to 0.101s, and intonation becomes continuous across sentences rather than restarting at every chunk, which is the audible difference. It is implemented, measured and documented, but does not fit on today's 12GB edge GPU: with the synthesis server running, the speech-to-text model hits CUDA out-of-memory on the first turn. Frozen for higher-VRAM hardware, with one prerequisite already identified — the <code>synthesize()</code> contract has to become async first, because the current thread bridge adds noise exactly on top of the metric that justifies the change.</p>
+        <p>Would cut time-to-first-audio from ~2.2s to 0.1s and fix choppy intonation between sentences — but doesn't fit today's 12GB GPU alongside STT. Frozen for higher-VRAM hardware.</p>
       </div>
     </div>
   </section>
@@ -611,7 +510,7 @@
   <!-- MEASURED RESULTS -->
   <section class="results">
     <div class="sec-head"><span class="num">08</span><h2>Some measured results</h2></div>
-    <p class="lead">Measured on the corpus indexed at the time of testing, not on a benchmark suite. These are test-set results, not universal guarantees.</p>
+    <p class="lead">Measured on the corpus indexed at the time of testing, not on a benchmark suite.</p>
     <div class="metrics" aria-label="Measured results">
       <div class="metric"><span class="v">~0.1s</span><span class="l">expert TTFT, p50</span></div>
       <div class="metric"><span class="v">~125ms</span><span class="l">retrieval + rerank, end‑to‑end</span></div>
@@ -620,7 +519,7 @@
       <div class="metric"><span class="v">0.924</span><span class="l">R@3, full synthetic golden (n=2079)</span></div>
       <div class="metric"><span class="v">9.1/12GB</span><span class="l">edge GPU, steady state</span></div>
     </div>
-    <p class="lesson" style="font-style:normal;">First-stage retrieval alone answered 27/35 real voice queries; the second pass recovered 5 of the 8 misses, taking end-to-end success to 32/35. Off-topic abstention held at 6/6, 5/5 and 13/14 across three difficulty levels.</p>
+    <p class="lesson" style="font-style:normal;">First-pass retrieval alone solved 27/35 real queries; the retry recovered 5 more. Off-topic questions were reliably declined across every difficulty level.</p>
   </section>
 
   <footer>
