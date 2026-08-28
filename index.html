@@ -73,6 +73,14 @@
     .section-desc { font-size: 0.95rem; color: var(--muted); max-width: 540px; line-height: 1.75; margin-bottom: 2.5rem; }
     .about-text p { font-size: 0.95rem; color: var(--muted); line-height: 1.9; max-width: 640px; }
     .about-text p + p { margin-top: 12px; }
+    .release-banner { display: block; text-decoration: none; color: inherit; border: 1.5px solid #E0A82E; background: #FFFDF5; box-shadow: inset 0 0 0 1px rgba(224,168,46,0.18), 0 4px 18px rgba(224,168,46,0.12); border-radius: 16px; padding: 2rem 2.2rem; margin: 2.2rem 0 0; transition: background 0.25s, transform 0.2s; }
+    .release-banner:hover { background: #FBF3DC; transform: translateY(-2px); }
+    .release-tag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #B07D14; margin-bottom: 0.8rem; }
+    .release-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.04em; color: var(--text); margin-bottom: 0.6rem; transition: color 0.2s; }
+    .release-banner:hover .release-title { color: #8A6310; }
+    .release-desc { font-size: 0.92rem; color: var(--muted); line-height: 1.7; max-width: 640px; margin-bottom: 1rem; }
+    .release-link { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #B07D14; display: inline-flex; align-items: center; gap: 4px; transition: gap 0.2s; }
+    .release-banner:hover .release-link { gap: 8px; }
     .focus-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5px; background: var(--border); border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; }
     .focus-card { background: var(--white); padding: 2rem; transition: background 0.25s; position: relative; }
     .focus-card:hover { background: var(--off); }
@@ -157,6 +165,12 @@
     <p>I design, benchmark, and validate inference architectures to map performance, trade-offs, and real-world limits &mdash; and turn these findings into opinionated frameworks for day 0&ndash;1 decisions: sizing, capacity planning, and workload deployment.</p>
     <p>Then I help organizations translate these frameworks into production-ready decisions: what to deploy, where, and at what scale, minimizing cost and risk without compromising on performance.</p>
   </div>
+  <a class="release-banner" href="/case-studies/platone.html">
+    <span class="release-tag">Just released &mdash; demonstration of my studies</span>
+    <h3 class="release-title">Platone</h3>
+    <p class="release-desc">A hybrid inference architecture enhanced voice RAG with edge/cloud placement measured against latency, cost, and privacy. You can chat with your KBs and gain grounded answers, free advice, or internet searches.</p>
+    <span class="release-link">Read the case study &rarr;</span>
+  </a>
 </div></div>
 <div class="section" id="focus" style="background: var(--off);"><div class="section-inner">
   <p class="section-label">What I work on</p><h2 class="section-title">Focus Areas</h2>
@@ -224,7 +238,7 @@
 <div class="section" id="repository" style="background: var(--white);"><div class="section-inner">
   <p class="section-label">Repository</p><h2 class="section-title">Content & Docs</h2>
   <div class="links">
-    <a class="link-row" href="case-studies/"><div class="link-left"><span class="link-index">01</span><div><div class="link-title">Case Studies</div><div class="link-desc">Applied systems, shipped — Platone, a hybrid edge/cloud voice AI, with the architecture decisions and incidents behind it</div></div></div><span class="arrow">→</span></a>
+    <a class="link-row" href="case-studies/"><div class="link-left"><div><div class="link-title">Case Studies</div><div class="link-desc">Applied systems, shipped — Platone, a hybrid edge/cloud voice AI, with the architecture decisions and incidents behind it</div></div></div><span class="arrow">→</span></a>
     <a class="link-row" href="frameworks/"><div class="link-left"><span class="link-index">02</span><div><div class="link-title">Frameworks</div><div class="link-desc">Conceptual models — inference stack anatomy, technology model, parameter topology, sizing methodology, observability, workload characterization</div></div></div><span class="arrow">→</span></a>
     <a class="link-row" href="manuals/"><div class="link-left"><span class="link-index">03</span><div><div class="link-title">Manuals</div><div class="link-desc">Reference manuals — inference engineering and KV cache management</div></div></div><span class="arrow">→</span></a>
     <a class="link-row" href="architectures/"><div class="link-left"><span class="link-index">04</span><div><div class="link-title">Architectures</div><div class="link-desc">Architectural references — GPU fabric, NVIDIA communication libraries, network critical path, parallelism strategies</div></div></div><span class="arrow">→</span></a>
