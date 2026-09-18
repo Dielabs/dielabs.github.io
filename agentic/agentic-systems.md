@@ -1068,3 +1068,384 @@ The right posture in discovery:
 > "It depends on the average N_steps for your use case. A single-call copilot I size like RAG. A multi-step coding agent is a different exercise. Let us measure N_steps on real traffic before estimating the GPU footprint."
 
 That sentence closes the wrong conversation — how many GPUs do we need for AI — and opens the right one: measure before sizing.
+### Workload morphology, what the serving side actually sees
+
+The four dimensions describe the behaviour of a single task. Anyone proposing a sizing has to reason at the aggregate level — how the workload presents itself to the serving cluster under real load. Three recurring operational observations.
+
+**1. The arrival curve is not Poisson.**
+
+In a classic chat workload, requests arrive approximately as a Poisson process, an assumption that holds up the classic queueing formulas. In an agentic workload, a single user activation generates a **correlated burst**: the first request triggers N tool results which trigger M more requests, and so on. Interarrival time between requests of the same session is near zero, milliseconds, while between different sessions it stays Poisson-like.
+
+Operational implication: estimating aggregate throughput as a sum of Poisson processes underestimates the p99 of the queue. A cluster sized on the average goes into overload during correlated bursts.
+
+**2. Context size is bimodally distributed.**
+
+Under real mixed load, the context size of requests arriving at the serving stack tends to be **bimodal**:
+
+- A "low" peak: opening requests of new sessions, around 20-30K — system prompt, tools, skills manifest, user message
+- A "high" peak: advanced requests of sessions in progress, 80-200K and up
+
+It is not a normal distribution around the mean. Sizing based on average context is wrong at both peaks: it overestimates memory for the low requests and underestimates prefill for the high ones.
+
+**3. KV cache is the scarce resource.**
+
+In a serving engine such as vLLM, the KV cache is finite GPU memory. Every active session occupies KV cache equal to its context size. In chat workloads with short sessions, turnover is high and the cache frees up frequently. In agentic workloads, an hour-long session steadily occupies 100K or more.
+
+Implication: the number of concurrent sessions the cluster can sustain is limited by the **sum of committed KV cache**, not by theoretical tokens per second. When a customer says "1000 concurrent developers", the first question is: how many sessions are actually active at any moment, and what is the average KV cache footprint?
+
+### Four operational pressures worth naming
+
+When proposing an agentic-ready architecture, there are four pressures worth naming explicitly, because nobody mentions them in generic "AI for enterprise" pitches.
+
+**Pressure 1, tail latency versus throughput.** The agentic workload is naturally sensitive to p99, not to the average. A compaction taking 4 seconds of prefill over 180K tokens is a user-visible event that breaks the flow of work. Systems tuned for aggregate throughput, with aggressive batching, make the tail worse.
+
+**Pressure 2, KV cache eviction policy.** Who gets evicted when GPU memory saturates? In chat workloads, natural LRU works. In agentic workloads, evicting an active session means forcing a large prefill recomputation when that session comes back. LRU-based policies need adjusting, or mitigations: offload to CPU or NVMe, priority for active sessions.
+
+**Pressure 3, cost attribution.** In a cluster shared across N tenants, "who consumed what" is not a trivial question. An hour-long agentic session that fans out into subagents crosses several jobs, several requests, several layers of shared prefix cache. Accurate attribution requires dedicated observability infrastructure.
+
+**Pressure 4, failure isolation.** What happens when a single tool result is anomalous — a 50MB file read in one go? Without context size guardrails, one request can saturate an entire serving slot. You need checks at the tool runtime level, to split or filter before it enters the context.
+
+These four are concrete technical arguments that separate a grounded conversation from a generic pitch. They are also the direct antecedents of the observability metrics in the next chapter.
+### Tool latency, where the latency actually lives
+
+One operational observation is worth naming explicitly, because it inverts the usual framing of enterprise AI conversations: **in an agentic workload, the GPU is often not the bottleneck**.
+
+Decomposing the end-to-end latency of a single loop iteration:
+
+```
+E2E_step = TTFT + decode_time + tool_latency + runtime_overhead
+
+where typically:
+  TTFT             = prefill of this iteration (GPU)          ~50-500ms
+  decode_time      = generating the tool call (GPU, short)    ~50-300ms
+  tool_latency     = external tool execution (network)        ~100ms-5s
+  runtime_overhead = parsing, routing, state mgmt (CPU)       ~10-50ms
+```
+
+In real systems, **tool_latency is often the dominant term**. The typical sources in enterprise platforms:
+
+- **External SaaS APIs**: rate limiting, geographic region, large payloads. Typical latency 200ms to 2s per call, with high variance.
+- **Vendor throttling**: per-minute quotas and fair use policies that kick in under load.
+- **MCP serialization**: marshalling and unmarshalling complex payloads, especially with large structured result sets.
+- **Cold database or vector store queries**: the first query after idle, cold cache, embeddings not resident.
+- **Auth and token exchange overhead**: OAuth refresh, SSO federation, an mTLS handshake on every call if sessions are not reused.
+- **Connection pool exhaustion** towards saturated internal backends.
+
+**The crucial implication for discovery**: when a customer says "our agentic AI proof of concept is too slow", the first question is not how many GPUs they need. It is where the latency is. Measuring TTFT separately from tool latency requires dedicated observability, but it is the precondition for a correct diagnosis.
+
+Put bluntly: a system with excellent prefix caching and p99 TTFT under 500ms, whose MCP tools round-trip to a service in a US region for an Italian customer, will still be slow. That is not a GPU sizing problem. It is a network topology and backend problem.
+
+### Model and runtime compatibility, the silent failure mode
+
+A practical point often discovered only in production, and worth raising in discovery.
+
+For an agent to work, three things have to line up:
+
+1. The **model** must be fine-tuned to emit tool calls in a structured format — special tokens, dedicated JSON, XML tags.
+2. The **runtime parser** must know how to interpret that specific format.
+3. The **tool definition schema** in the system prompt must be consistent with what the model expects.
+
+The formats are **not universal**: each model family has its own. One uses a specific wrapper for tool use blocks, another a `tool_calls` field with its own structure, another XML tags or JSON depending on the fine-tuning.
+
+**The typical failure mode**, seen in many proofs of concept: the model was fine-tuned to emit tool calls as XML, but the runtime expects JSON in a dedicated field. The parser does not recognise the pattern, so the tool call reaches the user as raw text. The agent "looks stupid": instead of doing something, it narrates what it would do.
+
+**The problem is not the model, it is architectural.** Without an explicit model-runtime compatibility matrix, these mismatches only surface under real load. For a sovereign platform that might offer bring-your-own-model or several sovereign-tuned models, **stating that compatibility matrix explicitly** is a product requirement, not a technical detail.
+
+In discovery, three concrete questions for a customer proposing a custom model: has the model been fine-tuned for function calling? In what format does it emit tool calls? Has the proposed runtime been tested with this specific model? Three questions, three potential sources of silent failure.
+### Layered prefix caching
+
+Now the crucial point of agentic infrastructure. The context of an agent session has **layers** of stability:
+
+```
++------------------------------------+
+| Main system prompt                 |  <- STABLE across all users
++------------------------------------+
+| Tool definitions (base)            |  <- STABLE across all users
++------------------------------------+
+| Skills manifest                    |  <- STABLE across all users
++------------------------------------+
+| Loaded skill bodies                |  <- VARIES by task
++------------------------------------+
+| Original user message              |  <- STABLE for the session
++------------------------------------+
+| Iteration 1: action + result       |  <- STABLE from iteration 2 on
++------------------------------------+
+| Iteration 2: action + result       |  <- STABLE from iteration 3 on
++------------------------------------+
+| ...                                |
++------------------------------------+
+| Iteration N: being generated       |  <- VARIES
++------------------------------------+
+```
+
+**The optimal caching strategy** exploits that layering. The hit rates below are **reasoned estimates**, not measurements: they depend heavily on the runtime implementation, the serving engine and the real workload pattern.
+
+1. **Layer 1**, system prompt plus tools plus manifest: globally cacheable, expected hit rate very high, near 99% in stable conditions
+2. **Layer 2**, skill bodies: cached per skill set, hit rate depends on which skills are popular
+3. **Layer 3**, user message: cached per session, hit rate 100% for every iteration after the first
+4. **Layer 4**, history: cached per session, hit rate decaying after each compaction
+
+Without layered caching, the KV cache prefix tree is inefficient. With it well designed, a request at an advanced iteration can reach a very high hit rate on the prefix — in well-tuned scenarios above 90% — prefilling only the delta. That is an orienting estimate, always to be validated by direct measurement in the specific deployment.
+
+This layering is a strong design argument: an agent-aware inference platform has to do multi-level prefix caching, not just session-level. It is an infrastructural design choice, not a nice-to-have.
+
+### How this connects to the SLO-anchored metric
+
+Four points, each one a differentiator.
+
+**1. Closed-loop benchmarks measure the wrong thing.** The hardware-anchored closed-loop metric measures maximum throughput at constant saturation. Perfect for chat. For agents it **understates** the real problem: an agent does not generate stationary load, it generates bursts of N requests with growing context.
+
+**2. Open-loop with an SLO is the only honest metric.** The SLO-anchored open-loop metric asks: at what rate can I accept new tasks while keeping TTFT under X and ITL under Y at the 99th percentile? That is exactly what an agent needs — the task is the user-visible unit of work, not the individual request; p99 TTFT captures the worst cases, post-compaction and subagent fan-out; ITL captures streaming quality during decode.
+
+**3. The workload model has to be enriched.** The four missing dimensions become benchmark parameters:
+
+- `tool_calls_per_task`: a distribution, with mean, p50, p95, p99
+- `context_growth_curve`: context size as a function of iteration
+- `compaction_rate`: events per minute per active session
+- `subagent_fanout`: the distribution of fan-out sizes
+
+A synthetic workload for an open-loop agentic benchmark is a **multi-dimensional distribution**, not a single number.
+
+**4. The capacity card includes caching efficiency.** When you produce a capacity card, a key metric is the **layered prefix cache hit rate**: per-layer hit rates, and the effective prefill reduction they produce.
+
+That is what converts "we have X GPUs" into "we can serve Y agent-tasks per second at this SLO". It is the correct translation from hardware to business metric.
+
+### Anticipating the customer's question
+
+The customer asks: "How many GPUs do we need to serve 1000 developers using a CLI agent?"
+
+The wrong answer: "It depends on the model, on average X tokens per second per GPU, so N GPUs."
+
+The right answer:
+
+1. I need the real workload: average tool calls per task, session duration distribution, peak fan-out
+2. I need the target SLO: max TTFT, max ITL, at which percentile
+3. I need to know the model and its prefill/decode characteristics
+4. I need to know whether the infrastructure supports layered prefix caching
+5. With those inputs I can build a synthetic open-loop workload and measure
+6. The capacity card output answers in units the customer understands: Y agent-tasks per second sustained at p99, with M GPUs of type Z
+
+That is enabling a business decision, not doing arithmetic.
+### A worked example, a copilot for an Italian bank
+
+A realistic scenario, composite and not referring to any specific customer: an Italian bank, 600 internal developers, wants a sovereign AI copilot deployable on-premise or in a sovereign cloud. Requirements: EU data residency, an open or sovereign-tuned model, banking compliance with audit and operational restrictions on critical systems.
+
+**Step 1, map the workload.** From the discovery conversation:
+
+- Developers active at any moment: an estimated 150, a quarter of 600
+- Sessions active at any moment: around 80 — not everyone active has an agentic session open
+- Tasks per active session: one every 5 to 10 minutes, with wide variance
+- Tool calls per task: bimodal, a fast cluster at 3-5 and a complex cluster at 20-40
+- Cost cap target: no task above 3 euros of inference
+- SLO target: TTFT p95 under 2 seconds, even after compaction
+
+**Step 2, estimate the operational pressures.** Applying the patterns above:
+
+- Average aggregate throughput: on the order of 30 to 60 requests per second on the cluster
+- Average KV cache footprint per active session: 100-150K tokens
+- Burst peaks from subagent fan-out: an estimated 2 to 3 times the average rate, in windows of a few seconds
+- Expected compaction events: roughly one every 15 minutes per active session
+
+**Step 3, configure the platform.** Given the banking profile:
+
+- Conservative reasoning policy: maximum 30 iterations, early escalation, extensive hard guardrails with no writes to core banking repositories
+- A restricted skill set: only certified Skills with an audit log
+- MCP servers limited to approved integrations, no arbitrary ones
+- Full observability with 90-day retention for compliance
+- KV cache offload to NVMe for paused sessions
+
+**Step 4, the resulting capacity card.** The final output of the open-loop benchmark process:
+
+```
+Workload - Banking copilot
+Profile: 600 developers, ~150 concurrent active, conservative policy
+SLO: TTFT p95 < 2s, ITL p95 < 50ms, task completion p95 < 90s
+
+Capacity: 12 tasks/sec sustained, 28 tasks/sec peak (3s burst)
+Hardware: 8x high-end datacentre GPUs (sovereign-deployable)
+Effective prefix cache hit rate: 78-85% (layers 1-2 stable, layer 3 variable)
+Cost per successful task (p50): EUR 0.34
+Cost per successful task (p95): EUR 1.20
+Compliance: full audit trail, guardrails active, EU data residency
+```
+
+That card gives the bank's CTO three things: a concrete answer to "how many GPUs", a cost structure to budget against, and an operational guarantee with explicit SLOs.
+
+**What must not be promised, and why saying so matters:**
+
+- No absolute numbers on models not measured directly
+- No TTFT figure without measuring the customer's real workload
+- No prefix cache hit rate guarantee without knowing the organisation's skill usage pattern
+
+That operational honesty is exactly what separates a technically credible proposal from a sales deck.
+
+### In short
+
+Agentic workloads break classic sizing along four dimensions: tool call rate, context growth, compaction frequency, subagent fan-out. The right metric is not requests per second but agent-tasks per second under a TTFT and ITL SLO. Layered prefix caching — system, tools, skills, history — is what decides the real unit cost. The open-loop SLO-anchored metric is designed for exactly this, and produces a capacity card that translates hardware into a business metric.
+---
+
+## Agentic observability
+
+**Key points.**
+
+- Without observability on an agent, debugging and tuning are blind — and these workloads are too complex for improvised post-mortems
+- Six families of metrics to capture: hierarchical **tracing**, **context**, **cost**, **quality**, **performance**, and **replay and debugging**
+- For a sovereign platform, agentic observability is also a **compliance surface**: audit, attribution, governance
+- It is natural ground for anyone from infrastructure: the same observability patterns as distributed systems, applied to a new domain
+
+### Why agentic observability differs from LLM observability
+
+Observability on a single LLM prompt is relatively simple: an input, an output, and metrics — TTFT, ITL, tokens in and out, total latency, cost.
+
+Observability on an agent loop is far richer:
+
+- N model calls, with a growing context
+- M tool calls, with variable results
+- K subagents invoked, each with its own sub-loop
+- Compaction events
+- Reasoning policy decisions: terminate, continue, escalate
+- Internal failure modes: looping, verify failure, timeout
+
+The right analogy is not "the log of a REST API" but "the distributed trace of a microservice with N hops". Familiar patterns for anyone from the cloud-native world.
+
+### Family 1, hierarchical tracing
+
+**What it captures**: the whole execution tree of a task, from user prompt to final output.
+
+**Conceptual model**: the same as OpenTelemetry, applied to agents. Hierarchical spans:
+
+```
+Trace: task_completion (user: "refactor module X")
++-- Span: parent_agent_loop
+    +-- Span: llm_call (iter 1, prefill 5K, decode 200)
+    +-- Span: tool_call (read_file)
+    +-- Span: llm_call (iter 2, prefill 5.5K, decode 150)
+    +-- Span: tool_call (Task -> subagent_explore)
+    |   +-- Span: subagent_loop (Explore)
+    |       +-- Span: llm_call (iter 1)
+    |       +-- Span: tool_call (grep)
+    |       +-- Span: llm_call (iter 2)
+    |       +-- Span: subagent_result (summary, 200 tokens)
+    +-- Span: llm_call (iter 3, prefill 6K + summary)
+    +-- Span: tool_call (edit_file)
+    +-- Span: final_response
+```
+
+**What belongs in the span attributes**: iteration count, tool name, subagent type, model, input and output tokens, cache hit rate and which layer hit (system, tools, skills, history), context size in tokens, and which skill was activated.
+
+**OpenTelemetry GenAI semantic conventions**, stabilising through 2025-2026, standardise these attributes. They are not fully settled, but they are the pivot to bet on.
+
+**Trace context propagation through MCP** is a delicate point. When the agent calls an MCP server, the trace context has to travel inside the MCP protocol, so the server call appears in the same trace. Recent MCP supports this through standard headers; older implementations do not.
+
+### Family 2, context telemetry
+
+**What it captures**: how the context grows, compresses and stratifies during a session.
+
+| Metric | What it measures |
+|---|---|
+| `context_size_over_time` | Tokens against iteration |
+| `context_growth_rate` | Tokens added per iteration (mean, p50, p95) |
+| `compaction_events` | Count, timing, size before and after |
+| `prefix_cache_hit_layer1..N` | Hit rate per layer |
+| `prefix_cache_byte_reuse` | Bytes actually reused from cache |
+| `skill_load_frequency` | Which skills load, and how often |
+| `subagent_context_isolation` | Tokens the parent was spared by the subagent |
+
+**Why it matters**: context telemetry is the primary data for **modelling the workload**. Without it, sizing rests on assumptions. With it, you have empirical distributions to feed the open-loop benchmark.
+
+A practical example: you discover the prefix cache hit rate on the skills layer is only 35%, because there are too many skills and they vary too much. You consolidate similar skills, the hit rate rises to 70%, average prefill drops by 40%, and the sizing improves accordingly.
+
+### Family 3, cost telemetry
+
+**What it captures**: who consumes what, and what **a useful outcome** costs.
+
+**Three levels of granularity.**
+
+**Per request**, the base level: tokens in, tokens out, cost, model used.
+
+**Per task**, the agentic level: total tokens across all N requests, total cost per task, and a breakdown by agent (parent versus subagent), by tool, and by loaded skill.
+
+**Per outcome**, the business level:
+
+- **Cost per successful outcome**: total cost divided by successful tasks
+- **Cost of failure**: what is spent on tasks that fail, which has to be counted
+- **Cost of retry and looping**: what is spent on unproductive iterations
+
+The last level is the business-relevant one and is rarely captured. For example: "the agent costs 0.50 per task on average, but 30% of tasks fail, so cost per successful outcome is 0.71". That is the number the customer's CFO wants to see, not 0.50.
+
+**Token attribution per task** is what ties this back to sizing. Cost telemetry has to sum tokens across parent, subagents and every skill loaded for the same task. That requires a correlation ID propagated through the whole stack.
+
+### Family 4, quality telemetry
+
+**What it captures**: is the agent working well, and how well?
+
+| Metric | What it measures |
+|---|---|
+| `task_success_rate` | Share of tasks completed successfully (needs ground truth) |
+| `verify_failure_rate` | Share of verify steps returning not-OK |
+| `looping_detection_rate` | Share of tasks where degenerative looping is detected |
+| `abandonment_rate` | Share aborted on iteration or cost budget |
+| `escalation_rate` | Share requiring user escalation |
+| `user_satisfaction` | Explicit user feedback |
+| `time_to_completion_p50/p95` | End-to-end latency per task |
+
+**The ground truth challenge**: `task_success_rate` needs an external judge — human or LLM-as-judge — to decide whether the task was really completed. The agent declaring "done" is not enough. For coding workloads, automated tests are the natural judge; in other domains it is harder.
+
+### Family 5, performance telemetry
+
+**What it captures**: the operational SLOs of serving under agentic load. It overlaps with classic inference telemetry, with extra dimensions:
+
+| Metric | Note |
+|---|---|
+| `TTFT_p50/p99` | Per request, but also aggregated per task |
+| `ITL_p50/p99` | Inter-token latency during decode |
+| `prefill_throughput` | Tokens/sec, split by cache hit versus miss |
+| `decode_throughput` | Output tokens/sec |
+| `queue_depth` | Requests queued — bursty under subagent fan-out |
+| `gpu_utilization`, `kv_cache_pressure` | Hardware saturation |
+| `agent_task_throughput` | Tasks per second completed, not requests per second |
+
+**The critical point**: you need to correlate serving performance metrics with agentic task metrics. "p99 TTFT has degraded — is it because we have tasks with context over 150K missing the prefix cache?" Without correlation, that question has no answer.
+
+### Family 6, replay and debugging
+
+**What it captures**: the ability to faithfully reproduce a task execution for post-mortem debugging.
+
+Four components are needed: a **complete persisted trace** of every input, output, tool call and subagent invocation; a **determinism handle** — sampling seed, model version, prompt template version — so the run can be repeated; a **replay interface** to step through the execution; and **attribution per decision**, understanding which part of the context influenced each step.
+
+That last one is active research. Attribution interpretation is far from solved, but heuristic methods — attention analysis, ablation testing on parts of the context — are starting to appear in production debugging.
+
+**The business use case**: a customer reports that the agent did something strange yesterday. Without a complete replay and attribution you are log-scraping. With them you have a structured triage workflow. That is compliance-grade, not a nice-to-have.
+### How observability ties back to sizing
+
+Three connections.
+
+**1. Observability is the tap the workload modelling data comes out of.** A synthetic open-loop workload is not invented, it is measured. From observability on real workloads — even synthetic ones built in a lab — you get the distribution of tool calls per task, the context growth curve, the compaction rate, and the subagent fan-out pattern. Without layered observability those distributions are guesses. With it, they are data.
+
+**2. Observability is the feedback loop for capacity tuning.** Measure the real workload, compare it with the forecast, identify the drift, tune. That loop does not work without rich observability.
+
+**3. Cost per successful outcome is the business KPI.** The capacity card should carry not only "X tasks/sec at Y SLO" but also the cost per successful outcome. That requires performance telemetry and quality telemetry to be integrated. It is the most mature level of observability.
+
+### What this is worth for a sovereign platform
+
+For a sovereign platform with enterprise or public sector customers, agentic observability has three distinct values.
+
+**Operational**: debugging, tuning, capacity planning — everything above.
+
+**Compliance**: a complete audit trail of who did what, when, with which prompt and which result. For regulated sectors this is a regulatory requirement, not a feature.
+
+**Governance**: administrator visibility into use cases, costs and anomalies, enabling policy enforcement — budget per department, restrictions on sensitive use, audit of critical actions.
+
+Presenting a platform where observability is **first class** rather than an add-on is a strong enterprise argument. For regulated customers it is close to a must-have.
+
+### Natural ground for infrastructure people
+
+An honest note: agentic observability sits **very close** to the ground anyone from datacentre or serving operations already knows. The primitives are familiar — distributed tracing, SLO and SLA frameworks, metrics versus logging, anomaly detection.
+
+The jump is applying those primitives to a new domain, the agent loop, with its own peculiarities: hierarchy, context, reasoning policy. For anyone from modern infrastructure, it is a natural transfer.
+
+And that is precisely the difference from someone talking about "AI agents" in general: being able to describe agentic observability with the same rigour as the observability of a distributed application. Few people do.
+
+### In short
+
+Agentic observability is an engineering surface as rich as distributed system observability: six families of metrics, hierarchical tracing, per-task attribution, cost per successful outcome. For a sovereign platform it is also a compliance and governance surface. The underlying pattern — hierarchical spans, trace context propagation, multi-level SLOs — is familiar to anyone from serving operations. The challenge is applying it where the primitives are new.
