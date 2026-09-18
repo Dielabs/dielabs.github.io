@@ -21,6 +21,9 @@ This is the newest part of the lab. It reads the same problems as the inference 
 
 ## Documents
 
+### [Agentic Systems for Inference Infrastructure People](agentic-systems.md)
+From the stateless model to the agentic harness, written for people who know inference but not agents. The model as a pure function, tool use as structured generation plus external execution, the gather-act-verify loop, context engineering as the central discipline, the four context management strategies, MCP, reasoning policy — then what an agentic workload does to serving: prefill amplification, the bottleneck shifting from memory bandwidth to compute, TTFT times N_steps, layered prefix caching, and six families of agentic observability.
+
 ### [RAG for Dummies](rag-for-dummies.md)
 How a system that answers from company documents actually works, with the library analogy: the four models of the chain (rewriter, embedding, reranker, generator), the ingestion and query flows, the judge and its metrics, chunking, and a tour of the advanced variants — hybrid search, GraphRAG, agentic, adaptive, multimodal, federated. No maturity framework and no sizing: this is the one to read before deciding how deep a retrieval system needs to go.
 

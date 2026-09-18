@@ -1449,3 +1449,99 @@ And that is precisely the difference from someone talking about "AI agents" in g
 ### In short
 
 Agentic observability is an engineering surface as rich as distributed system observability: six families of metrics, hierarchical tracing, per-task attribution, cost per successful outcome. For a sovereign platform it is also a compliance and governance surface. The underlying pattern — hierarchical spans, trace context propagation, multi-level SLOs — is familiar to anyone from serving operations. The challenge is applying it where the primitives are new.
+---
+
+## Recurring questions
+
+### What exactly do agent loops solve?
+
+They solve a structural mismatch: the model's context window is finite, but the task horizon is open and not known in advance. In a single call you would have to preload all the context that MIGHT be needed — on non-trivial tasks that is impossible, or wasteful. With a loop, the model explores the context progressively: at each iteration it decides what it needs to know, retrieves it through a tool call, and moves on. It turns an unsolvable problem, complete preloading, into a solvable one, lazy gathering.
+
+Everything else — Skills, subagents, summarization, external memory — is a context engineering strategy on top of that primitive. Skills load capability progressively. Subagents isolate exploration in separate contexts. Summarization compresses history. External memory moves state outside. They are optimisations of the same basic idea: managing the finiteness of the context.
+
+Put more directly: the agent loop is NOT a new model capability. It is an operational design pattern around a stateless model that remains stateless. The apparent intelligence lives in the harness, not in the weights.
+
+### How do agent loops use the models available today?
+
+In different ways depending on the sophistication of the system. Three levels, from naive to mature.
+
+**Level 1, naive ReAct**: the model is instructed to generate Thought / Action / Observation in markdown, the runtime parses it, executes, and loops. It works for demos but it is fragile — the parsing breaks, the model forgets the format, the context grows uncontrolled. This is the level of the earliest agents.
+
+**Level 2, structured tool calling**: the model emits formal JSON through a function calling API, and the runtime has predefined structures to handle it. Far more robust. This was the state of the art in 2023-2024.
+
+**Level 3, a disciplined agentic harness**: the model is wrapped in a harness with strong operational constraints — mandatory external memory, an explicit verify step, subagents for context isolation, Skills for lazy loading, automatic compaction. This is the 2025-2026 state of the art.
+
+The leak confirms Anthropic sits at level 3, very disciplined. The model alone is not enough — the IP is in the constraints the harness imposes.
+
+As for how they use the models: mature systems do not ask the model to be enormously better than the baseline. They ask it to be RELIABLE within narrow patterns — emit valid JSON, recognise when a task is complete, know when to call a subagent. The more tool use reliability improves, the less general intelligence matters.
+
+### What are Skills?
+
+Skills are a mechanism for progressive context loading, in three levels.
+
+**Level 1, a manifest always in context**: name, a one or two sentence description, semantic triggers for activation. A few tokens per skill, so you can have 50 to 100 of them.
+
+**Level 2, a body loaded on demand**: detailed instructions, examples, the schemas of that skill's tools. Loaded ONLY if the triggers match the request. It can run to thousands of tokens, but you pay only when it is needed.
+
+**Level 3, referenced resources**: assets, code files, templates. Loaded only when the body explicitly asks for them.
+
+What they are not: not fine-tuning, so no weight changes; not plugins, so no arbitrary code execution; not RAG, so no vector similarity search.
+
+They are context engineering made operational. The problem they solve: having 50 capabilities without exploding the system prompt. The solution: load only what is needed, when it is needed, on semantic triggers.
+
+On the infrastructure side, Skills create a layered prefix caching pattern. The manifest is always cached. Bodies are cached by popularity. For a sovereign platform, running a curated registry of certified Skills is probably an important architectural asset.
+
+### How does all this hit infrastructure?
+
+Significantly. Agentic workloads break classic sizing along four dimensions.
+
+**1. Tool call rate.** A user-visible task is not one request, it is N. For a coding agent, N of 5 to 50 is typical, up to 100 or more on complex tasks. The throughput formula has to be multiplied accordingly.
+
+**2. Monotonic context growth.** A session's context grows from 20K to 200K and beyond. Every iteration's prefill includes the whole history. Without prefix caching, cost grows quadratically.
+
+**3. Compaction events.** Past the threshold, automatic summarization fires. It is a tax request with a heavily skewed prefill/decode profile, and it has to be modelled as its own workload category.
+
+**4. Subagent fan-out.** Invoking subagents generates parallelism bursts that a chat-style workload never sees.
+
+The operational consequence: **layered prefix caching** becomes the critical factor. The context has layers of stability — system prompt, tool definitions, skills manifest, user message, history — and the KV cache has to be organised in layers. A request at an advanced iteration can reach a very high hit rate, well above 90% in well-tuned scenarios, if the prefix tree is well structured; it can degrade badly if it is not.
+
+For anyone sizing agentic infrastructure, the right metric is not requests per second but agent-tasks per second under a TTFT and ITL SLO at the 99th percentile. That is exactly what an open-loop, SLO-anchored framework produces, with a capacity card that translates hardware into a business metric. That is the difference between an engineer's sizing and a proposal that enables a decision.
+---
+
+## Glossary
+
+| Term | Definition |
+|---|---|
+| **Agent loop** | The iterative gather, act, verify loop orchestrating calls to a stateless LLM |
+| **Tool use** | The mechanism by which the model emits structured JSON describing an action, executed by an external runtime |
+| **Function calling** | A synonym for tool use |
+| **Context engineering** | The discipline of choosing what enters, leaves and gets compressed in the context at each iteration |
+| **Skills** | A context bundle — manifest, body, resources — loaded progressively on triggers |
+| **Subagent** | A sub-agent invoked by the parent to isolate exploration context |
+| **Compaction** | Automatic summarization of the context past a threshold |
+| **External memory** | Structured state moved out of the context |
+| **MCP** | Model Context Protocol: the standardised agent-to-tool wire protocol |
+| **Prefix caching** | Reuse of the KV cache for the prefix shared between requests |
+| **Capacity per replica (closed-loop)** | Hardware-anchored capacity per replica, measured in closed loop |
+| **Capacity per replica (open-loop)** | SLO-anchored capacity per replica, measured in open loop |
+| **Cost per successful outcome** | The business KPI: total cost divided by successful tasks, not per request |
+| **Reasoning policy** | The set of constraints governing the agent's decisions inside the loop |
+| **Degenerative looping** | The pathology where an agent repeats useless actions without progress |
+| **OTel GenAI conventions** | The OpenTelemetry standard for tracing attributes on AI workloads |
+| **Prefill amplification** | The phenomenon where an N-step agent runs N prefills and N decodes over a growing context, against 1+1 for chat |
+| **N_steps** | The average number of loop iterations per task; the primary workload characterisation metric |
+| **TTFT x N_steps** | An approximation of user-perceived latency in an N-step agent |
+| **Tool latency** | External tool execution time, network and backend; often the dominant term end to end |
+| **Capacity card** | The benchmark output translating GPU and model into capacity to serve a workload under an SLO |
+
+## Closing
+
+This manual runs from the basics — the stateless model — to the infrastructure consequences, by way of tool use as a mechanism, the loop as a primitive, context engineering as the central discipline, the four production-grade strategies, MCP as the tool ecosystem, reasoning policy as the parent's decision layer, the serving implications, and agentic observability as the natural bridge from an infrastructure background.
+
+A suggested three-day study path: day one for the model, tool use, the loop and context engineering; day two for the four strategies, MCP and reasoning policy; day three for the serving chapter, observability and the recurring questions.
+
+The minimum path to being operational: the model, the loop, context engineering, a skim of the four strategies, and the recurring questions. Reasoning policy and observability are depth — very useful, not strictly necessary to cover the basics.
+
+---
+
+*Original Dielabs work by Diego Bardella.*
