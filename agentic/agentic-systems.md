@@ -873,3 +873,198 @@ Three angles.
 ### In short
 
 An agent's reasoning policy — which tool to call, when to stop, how to avoid degenerative loops — is, in the systems observable today, almost entirely prompt-driven, with hard guardrails hardcoded for sensitive actions. For an enterprise customer the relevant question is not how it works internally, but how it can be configured for different user profiles and use cases. For a sovereign platform, exposing reasoning policy and guardrails as versioned configuration rather than hidden prompts is a significant enterprise differentiator.
+---
+
+## What this does to serving infrastructure
+
+**Key points.**
+
+- Agentic workloads **break the classic sizing patterns** of LLM inference
+- Four dimensions are missing from the traditional formulas: tool call rate, context growth, compaction frequency, subagent fan-out
+- **Prefix caching becomes layered, and critical**
+- The **open-loop, SLO-anchored** metric is particularly well suited to this workload
+
+### From chat completion to agentic session
+
+**Classic workload, chat completion:**
+
+- 1 user message, 1 request to the serving stack, 1 response
+- Context size: typically under 10K tokens
+- Requests per second: directly measurable
+- Caching: useful, but marginal — every session has a different system prompt
+- Pattern: bursty, but stationary over short windows
+
+**Agentic workload:**
+
+- 1 user task, N requests to the serving stack, where N is 5 to 50 or more
+- Context size: grows monotonically within a session, from 10K to 200K and beyond
+- Requests per second: varies by session, depending on task complexity
+- Caching: **critical** — the prefix cache hit rate determines cost and latency
+- Pattern: long-tailed, with highly variable session duration
+
+The jump is structural, not quantitative. Classic sizing metrics — X requests per second, Y average tokens — lose their meaning.
+
+### Enterprise use cases, from patterns to workload
+
+Before the four sizing dimensions, it helps to anchor the conceptual patterns to real use cases. One possible classification:
+
+**1. Internal AI copilot for developers.** Dominant patterns: agent loop with verification, intensive tool use (read, grep, edit), subagents for codebase exploration, prefix cache critical on the system prompt and development-focused Skills. Workload profile: long sessions of dozens of tool calls, context growing to 100-200K, frequent compaction, bursty distribution as a developer works then pauses. Serving implication: throughput is not the bottleneck, p99 latency is. High TTFT breaks the UX. Layered prefix caching is the main efficiency factor.
+
+**2. Ticket analysis and support augmentation.** Dominant patterns: a shorter loop, targeted tool use — knowledge base lookup over MCP, ticket database queries, possibly RAG — a smaller context, and no complex subagents in most cases. Workload profile: short sessions of 3 to 10 tool calls, context usually under 30K, traffic tied to helpdesk working hours. Serving implication: throughput is more predictable, prefix cache hit rate is very high because the system prompt and KB loader are stable, and the bottleneck is often the MCP layer rather than the model.
+
+**3. HR and ITSM workflows with transactional actions.** Dominant patterns: a SHORT loop but with rigid guardrails, because the actions write to systems of record. MCP towards enterprise systems. An explicit verify step before every state-changing action. Workload profile: few tokens, but high overall latency because of the downstream MCP calls, and a very conservative reasoning policy. Serving implication: the model is a small part of the total cost. Observability across the tool chain is critical. Compliance and audit are often the real requirement, not performance.
+
+**4. Hybrid technical or document RAG with an agent loop.** Dominant patterns: a loop with iterative retrieval. The model decides what to search for, gets results through a RAG or vector database tool, reasons, and may search again. Not the classic one retrieval plus one generation, but a multi-step loop. Workload profile: the context grows quickly because every retrieval injects 5 to 20K tokens, so compaction can trigger early. Serving implication: prefix cache hit rate on retrieval results is almost always a miss, since different queries pull different chunks. The bottleneck is prefill, not decode.
+
+**5. Batch code assistant** — mass refactoring, migration, audit. Dominant patterns: long autonomous loops, run overnight or on demand, with aggressive subagent fan-out, a high iteration budget and a high cost cap. Workload profile: throughput-bound, not latency-bound. Maximum context, multiple compactions per task. Serving implication: prioritise total throughput over p99 latency. Batch scheduling works well, and hardware can be time-shared with interactive workloads during quiet hours.
+
+**Summary:**
+
+| Use case | Session | Bottleneck | Cost driver | Reasoning policy |
+|---|---|---|---|---|
+| Developer copilot | Long | p99 latency | Context growth | Permissive |
+| Ticket analysis | Short | MCP downstream | Tool call frequency | Standard |
+| HR / ITSM workflow | Short | Guardrails, audit | Compliance overhead | Conservative |
+| Hybrid RAG | Medium | Prefill throughput | Retrieval volume | Standard |
+| Batch code assistant | Long | Total throughput | Token consumption | Aggressive |
+
+Every row is a distinct workload: different sizing, different policy configuration, different capacity card. This is the mental map that separates "GPUs for AI" from sizing a specific agent workload.
+### Dimension 1, tool call rate
+
+In an agentic workload, every user task generates N tool calls, and N varies enormously. The table below is an **order-of-magnitude estimate** drawn from public observation of agentic coding systems, not from official benchmarks. Treat it as a reference for reasoning about the workload, to be validated by direct measurement in a real case:
+
+| Task type | Typical tool calls |
+|---|---|
+| Q&A on a specific file | 1-3 |
+| Refactoring a module | 5-15 |
+| Implementing a complex feature | 20-50 |
+| Deep debugging or exploration | 30-100+ |
+
+Every tool call is a **separate request** to the serving stack. With an average of 20 tool calls per task and one task per minute per user, the serving rate is **20 requests per minute per user**, not one.
+
+**Sizing implication**: the concurrent-users figure has to be multiplied by the tool call multiplier before estimating required throughput.
+
+```
+Effective requests/sec = concurrent users x tasks/min/user x tool calls/task / 60
+```
+
+For 100 users doing one task a minute at 20 tool calls each: **33 sustained requests per second**, with peaks at multiples of that.
+
+### Dimension 2, context growth
+
+The context grows monotonically within a session. The curve below is an **illustrative distribution** for a typical coding agent session — absolute numbers depend on model, task and configuration, and have to be measured in the specific case:
+
+```
+Iteration 1:   ~20K tokens  (system prompt + tools + skills manifest)
+Iteration 5:   ~50K tokens  (a few tool results accumulated)
+Iteration 15:  ~120K tokens (more tool results, code read)
+Iteration 30:  ~180K tokens (approaching the context limit)
+               -- compaction trigger --
+Iteration 31:  ~80K tokens  (post-compaction)
+Iteration 50:  ~150K tokens (growing again)
+```
+
+**Prefill implications:**
+
+- At iteration 30, every new request prefills 180K tokens
+- Without prefix caching, that is expensive recomputation
+- With prefix caching, you pay prefill only on the **delta**
+
+This changes the throughput formula:
+
+```
+Without prefix cache: prefill time is proportional to context_size
+With prefix cache:    prefill time is proportional to delta_size
+```
+
+For an iteration adding 5K tokens to a 150K context, that is a **30x speedup** on prefill when the prefix cache hits.
+
+### Dimension 3, compaction frequency
+
+When the context passes the compaction threshold — say 80% of the window — the runtime runs summarization:
+
+1. A **large prefill** over the long context, as input to the summarizer
+2. A **decode** of the summary, roughly 1 to 5K tokens
+3. A **new prefill** over the compacted context at the next iteration
+
+A compaction event is a **tax request**: it pays prefill at maximum context, decodes a summary, and invalidates the prefix cache up to that point.
+
+**Typical observed frequency**: in an hour of intensive agentic work you might see 2 to 5 compaction events. That figure is not an official measurement; it is there to reason about cadence, not as a sizing parameter.
+
+**Implication**: your workload model has to include these tax requests as a separate category. They are not normal — their prefill/decode profile is heavily skewed towards prefill.
+
+### Dimension 4, subagent fan-out
+
+When the parent invokes a subagent, it starts a **sub-session** with its own system prompt, its own tool results accumulated in its own context and invisible to the parent, and several internal iterations of its own loop.
+
+In practice, invoking a subagent can generate several additional requests — call it 5 to 20 — in a short window, in parallel with the main flow.
+
+If the parent's orchestration invokes **several subagents in parallel**, as it can, you get a **fan-out** that multiplies the instantaneous request rate.
+
+**Implication**: the bursting pattern of an agentic workload has far higher parallelism peaks than a chat workload. Systems tuned for chat — steady throughput — can suffer head-of-line blocking in the queue during those bursts.
+### Prefill amplification
+
+The four dimensions above describe effects that have a single name in serving systems: **prefill amplification**. It is worth naming explicitly, because it immediately separates the conversation from anyone who only talks about "long context".
+
+```
+Classic chat:
+  1 prefill  ->  1 decode  ->  user-visible answer
+
+N-step agent:
+  prefill1 -> decode1 -> tool -> prefill2 -> decode2 -> tool -> ... -> prefillN -> decodeN
+  |--------------------------  N prefills, N decodes  --------------------------|
+```
+
+On every iteration the model runs a new forward pass over a context that grows monotonically. The decode stays short — a tool call in JSON, a few hundred tokens — stopping at `stop_reason: tool_use`. Only the last decode produces the final answer for the user.
+
+The input/output ratio per turn runs at typical orders of 10:1, 50:1, up to 100:1 in deep agents, against 2-5:1 for standard chat.
+
+### The bottleneck shifts from memory bandwidth to compute
+
+This is the most important observation in the chapter for anyone coming from serving, and it rarely shows up in generic agent pitches.
+
+- **Prefill is compute-bound**: large GEMMs that saturate the matrix units
+- **Decode is memory-bandwidth-bound**: reading the KV cache for every generated token
+
+Direct consequence: a chat workload, decode-heavy, is limited by HBM bandwidth. An agentic workload, prefill-heavy, moves the bottleneck towards **GPU compute**. Operational implications:
+
+- GPUs with high FLOPS do **proportionally better** on agentic workloads than on chat. Their compute advantage expresses itself more fully.
+- KV offload to slower tiers — CPU memory, NVMe — becomes **more tolerable** in agentic workloads: short decodes mean fewer KV reads, so less sensitivity to offload bandwidth.
+- Sizing that optimises only for bandwidth, the natural instinct when assuming a chat workload, undervalues peak compute when the workload is agentic.
+
+This changes the hardware conversation. "You need compute, not bandwidth" is a strong technical argument, and one rarely heard.
+
+### TTFT times N_steps, the latency that is actually perceived
+
+A direct consequence of prefill amplification: the latency the user of an N-step agent perceives is roughly
+
+```
+perceived latency = N x TTFT_per_step + N x tool_latency + final decode
+```
+
+An 8-step agent with a 2-second TTFT is **16 perceived seconds**, even with instant decode and fast tools. Which means TTFT is the queen metric in agentic workloads, not TPOT.
+
+Implications for SLOs:
+
+- TTFT under 500ms becomes the realistic operational target for interactive agents
+- Under compaction, prefilling 180K or more, the target relaxes to 2-3 seconds
+- If the perceived SLO is "task done in under 30 seconds" and the agent takes 10 steps, each step has at most 3 seconds of budget
+
+That calculation belongs in discovery, not at the end of the project.
+
+### Characterising by N_steps
+
+"Agentic" is not a monolithic category. The most operational way to characterise a workload is along the axis of **average N_steps per task**:
+
+| N_steps | Profile | Analogy | Sizing reference |
+|---|---|---|---|
+| 1 | Chat-tool (single-loop) | RAG | Standard closed-loop chat, light overhead |
+| 2-4 | Light agent | ITSM workflow | Moderate prefill amplification, cache useful |
+| 5-15 | Full agent | Coding agent | Prefill-driven, cache critical, aggregate KV pressure |
+| 15+ | Deep agent | Deep research | Disaggregated serving and KV offload nearly mandatory |
+
+The right posture in discovery:
+
+> "It depends on the average N_steps for your use case. A single-call copilot I size like RAG. A multi-step coding agent is a different exercise. Let us measure N_steps on real traffic before estimating the GPU footprint."
+
+That sentence closes the wrong conversation — how many GPUs do we need for AI — and opens the right one: measure before sizing.
