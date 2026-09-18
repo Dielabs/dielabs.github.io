@@ -389,3 +389,322 @@ Everything else — Skills, subagents — is a strategy built on top of this pri
 ### In short
 
 The loop exists because you cannot preload all the context you will need. You explore it progressively. The loop turns an unsolvable problem, load everything, into a solvable one, load what is needed when it is needed. Skills and subagents are optimisations of that exploration, not independent innovations.
+---
+
+## Context engineering, the real problem
+
+**Key points.**
+
+- In a naive loop, the context grows **monotonically** on every iteration
+- At some point it saturates the window, and everything breaks
+- "Context engineering" is the discipline of **choosing what goes in, what stays, what comes out**
+- It is the central problem of modern agents, and what separates a toy system from a production-grade one
+
+### Anatomy of the context in an agent loop
+
+At iteration N of an agent loop, the context holds:
+
+```
++--------------------------------------+
+|  System prompt                       |  <- stable, large (5-50K tokens)
++--------------------------------------+
+|  Tool descriptions                   |  <- stable, medium (1-10K tokens)
++--------------------------------------+
+|  Original user message               |  <- stable, small (100-1K)
++--------------------------------------+
+|  Assistant turn 1: thought + action  |  <- grows
+|  Tool result 1                       |  <- grows
+|  Assistant turn 2: thought + action  |  <- grows
+|  Tool result 2                       |  <- grows
+|  ...                                 |
+|  Assistant turn N-1: action          |
+|  Tool result N-1                     |
++--------------------------------------+
+|  Assistant turn N: thought (current) |  <- being generated
++--------------------------------------+
+```
+
+**Two crucial observations:**
+
+1. **The top part is stable**: system prompt, tools and user message do not change between iteration 1 and iteration N. This is what makes prefix caching possible.
+
+2. **The bottom part grows**: every iteration adds a thought, an action and a tool result. And tool results can be large — a `read_file` on a 5,000-line file is roughly 50K tokens for that single result.
+
+### The monotonic growth problem
+
+A concrete example. Task: "Refactor this Python module to use async/await instead of threading."
+
+- Iteration 1: `list_directory(".")` sees 50 files
+- Iteration 2: `read_file("module.py")`, 3,000 lines, about 30K tokens
+- Iteration 3: `grep("threading", ".")`, 80 matches, about 5K tokens
+- Iteration 4: `read_file("utils.py")`, 1,500 lines, about 15K tokens
+- Iteration 5: `read_file("worker.py")`, 2,000 lines, about 20K tokens
+
+In 10 iterations you have accumulated roughly 150K tokens of **historical tool results**, which the model may no longer need for the next steps. But they are there, they occupy space, and every new call re-prefills them.
+
+At some point you either:
+
+- **Saturate the context window** — 300K, 1M, whatever the limit is
+- **Degrade model performance** — the lost-in-the-middle problem: models remember the beginning and the end of a context better than its middle
+- **Blow up the cost** — per-token pricing, expensive prefill
+
+### What does not work
+
+**Naive sliding window**: cutting the oldest tokens past a threshold. It breaks because the system prompt and the original request are at the beginning — cut them and the agent no longer knows what it was doing.
+
+**Random truncation**: removing blocks at random. It breaks causal coherence — a tool_use without its tool_result is a format error.
+
+**Relying on a huge context window**: scaling hardware until the context reaches 10M. It does not scale in cost, and the model degrades in the middle anyway.
+
+### What does work
+
+The term **context engineering** emerged in 2024-2025 as a discipline. It is the art of answering three questions on every iteration of the loop:
+
+1. **What has to go in** the context for this iteration? (gather)
+2. **What can come out** without compromising the task? (eviction)
+3. **What gets compressed** versus kept verbatim? (compaction)
+
+Each answer is a context engineering strategy. The four main ones:
+
+| Strategy | Question it answers |
+|---|---|
+| **Skills** | What goes in (lazy loading) |
+| **Subagents** | What does NOT go in (context isolation) |
+| **Summarization** | What gets compressed |
+| **External memory** | What gets moved outside |
+
+### Context engineering is the real core skill
+
+An uncomfortable truth of the industry in 2026: **the model is close to a commodity**. Claude Sonnet 4.6, GPT-5, Gemini 3 are all good enough for most tasks. What separates a production-grade agent from a toy is not which model it uses, but **how well it manages the context**.
+
+That is also why Anthropic has published explicit engineering posts on context engineering, and opened up tooling like MCP. They are moving the value from the model to the **harness** around the model.
+
+### Serving implications, in advance
+
+For anyone sizing infrastructure:
+
+- **Context size distribution**: in an agentic workload, context size is NOT a fixed variable. It is a long-tailed distribution — some tasks close in 3 steps, others in 50. You measure percentiles, not averages.
+- **Prefix caching becomes layered**: the system prompt is 99% cacheable. The Skills loaded depend on the task. The conversation history is almost always a miss.
+- **Compaction events**: when an agent runs automatic summarization, it is a prefill tax on a long context followed by the decode of a summary. A bursty traffic pattern. It has to be modelled.
+
+### In short
+
+The real problem with agents is not model power, it is context engineering. In a naive loop the context grows monotonically until it breaks the window or degrades the model. Skills, subagents, summarization and external memory are the four strategies production-grade systems use to manage that growth. That is where it is won or lost, not in the weights.
+---
+
+## Four strategies for context management
+
+**Key points.**
+
+- Four main strategies in production-grade systems: **Skills**, **subagents**, **summarization**, **external memory**
+- Each answers a different context engineering question
+- They are **complementary, not alternatives**: a mature coding agent uses all four
+- Understanding these four is understanding 90% of modern agents
+
+### Strategy 1, Skills and progressive loading
+
+**Question answered**: what goes into the context, and *when*?
+
+The problem: if you have 50 different capabilities — editing Word files, handling PDFs, running SQL queries, talking to MCP servers X, Y and Z — you cannot describe them all in the system prompt. It would blow up to hundreds of thousands of tokens.
+
+The solution visible in production systems: **two or three level loading**. The layered structure below is a reasoned reconstruction of the pattern visible in the leaked system prompt and in public Anthropic documentation, not a quotation from an official design document.
+
+**Level 1, the skill manifest**, always in the context:
+
+- Skill name
+- A short description, one or two sentences
+- Semantic triggers, describing when to activate it
+- For example: `pdf-skill: Use when working with .pdf files. Triggers: read PDF, extract text from PDF, fill PDF form.`
+
+This costs a few dozen tokens per skill. You can have a hundred without trouble.
+
+**Level 2, the skill body**, loaded on demand:
+
+- Detailed instructions
+- Examples
+- References to code files
+- Schemas for the tools specific to that skill
+
+Loaded **only if the model decides to activate the skill** based on the triggers. It can run to thousands of tokens, but you pay for it only when it is needed.
+
+**Level 3, referenced resources**, loaded on a tool call:
+
+- Utility code files
+- Assets such as templates or datasets
+- In-depth documentation
+
+Loaded only when the skill body explicitly asks to read them.
+
+**Why it works:**
+
+1. **Context economy**: you pay tokens only for relevant capabilities
+2. **Modularity**: adding a skill does not require touching the main system prompt
+3. **Composition**: several skills can activate together when their triggers match
+
+**What Skills are not:**
+
+- They are not fine-tuning. They do not modify the weights.
+- They are not plugins. They do not execute arbitrary code outside the agent runtime.
+- They are not RAG. There is no vector similarity search — the match is based on language semantics in the prompt.
+
+### Strategy 2, subagents and hierarchical isolation
+
+**Question answered**: what does NOT enter the parent's context?
+
+The problem: some tasks require exploring a lot of context to arrive at very little information. "Find all the files that import `requests`" — you might read 100 files to discover that only 5 import it. Do those 100 files stay in the context?
+
+Without subagents: yes. They pollute the context for the rest of the task.
+
+With subagents:
+
+```
+PARENT AGENT
+  context: [system + tools + user_msg + task_so_far]
+  |
+  calls subagent("explore", "find files importing requests")
+  |
+  SUBAGENT (separate context)
+    context: [system_subagent + task]
+    reads 100 files
+    accumulates 200K tokens in its own context
+    produces a final synthesis: "5 files: a.py, b.py, c.py, d.py, e.py"
+  |
+  back to the PARENT:
+    added to the parent context: ONLY the synthesis (~50 tokens)
+```
+
+The 200K tokens the subagent read **never travel back up to the parent**. The parent sees only the distillate.
+
+**The tradeoff, stated explicitly in the leak:**
+
+> "For broader codebase exploration and deep research, use the Task tool with subagent_type=Explore. **This is slower than calling Glob or Grep directly** so use this only when a simple, directed search proves to be insufficient..."
+
+Anthropic admits it: the subagent is **slower**. It goes through a second model, adds latency, and costs more tokens in total. **But it protects the parent's context**, which is the scarcer resource.
+
+This is a fundamental design tradeoff of modern agents: **trade latency for context economy**.
+
+**Types of subagent in the leak:**
+
+- `general-purpose`: generic multi-step search
+- `Explore`: codebase exploration, at three depths — quick, medium, very thorough
+- `Plan`: software architect for planning complex tasks
+- `Bash`: shell command execution
+- `statusline-setup`: a very specific configuration job
+
+They are functionally identical to the parent — LLMs with tools — but with a **reduced tool set** and a **specialised prompt**. The specialisation is in the prompt, not in the model.
+
+### Strategy 3, summarization and lossy compression
+
+**Question answered**: what gets compressed when the context grows too far?
+
+The problem: even with Skills and subagents, a long session can accumulate context beyond any reasonable limit. At some point the model itself degrades.
+
+The solution: **automatic summarization** of the historical context, past a threshold.
+
+From the leak:
+
+> "The conversation has unlimited context through automatic summarization."
+
+The leak confirms the mechanism exists; the implementation details that follow — the threshold, the criteria for choosing which sections to compress — are a **plausible reconstruction** of the pattern, not officially stated by Anthropic.
+
+That sentence is enormous. Anthropic does NOT rely on large context windows: it runs **automatic compaction** as the context grows.
+
+**How it works, as a general pattern:**
+
+```python
+def maybe_compact(context):
+    if token_count(context) > THRESHOLD:
+        # Identify the compactable sections
+        # (typically: old tool_results, successfully completed turns)
+        sections_to_compact = identify_compactable(context)
+
+        # Call the model to summarize
+        summary = model.summarize(sections_to_compact)
+
+        # Replace them in the context
+        context = replace(context, sections_to_compact, summary)
+    return context
+```
+
+**What makes compaction good:**
+
+1. **It preserves causality**: never compress across a tool_use / tool_result pair
+2. **It preserves the user-agent contract**: the original request stays verbatim
+3. **It preserves relevant intermediate results**: if a file was created at turn 3, the agent has to remember it exists
+4. **It compresses aggressively**: exploration tool results — reads, searches — are excellent compression candidates
+
+**The infrastructure cost of compaction.** A compaction event is:
+
+1. An **expensive prefill** over the large context, as input to the summarization
+2. A **decode** of the summary
+3. A **new prefill** at the next iteration, over the compacted context
+
+It is a **periodic tax** that has to be modelled in sizing. It is not a normal request.
+
+### Strategy 4, external memory
+
+**Question answered**: what can live outside the context, reachable on demand?
+
+The problem: even the three strategies above are not enough for very long tasks with structured state — "implement 20 features following this plan".
+
+The solution: **move the state into persistent storage**, reachable through tools.
+
+The TodoWrite pattern in the leak is exactly this:
+
+```
+[the model writes a todo list at the start of the task]
+  TodoWrite([
+    "Fix authentication bug",
+    "Add unit tests",
+    "Update docs"
+  ])
+
+[the state lives in an external file or structure, not in the context]
+
+[as the model works, it updates the state through tools]
+  TodoUpdate(1, status="completed")
+  TodoUpdate(2, status="in_progress")
+
+[when needed, it reads the state back]
+  TodoList() -> [{id:1, status:"completed"}, {id:2, status:"in_progress"}, ...]
+```
+
+**Advantages:**
+
+1. The list is **authoritative**, independent of the model's memory
+2. It survives compaction, because it is in storage, not in the context
+3. It is visible to the user, which is a UX bonus
+4. It forces the model to be explicit about the plan, which fights divergence
+
+**Extensions of the pattern.** The same idea applies to:
+
+- **Memory** (Mem0, Letta, custom): persistent user facts across sessions
+- **Working files**: a scratchpad where the agent writes intermediate results
+- **Vector DB**: an external knowledge base reachable through similarity search
+
+In every case the principle is the same: **the agent's state does not live only in the context, it lives in external storage reachable through tools**.
+
+### How they combine
+
+A modern agent loop uses all four together:
+
+```
+TASK START
+  |
+[skills manifest always in the context]
+[skill body loaded on demand from the triggers]
+  |
+[iterative loop]
+  |- complex task?        -> generate todos in external memory
+  |- heavy exploration?   -> delegate to a subagent (context isolation)
+  |- context > threshold? -> trigger summarization (compaction)
+  |- continue
+  |
+TASK END
+```
+
+All four exist to answer the central problem of the previous chapter: **how to manage a context that would otherwise grow monotonically**.
+
+### In short
+
+Modern agents manage context with four complementary strategies. Skills load capabilities progressively (what goes in). Subagents isolate exploration in separate contexts (what does not go in). Summarization compresses historical context (what gets compacted). External memory moves structured state into storage (what leaves the context). Production coding systems use all four. Understanding that combination is understanding 90% of production-grade agent design.
