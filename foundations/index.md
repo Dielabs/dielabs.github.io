@@ -20,21 +20,13 @@ Comprehensive reference covering the full LLM inference stack: from model lifecy
 
 ### [KV Cache Manual](kv-cache-workbook.md)
 End-to-end manual on KV cache mechanics and management. Covers anatomy and per-token consumption, PagedAttention and pool management in vLLM, behavior under load, prefix caching, tuning parameters, policy levers (TTL, quotas, eviction), the storage tier hierarchy and offload lifecycle, the 2026 software ecosystem (LMCache, NIXL, Dynamo, CMX), the economics of long chats, observability metrics, and the path from single-node to distributed inference.
+
 <div class="private-card">
   <div class="private-title-row">
     <span class="private-title">Testing Is the Product</span>
     <a class="private-pill" href="mailto:info@dielabs.eu?subject=Testing%20Is%20the%20Product%20%E2%80%94%20request" title="Request access via email">Available on request</a>
   </div>
   <p class="private-desc">A manifesto for on-premise inference due diligence, built from a public case study: a viral four-node DGX Spark deployment and the four hundred comments it drew. Extracts eleven principles, an eight-question qualification checklist, and a five-axis acceptance protocol (performance, quality, resilience, operations, governance).</p>
-  <p class="private-note">Not published. Reserved for direct conversations &mdash; reach out if relevant to your context.</p>
-</div>
-
-<div class="private-card">
-  <div class="private-title-row">
-    <span class="private-title">From Idea to Production</span>
-    <a class="private-pill" href="mailto:info@dielabs.eu?subject=From%20Idea%20to%20Production%20%E2%80%94%20request" title="Request access via email">Available on request</a>
-  </div>
-  <p class="private-desc">The full operational manual behind the <em>Inference Sizing in 11 Steps</em> framework. End-to-end presales architect playbook: from business pain statement to validated production deployment, with discovery templates, sizing worksheets, runtime decision matrices, hardware constraint tables, benchmark protocols, and scaling decision trees. Each of the 11 steps is expanded into actionable artifacts usable in real customer engagements.</p>
   <p class="private-note">Not published. Reserved for direct conversations &mdash; reach out if relevant to your context.</p>
 </div>
 
