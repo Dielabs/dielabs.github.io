@@ -249,7 +249,17 @@
     .thesis{color:#3A3D42;}
     .site-nav{display:none;}
   }
-</style>
+    .nav-new::after {
+      content: "New";
+      margin-left: 0.35rem;
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px;
+      background: var(--edge);
+      color: var(--ink);
+      font-size: 0.7em;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }</style>
 </head>
 <body>
 <nav class="site-nav">
@@ -258,7 +268,7 @@
     <a href="/frameworks/">Frameworks</a>
     <a href="/foundations/">Foundations</a>
     <a href="/technologies/">Technologies</a>
-        <a href="/agentic/">Agentic</a>
+        <a class="nav-new" href="/agentic/">Agentic</a>
     <a href="/papers/">Papers</a>
     <a class="current" href="/case-studies/">POCs</a>
     <a class="cv" href="https://www.kickresume.com/cv/4b8kvR/" target="_blank">CV ↗</a>

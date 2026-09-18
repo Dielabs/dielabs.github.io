@@ -128,7 +128,16 @@
     .hero-content { animation: fadeIn 0.7s ease both; }
     @media (max-width: 1024px) { .fwset-grid { grid-template-columns: repeat(2, 1fr); } } @media (max-width: 768px) { nav { padding: 0 1.5rem; } .nav-links { display: none; } .hero, .section { padding-left: 1.5rem; padding-right: 1.5rem; } h1 { white-space: normal; font-size: clamp(32px, 9vw, 56px); } .sub { white-space: normal; } .stats-bar { gap: 2rem; padding: 1.5rem; } .focus-grid { grid-template-columns: 1fr 1fr; } .fwset-grid { grid-template-columns: 1fr 1fr; } footer { flex-direction: column; } }
     @media (max-width: 480px) { .focus-grid { grid-template-columns: 1fr; } }
-  </style>
+      .nav-new::after {
+      content: "New";
+      margin-left: 0.35rem;
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 0.7em;
+      letter-spacing: 0.08em;
+    }</style>
 </head>
 <body>
 <nav>
