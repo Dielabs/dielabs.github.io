@@ -137,6 +137,17 @@
       color: #fff;
       font-size: 0.7em;
       letter-spacing: 0.08em;
+    }    .new-flag {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 0.4rem;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }</style>
 </head>
 <body>
@@ -156,18 +167,11 @@
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div><div class="orb orb-4"></div>
   <div class="hero-content">
     <h1>AI Infrastructure <em>Engineering</em></h1>
-    <p class="tagline">Delivering the right AI architecture for your workload.<br>Powered by caffeine and reboots.</p>
-    <div class="status"><span class="dot" style="background:#5A9A3E;"></span> GPU Node 32 GB RAM &middot; RTX 4070 Super 16 GB VRAM &middot; Dell PowerEdge R730 Dual Socket 128 GB RAM &middot; Regolo.ai (EU Inference Cluster)</div>
+    <p class="tagline">Delivering the right AI architecture for your workload.</p>
+    <div class="status"><span class="dot" style="background:#5A9A3E;"></span> Hybrid LLM inference setup &middot; local GPU node &middot; on-prem server &middot; EU inference cluster</div>
     <div class="status" style="margin-top:8px;"><span class="dot" style="background:var(--blue);"></span> NVIDIA CUDA stack &middot; Docker &middot; OpenWebUI &middot; vLLM &middot; LMCache &middot; GuideLLM &middot; Prometheus &middot; Grafana</div>
   </div>
 </section>
-<div class="stats-bar">
-  
-  <div class="stat"><div class="stat-number">4</div><div class="stat-label">Research Papers</div></div>
-  <div class="stat"><div class="stat-number">6</div><div class="stat-label">Frameworks</div></div>
-  <div class="stat"><div class="stat-number">3</div><div class="stat-label">Technology References</div></div>
-  <div class="stat"><div class="stat-number">15+</div><div class="stat-label">GuideLLM Benchmark Runs</div></div>
-</div>
 <div class="section" style="background: var(--white);"><div class="section-inner">
   <p class="section-label">About</p><h2 class="section-title">The Lab</h2>
   <div class="about-text">
@@ -176,7 +180,7 @@
     <p><strong>From there, I help organizations decide what to deploy, where, and at what scale &mdash; minimizing cost and risk without giving up performance.</strong></p>
   </div>
   <a class="release-banner" href="/case-studies/platone.html">
-    <span class="release-tag">Just released &mdash; a framework put into production</span>
+    <span class="release-tag">A framework put into production</span>
     <h3 class="release-title">Platone</h3>
     <p class="release-desc">Voice RAG with a hybrid edge/cloud architecture, measured against latency, cost and privacy. Ask your knowledge bases and get grounded answers, advice or a web lookup &mdash; and watch the pipeline work: the retrieval score, the policy that fired, and the source every answer rests on, live in the WebGUI.</p>
     <span class="release-link">Read the case study &rarr;</span>
@@ -252,7 +256,7 @@
     <a class="link-row" href="frameworks/"><div class="link-left"><span class="link-index">02</span><div><div class="link-title">Frameworks</div><div class="link-desc">Conceptual models — inference stack anatomy, technology model, parameter topology, sizing methodology, observability, workload characterization</div></div></div><span class="arrow">→</span></a>
     <a class="link-row" href="foundations/"><div class="link-left"><span class="link-index">03</span><div><div class="link-title">Foundations</div><div class="link-desc">What does not age — inference mechanics, KV cache, the math and the trade-offs</div></div></div><span class="arrow">→</span></a>
     <a class="link-row" href="technologies/"><div class="link-left"><span class="link-index">04</span><div><div class="link-title">Technologies</div><div class="link-desc">The moving layer — GPU fabric, communication libraries, network critical path, parallelism strategies</div></div></div><span class="arrow">→</span></a>
-            <a class="link-row" href="agentic/"><div class="link-left"><span class="link-index">05</span><div><div class="link-title">Agentic</div><div class="link-desc">Newest work — agentic systems, what an agent workload does to serving, and retrieval</div></div></div><span class="arrow">→</span></a>
+            <a class="link-row" href="agentic/"><div class="link-left"><span class="link-index">05</span><div><div class="link-title">Agentic <span class="new-flag" style="font-size:0.55rem;vertical-align:middle;">New</span></div><div class="link-desc">Newest work — agentic systems, what an agent workload does to serving, and retrieval</div></div></div><span class="arrow">→</span></a>
     <a class="link-row" href="papers/"><div class="link-left"><span class="link-index">06</span><div><div class="link-title">Papers</div><div class="link-desc">Original research — decoding analysis, offloading, CPU-GPU isomorphism, shifting bottleneck</div></div></div><span class="arrow">→</span></a>
   </div>
 </div></div>
@@ -279,7 +283,7 @@
 </div></div>
 <footer>
   <span class="footer-logo">Dielabs</span>
-  <p>Diego Bardella · AI Infrastructure Homelab · Casale Monferrato, IT</p>
+  <p>Diego Bardella · AI inference lab · Casale Monferrato, IT</p>
   <div class="footer-links">
     <a href="https://linkedin.com/in/diegobardella" target="_blank">LinkedIn</a>
     <a href="https://www.credly.com/users/diego-bardella/badges#credly" target="_blank">Credly</a>
