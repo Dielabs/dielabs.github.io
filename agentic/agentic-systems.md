@@ -708,3 +708,168 @@ All four exist to answer the central problem of the previous chapter: **how to m
 ### In short
 
 Modern agents manage context with four complementary strategies. Skills load capabilities progressively (what goes in). Subagents isolate exploration in separate contexts (what does not go in). Summarization compresses historical context (what gets compacted). External memory moves structured state into storage (what leaves the context). Production coding systems use all four. Understanding that combination is understanding 90% of production-grade agent design.
+---
+
+## MCP and the tool ecosystem
+
+**Key points.**
+
+- **MCP (Model Context Protocol)** is an open protocol for connecting agents to external tools
+- Published by Anthropic in November 2024, adopted across the ecosystem through 2025-2026
+- It is not "tool use" — it is the **standardised wire protocol** between an agent and a tool server
+- It is agent-to-tool, not agent-to-agent, and that distinction carries weight
+
+### The problem MCP solves
+
+Without MCP, every agent talks to tools in its own proprietary way:
+
+```
+Claude Code -> custom tool API
+ChatGPT     -> OpenAI plugins API (deprecated)
+Cursor      -> custom MCP-like protocol
+Windsurf    -> ...
+```
+
+For a tool provider — GitHub, Notion, Slack — that means **N separate integrations, one per agent**. Unsustainable.
+
+MCP is an open protocol standardising:
+
+- **Tool discovery**: how the agent finds out which tools exist
+- **Tool invocation**: how the agent calls one
+- **Resource access**: how the agent reads structured data — files, databases, query results
+- **Prompts**: how the server can hand prompt templates to the agent
+
+In practice: an **MCP server** exposes tools and resources, and any **MCP client** — any agent — can consume them.
+
+### Minimal MCP architecture
+
+```
++------------------+     JSON-RPC over     +--------------------+
+|  Agent (client)  | <---- stdio / SSE --> |   MCP server       |
+|  (Claude Code)   |                       |  (Notion, GitHub,  |
++------------------+                       |   custom, ...)     |
+                                           +--------------------+
+```
+
+**Supported transports:**
+
+- **stdio**, for local servers spawned as a process by the agent
+- **SSE / HTTP**, for remote servers
+
+**Key protocol operations:**
+
+- `tools/list`: discover the available tools
+- `tools/call`: invoke a tool with parameters
+- `resources/list`: discover readable resources
+- `resources/read`: read one
+- `prompts/list` and `prompts/get`: prompt templates
+
+### Why MCP matters for agentic demand
+
+Three points.
+
+**1. It decouples the agent from the tool ecosystem.** A company can build an MCP server once, and every agent can use it. That reduces vendor lock-in and accelerates the ecosystem.
+
+**2. It turns tool integration into an infrastructure problem.** An MCP server is a service like any other: deployment, monitoring, scaling, SLA. Familiar ground for anyone from a solution architecture or DevOps background.
+
+**3. It is not agent-to-agent.** MCP is **agent to tool**. The MCP server is NOT an agent. It is a provider of structured capability. It has no autonomy, no loop, no decisions of its own.
+
+### Infrastructure implications
+
+For anyone sizing infrastructure:
+
+- **MCP servers are workload components**: an agent using N MCP servers makes N kinds of call, often in parallel. It becomes a distributed system with multiple dependencies.
+- **A shared latency budget**: total perceived latency is LLM latency plus MCP call latency plus tool execution. Every MCP server is a latency point and a failure point.
+- **Authentication and secrets**: MCP servers often reach sensitive systems — databases, enterprise APIs. Credential management, audit and RBAC become part of the agentic infrastructure.
+- **Cold start**: local MCP servers are spawned at boot. Remote ones scale like any web API.
+
+For a sovereign AI platform, offering a curated **MCP server registry** — certified servers, monitored, with governance built in — is probably an architectural asset, not just a technical integration.
+
+### In short
+
+MCP is the standardised wire protocol between agents and tools. It is not tool use, it is the open and interoperable version of tool use. It turns the N×M problem — N agents times M tool providers — into N+M. And it is agent-to-tool, not agent-to-agent: the foundation for a capability ecosystem, not a protocol for composing agents.
+---
+
+## Reasoning policy, or how the parent decides
+
+**Key points.**
+
+- The brain deciding what to do inside an agent loop is, in the systems we can observe today, **almost entirely prompt-driven**, with hardcoded guardrails for sensitive actions
+- Loop termination is a mix of criteria — completion signal, iteration budget, verify failure, cost budget — typically all present at once
+- Degenerative looping is a real pathology, and the production mitigations are pragmatic, not sophisticated
+- For an enterprise customer, **reasoning policy is a configurable surface**, not a fixed property of the system
+
+### Who decides which tool or subagent to invoke
+
+On every iteration, the agent chooses between:
+
+- Primitive tools (read_file, grep, write, bash)
+- A subagent
+- Loading a Skill
+- Asking the user
+- Closing the loop with a final answer
+
+In the production systems we can observe, **the decision is driven by the prompt**, not by an external policy engine. The prompt carries natural-language directives such as "prefer the Task tool for searches across many files, to reduce context usage" — the model reads them and applies them. For someone coming from serving, the operational observation is simple: the reasoning policy is not a separate runtime component, it is material travelling inside the context on every request, with all the caching and prefill implications that follow.
+
+In mature systems it is **hybrid**: the prompt as primary logic, plus hard hardcoded guardrails for actions that need strong guarantees — a filesystem permission system, a sandbox for code execution, a blocklist of destructive operations. Hard guardrails are never delegated to the model.
+
+### Termination, or when the loop closes
+
+A loop with no closing criterion diverges. Four criteria are typically present together:
+
+1. **A task-complete signal from the model**: it emits a final answer — text, not a tool call — and the runtime reads that as the end. The primary criterion, but fallible in both directions: closing early, or carrying on past the point of usefulness.
+
+2. **An iteration budget**: a hard cap on the number of iterations, say 50. Crude but effective as a safety net.
+
+3. **Repeated verify failure**: if verification fails N times in a row, escalate or abort.
+
+4. **A cost or token budget**: a hard cap on total tokens per task. Common in enterprises with cost control.
+
+The important part: these four are **configurable parameters**, not constants. A customer can tune them per use case.
+
+### Degenerative looping
+
+The pathology: the model retries the same action, or minimal variations of it, without making progress. Typical causes are a context that already holds the failed attempts without the model recognising the pattern, a prompt that never explicitly encourages a change of strategy, and the absence of external detection.
+
+Production-grade mitigations, all pragmatic, no magic:
+
+- **An explicit prompt**: "if you have tried the same approach three times without success, stop and change strategy or ask the user"
+- **Aggressive verification after N failures**, forcing escalation
+- **Cost-aware termination**: if the task has consumed X tokens with no measurable progress, abort
+
+Nothing exotic. The difference between a system that works and one that does not is applying these **together and with discipline**, not inventing new ones.
+
+### A concrete enterprise example
+
+To anchor all this, take a realistic scenario: a customer wants an internal AI copilot for its developers.
+
+**Reasoning policy that changes per user profile:**
+
+| Profile | Max iterations | Cost cap | Escalation | Hard guardrail |
+|---|---|---|---|---|
+| Senior R&D developer | 100 | $5/task | On request only | Sandboxed bash, no production credentials |
+| Junior developer | 30 | $1/task | After 3 verify failures | Sandbox, read-only on critical repositories |
+| CI/CD operator | 20 | $0.50/task | Always before merge | Tool whitelist, no writes to main |
+
+That table is **not a technical detail**, it is a product argument: the difference between a generic LLM API and a platform that lets you express enterprise policy per user profile.
+
+**What the platform needs in order to implement that grid:**
+
+- Reasoning policy as versioned configuration, not as a hidden prompt
+- Telemetry showing where each profile consumes its budget
+- An audit log of escalation triggers
+- The ability to tune the policy without redeploying the model
+
+### Architectural implications
+
+Three angles.
+
+**1. Reasoning policy is a configurable surface.** Not an internal opacity, but a product parameter the customer tunes per use case and per user profile.
+
+**2. Telemetry on reasoning is crucial for operational debugging.** When an agent misbehaves you need to know: did it loop? did it terminate early? was it stopped by a guardrail? Without dedicated observability the debugging is blind.
+
+**3. Hard guardrails are compliance territory.** A regulated customer — a bank, a hospital, a public administration — cannot accept an agent loop governed entirely by prompts. Hard guardrails exposed as explicit configuration are an enterprise requirement, not a nice-to-have. A sovereign platform has to treat them as a first-class feature.
+
+### In short
+
+An agent's reasoning policy — which tool to call, when to stop, how to avoid degenerative loops — is, in the systems observable today, almost entirely prompt-driven, with hard guardrails hardcoded for sensitive actions. For an enterprise customer the relevant question is not how it works internally, but how it can be configured for different user profiles and use cases. For a sovereign platform, exposing reasoning policy and guardrails as versioned configuration rather than hidden prompts is a significant enterprise differentiator.
