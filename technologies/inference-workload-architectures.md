@@ -1,4 +1,6 @@
 ---
+redirect_from:
+  - /architectures/inference-workload-architectures.html
 layout: default
 title: "Inference Workload Architectures"
 ---

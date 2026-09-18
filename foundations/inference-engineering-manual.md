@@ -1,4 +1,6 @@
 ---
+redirect_from:
+  - /manuals/inference-engineering-manual.html
 layout: default
 title: The Inference Engineering Manual
 ---

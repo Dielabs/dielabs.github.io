@@ -1,4 +1,6 @@
 ---
+redirect_from:
+  - /manuals/from-idea-to-production.html
 layout: default
 title: From Idea to Production
 sitemap: false

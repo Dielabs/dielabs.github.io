@@ -1,4 +1,6 @@
 ---
+redirect_from:
+  - /architectures/cpu-gpu-memory-topology.html
 layout: default
 title: "CPU-GPU Memory Topology for AI Inference"
 ---

@@ -1,11 +1,14 @@
 ---
-title: Architectures
+redirect_from:
+  - /architectures/
+  - /architectures/index.html
+title: Technologies
 layout: default
 ---
 
-# Architectures
+# Technologies
 
-Architectural references for AI inference infrastructure: GPU fabric, communication libraries, network behavior under load, parallelism strategies, deployment patterns, and memory topology. The connective tissue between datacenter infrastructure and LLM serving.
+The moving layer: products, versions, topologies and measured numbers. GPU fabric, communication libraries, network behavior under load, parallelism strategies, memory topology. These pages get rewritten when the landscape moves; the mechanics they rest on are in [Foundations](/foundations/).
 
 ---
 

@@ -1,4 +1,6 @@
 ---
+redirect_from:
+  - /manuals/kv-cache-workbook.html
 layout: default
 title: "KV Cache Manual"
 ---

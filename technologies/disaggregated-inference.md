@@ -1,4 +1,6 @@
 ---
+redirect_from:
+  - /architectures/disaggregated-inference.html
 layout: default
 title: "Disaggregated Inference"
 ---
