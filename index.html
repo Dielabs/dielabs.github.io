@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dielabs — AI Infrastructure Engineering</title>
-  <meta name="description" content="Dielabs is a hands-on AI inference engineering lab: LLM serving architectures designed, benchmarked and observed on real hardware. Frameworks for sizing, capacity planning and deployment." />
+  <meta name="description" content="Dielabs is a hands-on AI inference lab: LLM serving architectures designed, benchmarked and observed under production-like conditions, turned into frameworks for sizing, capacity planning and deployment. The work behind bringing AI in-house." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://dielabs.github.io/" />
   <meta property="og:site_name" content="Dielabs" />
   <meta property="og:title" content="Dielabs — AI Infrastructure Engineering" />
-  <meta property="og:description" content="AI inference engineering lab: LLM serving architectures designed, benchmarked and observed on real hardware. Lab evidence, not vendor slides." />
+  <meta property="og:description" content="How infrastructure decisions shape LLM serving: designed, benchmarked and observed in a hands-on inference lab. The work behind bringing AI in-house." />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Dielabs — AI Infrastructure Engineering" />
   <meta name="twitter:description" content="AI inference engineering lab: LLM serving architectures designed, benchmarked and observed on real hardware." />
@@ -167,17 +167,17 @@
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div><div class="orb orb-4"></div>
   <div class="hero-content">
     <h1>AI Infrastructure <em>Engineering</em></h1>
-    <p class="tagline">Sizing, serving, benchmarking and agentic workloads for enterprise inference.</p>
+    <p class="tagline">How infrastructure decisions shape LLM serving &mdash; designed, benchmarked, observed.</p>
     <div class="status"><span class="dot" style="background:#5A9A3E;"></span> Hybrid LLM inference setup &middot; local GPU node &middot; on-prem server &middot; EU inference cluster</div>
-    <div class="status" style="margin-top:8px;"><span class="dot" style="background:var(--blue);"></span> NVIDIA CUDA stack &middot; Docker &middot; OpenWebUI &middot; vLLM &middot; LMCache &middot; GuideLLM &middot; Prometheus &middot; Grafana</div>
+    <div class="status" style="margin-top:8px;"><span class="dot" style="background:var(--blue);"></span> NVIDIA CUDA stack &middot; Docker &middot; OpenWebUI &middot; vLLM &middot; LMCache &middot; GuideLLM &middot; LMEval &middot; Prometheus &middot; Grafana</div>
   </div>
 </section>
 <div class="section" style="background: var(--white);"><div class="section-inner">
   <p class="section-label">About</p><h2 class="section-title">The Lab</h2>
   <div class="about-text">
     <p>Dielabs investigates how architecture shapes workload behavior in AI systems. The focus is on the layers that make inference a service &mdash; runtime, serving stack, hardware and fabric &mdash; and on what they produce: latency, throughput, capacity under load.</p>
-    <p>I design, benchmark and validate inference architectures to map trade-offs and real limits, then turn the findings into opinionated frameworks for day 0&ndash;1 decisions: sizing, capacity planning, deployment.</p>
-    <p><strong>From there, I help organizations decide what to deploy, where, and at what scale &mdash; minimizing cost and risk without giving up performance.</strong></p>
+    <p>I design, benchmark and observe LLM serving architectures under production-like conditions, to understand how AI workloads behave and how infrastructure decisions shape the serving experience. The findings become the opinionated frameworks I use for day 0&ndash;1 decisions: sizing, capacity planning and workload deployment.</p>
+    <p><strong>This is the work behind how I help companies bring AI in-house: from use-case assessment to architecture design, GPU sizing, deployment and optimization of open-source LLMs &mdash; on-premises, hybrid or on neoclouds.</strong></p>
   </div>
   <a class="release-banner" href="/case-studies/platone.html">
     <span class="release-tag">A framework put into production</span>
@@ -186,16 +186,7 @@
     <span class="release-link">Read the case study &rarr;</span>
   </a>
 </div></div>
-<div class="section" id="focus" style="background: var(--off);"><div class="section-inner">
-  <p class="section-label">What I work on</p><h2 class="section-title">Focus Areas</h2>
-  <div class="focus-grid">
-    <div class="focus-card"><div class="fwset-step">01</div><div class="focus-accent a-blue"></div><h3>Discovery &amp; Sizing</h3><p>From a business need to a sized, validated deployment &mdash; customer inputs kept separate from the architectural response</p></div>
-    <div class="focus-card"><div class="fwset-step">02</div><div class="focus-accent a-violet"></div><h3>LLM Serving Operations</h3><p>Deploying and optimizing open-source models on GPU/CPU platforms &mdash; vLLM deep tuning, parallelism strategies, quantization, KV cache management, disaggregated serving</p></div>
-    <div class="focus-card"><div class="fwset-step">03</div><div class="focus-accent a-pink"></div><h3>Agentic &amp; Retrieval Workloads</h3><p>What agent loops and RAG chains do to the serving stack &mdash; prefill amplification, TTFT times N_steps, layered prefix caching</p></div>
-    <div class="focus-card"><div class="fwset-step">04</div><div class="focus-accent a-cyan"></div><h3>Measurement &amp; Observability</h3><p>Controlled, repeatable testing plus the monitoring stacks that expose the metrics defining inference SLOs: TTFT, ITL, throughput, KV cache utilization, GPU saturation</p></div>
-  </div>
-</div></div>
-<div class="section" id="frameworkset" style="background: var(--white);"><div class="section-inner">
+<div class="section" id="frameworkset" style="background: var(--off);"><div class="section-inner">
   <p class="section-label">Methodology</p><h2 class="section-title">A Framework Set for the Inference Lifecycle</h2>
   <p class="fwset-pitch">From a business need to a system in production: a framework set that turns LLM inference deployment into a sequence of named, defensible decisions &mdash; each anchored in lab evidence, not vendor slides.</p>
   <div class="fwset-grid">
