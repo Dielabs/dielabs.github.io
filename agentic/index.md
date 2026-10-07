@@ -21,16 +21,16 @@ This is the newest part of the lab. It reads the same problems as the inference 
 
 ## Documents
 
-### [Agentic Systems for Inference Infrastructure People](agentic-systems.md) <span class="read-time read-time--long">63 min · long read</span>
+### [Agentic Systems for Inference Infrastructure People](agentic-systems.md)
 From the stateless model to the agentic harness, written for people who know inference but not agents. The model as a pure function, tool use as structured generation plus external execution, the gather-act-verify loop, context engineering as the central discipline, the four context management strategies, MCP, reasoning policy — then what an agentic workload does to serving: prefill amplification, the bottleneck shifting from memory bandwidth to compute, TTFT times N_steps, layered prefix caching, and six families of agentic observability.
 
-### [Context Engineering vs KV Cache Engineering](context-vs-kv-cache-engineering.md) <span class="read-time">10 min</span>
+### [Context Engineering vs KV Cache Engineering](context-vs-kv-cache-engineering.md)
 Why designing an agent is a capacity planning decision. Compaction, sub-agents and loop structure decide the prefix reuse pattern; the resulting cache hit rate is an input of Cr_open. Three concrete couplings between the harness and the rack, and why sizing an agentic deployment starts with reading the harness.
 
-### [Effectiveness vs Efficiency in an Agentic Architecture](effectiveness-vs-efficiency.md) <span class="read-time">8 min</span>
+### [Effectiveness vs Efficiency in an Agentic Architecture](effectiveness-vs-efficiency.md)
 Quality of outcomes and cost of outcomes as two separate axes, with context engineering as the hinge that moves both. Why agentic workloads break chat-style sizing, why you cannot infer the workload from the interface, and what that means for fixed-capacity on-premises deployments.
 
-### [RAG for Dummies](rag-for-dummies.md) <span class="read-time">9 min</span>
+### [RAG for Dummies](rag-for-dummies.md)
 How a system that answers from company documents actually works, with the library analogy: the four models of the chain (rewriter, embedding, reranker, generator), the ingestion and query flows, the judge and its metrics, chunking, and a tour of the advanced variants — hybrid search, GraphRAG, agentic, adaptive, multimodal, federated. No maturity framework and no sizing: this is the one to read before deciding how deep a retrieval system needs to go.
 
 <div class="private-card">
