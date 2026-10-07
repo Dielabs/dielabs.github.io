@@ -1,3 +1,5 @@
+---
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,6 +75,7 @@
     .section-desc { font-size: 0.95rem; color: var(--muted); max-width: 540px; line-height: 1.75; margin-bottom: 2.5rem; }
     .about-text p { font-size: 0.95rem; color: var(--muted); line-height: 1.9; max-width: 640px; }
     .about-text p + p { margin-top: 12px; }
+    .about-note { font-size: 0.9rem; font-style: italic; color: var(--text); margin-top: 18px !important; }
     .release-banner { display: block; text-decoration: none; color: inherit; border: 1.5px solid #E0A82E; background: #FFFDF5; box-shadow: inset 0 0 0 1px rgba(224,168,46,0.18), 0 4px 18px rgba(224,168,46,0.12); border-radius: 16px; padding: 2rem 2.2rem; margin: 2.2rem 0 0; transition: background 0.25s, transform 0.2s; }
     .release-banner:hover { background: #FBF3DC; transform: translateY(-2px); }
     .release-tag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #B07D14; margin-bottom: 0.8rem; }
@@ -89,7 +92,7 @@
     .focus-card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.04em; color: var(--text); margin-bottom: 0.5rem; }
     .focus-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
     .links { display: flex; flex-direction: column; gap: 1.5px; background: var(--border); border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; }
-    .link-row { display: flex; align-items: center; justify-content: space-between; background: var(--white); padding: 1.2rem 1.8rem; text-decoration: none; color: var(--text); transition: background 0.2s; gap: 16px; }
+    .link-row { display: flex; align-items: center; justify-content: space-between; background: var(--white); padding: 0.95rem 1.8rem; text-decoration: none; color: var(--text); transition: background 0.2s; gap: 16px; }
     .link-row:hover { background: var(--off); }
     .link-row:hover .link-title { color: var(--blue); }
     .link-row:hover .arrow { color: var(--blue); transform: translateX(4px); }
@@ -116,6 +119,8 @@
     .fwset-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.55; flex-grow: 1; }
     .fwset-link { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; margin-top: 0.9rem; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s, gap 0.2s; }
     .fwset-card:hover .fwset-link { color: var(--blue); gap: 8px; }
+    .read-time { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.04em; text-transform: none; color: var(--muted); opacity: 0.8; margin-left: auto; }
+    .footer-updated { font-size: 0.72rem; color: var(--muted); opacity: 0.8; }
     .fwset-card--gold { border: 1.5px solid #E0A82E; background: #FFFDF5; box-shadow: inset 0 0 0 1px rgba(224,168,46,0.18), 0 4px 18px rgba(224,168,46,0.12); }
     .fwset-card--gold:hover { background: #FBF3DC; }
     .fwset-card--gold .fwset-accent { background: linear-gradient(90deg, #E0A82E, #F4C95B); }
@@ -178,6 +183,7 @@
     <p>Dielabs investigates how architecture shapes workload behavior in AI systems. The focus is on the layers that make inference a service &mdash; runtime, serving stack, hardware and fabric &mdash; and on what they produce: latency, throughput, capacity under load.</p>
     <p>I design, benchmark and observe LLM serving architectures under production-like conditions, to understand how AI workloads behave and how infrastructure decisions shape the serving experience. The findings become the opinionated frameworks I use for day 0&ndash;1 decisions: sizing, capacity planning and workload deployment.</p>
     <p><strong>This is the work behind how I help companies bring AI in-house: from use-case assessment to architecture design, GPU sizing, deployment and optimization of open-source LLMs &mdash; on-premises, hybrid or on neoclouds.</strong></p>
+    <p class="about-note">I design, test and deploy systems. AI accelerates the build.</p>
   </div>
   <a class="release-banner" href="/case-studies/platone.html">
     <span class="release-tag">A framework put into production</span>
@@ -196,7 +202,7 @@
       <div class="fwset-stage">Discovery</div>
       <div class="fwset-title">AI Use-Case Discovery</div>
       <div class="fwset-desc">Is it worth it, what system it needs, how it will be judged. Five coordinates from chat to agent, eight discovery areas, acceptance agreed before the PoV.</div>
-      <span class="fwset-link">Read &rarr;</span>
+      <span class="fwset-link">Read &rarr;<span class="read-time">7 min</span></span>
     </a>
     <a class="fwset-card fwset-card--gold" href="/frameworks/from-idea-to-production" style="text-decoration:none;color:inherit;">
       <div class="fwset-step">02</div>
@@ -204,7 +210,7 @@
       <div class="fwset-stage">Sizing</div>
       <div class="fwset-title">From Idea to Production</div>
       <div class="fwset-desc">Inference sizing in 11 steps. From business need to validated deployment. Separates customer inputs from architectural response.</div>
-      <span class="fwset-link">Read &rarr;</span>
+      <span class="fwset-link">Read &rarr;<span class="read-time">4 min</span></span>
     </a>
     <a class="fwset-card" href="/frameworks/one-capacity-is-not-enough" style="text-decoration:none;color:inherit;">
       <div class="fwset-step">03</div>
@@ -212,7 +218,7 @@
       <div class="fwset-stage">Benchmark</div>
       <div class="fwset-title">One Capacity Is Not Enough</div>
       <div class="fwset-desc">Why a single capacity number does not exist. CrossP, Cr_closed and Cr_open: the regime boundary, the hardware ceiling and what you can promise under SLO.</div>
-      <span class="fwset-link">Read &rarr;</span>
+      <span class="fwset-link">Read &rarr;<span class="read-time">8 min</span></span>
     </a>
     <a class="fwset-card" href="/frameworks/observability-kpi" style="text-decoration:none;color:inherit;">
       <div class="fwset-step">04</div>
@@ -220,14 +226,21 @@
       <div class="fwset-stage">Operations</div>
       <div class="fwset-title">Observability KPI</div>
       <div class="fwset-desc">Monitoring, diagnostics and incident response on vLLM + Prometheus + Grafana + DCGM. Golden metrics, percentile statistics, runbook.</div>
-      <span class="fwset-link">Read &rarr;</span>
+      <span class="fwset-link">Read &rarr;<span class="read-time">14 min</span></span>
     </a>
   </div>
 </div></div>
 <div class="section" id="repository" style="background: var(--white);"><div class="section-inner">
-  <p class="section-label">Repository</p><h2 class="section-title">Content & Docs</h2>
+  <p class="section-label">Browse</p><h2 class="section-title">Papers &amp; Docs</h2>
   <div class="links">
-    <a class="link-row" href="case-studies/"><div class="link-left"><div><div class="link-title">POCs</div><div class="link-desc">Applied systems, shipped — Platone, a hybrid edge/cloud voice AI, with the architecture decisions and incidents behind it</div></div></div><span class="arrow">→</span></a>
+    <a class="link-row" href="papers/"><div class="link-left"><span class="link-index">01</span><div><div class="link-title">Papers</div><div class="link-desc">Original research from the lab &mdash; decoding analysis, offloading, CPU-GPU isomorphism, shifting bottleneck. The evidence the frameworks rest on</div></div></div><span class="arrow">&rarr;</span></a>
+    <a class="link-row" href="case-studies/"><div class="link-left"><span class="link-index">02</span><div><div class="link-title">POCs</div><div class="link-desc">Applied systems, shipped &mdash; Platone, a hybrid edge/cloud voice AI, with the architecture decisions and incidents behind it</div></div></div><span class="arrow">&rarr;</span></a>
+    <a class="link-row" href="frameworks/"><div class="link-left"><span class="link-index">03</span><div><div class="link-title">Frameworks</div><div class="link-desc">The delivery cycle &mdash; discovery, sizing, benchmark, operations &mdash; plus reference models for the stack and for parameters</div></div></div><span class="arrow">&rarr;</span></a>
+    <a class="link-row" href="foundations/"><div class="link-left"><span class="link-index">04</span><div><div class="link-title">Foundations</div><div class="link-desc">What does not age &mdash; inference mechanics, KV cache, the math and the trade-offs</div></div></div><span class="arrow">&rarr;</span></a>
+    <a class="link-row" href="technologies/"><div class="link-left"><span class="link-index">05</span><div><div class="link-title">Technologies</div><div class="link-desc">The moving layer &mdash; GPU fabric, communication libraries, network critical path, parallelism strategies</div></div></div><span class="arrow">&rarr;</span></a>
+    <a class="link-row" href="agentic/"><div class="link-left"><span class="link-index">06</span><div><div class="link-title">Agentic <span class="new-flag" style="font-size:0.55rem;vertical-align:middle;">New</span></div><div class="link-desc">Newest work &mdash; agentic systems, what an agent workload does to serving, and retrieval</div></div></div><span class="arrow">&rarr;</span></a>
+  </div>
+</div></div></div><span class="arrow">→</span></a>
     <a class="link-row" href="frameworks/"><div class="link-left"><span class="link-index">02</span><div><div class="link-title">Frameworks</div><div class="link-desc">The delivery cycle &mdash; discovery, sizing, benchmark, operations &mdash; plus reference models for the stack and for parameters</div></div></div><span class="arrow">→</span></a>
     <a class="link-row" href="foundations/"><div class="link-left"><span class="link-index">03</span><div><div class="link-title">Foundations</div><div class="link-desc">What does not age — inference mechanics, KV cache, the math and the trade-offs</div></div></div><span class="arrow">→</span></a>
     <a class="link-row" href="technologies/"><div class="link-left"><span class="link-index">04</span><div><div class="link-title">Technologies</div><div class="link-desc">The moving layer — GPU fabric, communication libraries, network critical path, parallelism strategies</div></div></div><span class="arrow">→</span></a>
@@ -235,9 +248,6 @@
     <a class="link-row" href="papers/"><div class="link-left"><span class="link-index">06</span><div><div class="link-title">Papers</div><div class="link-desc">Original research — decoding analysis, offloading, CPU-GPU isomorphism, shifting bottleneck</div></div></div><span class="arrow">→</span></a>
   </div>
 </div></div>
-<div style="text-align:center;padding:3rem 3rem 2rem;">
-  <p style="font-size:1.1rem;font-weight:500;color:var(--text);line-height:1.7;max-width:620px;margin:0 auto;">I design, test and deploy systems. AI accelerates the build.</p>
-</div>
 <div class="section" style="background: var(--off);"><div class="section-inner" style="text-align:center;">
   <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:1.2rem;">
   <a class="cert-badge" href="https://www.credly.com/users/diego-bardella/badges" target="_blank" rel="noopener" title="Verify on Credly">
@@ -258,7 +268,7 @@
 </div></div>
 <footer>
   <span class="footer-logo">Dielabs</span>
-  <p>Diego Bardella · AI inference lab · Casale Monferrato, IT</p>
+  <p>Diego Bardella · AI inference lab · Casale Monferrato, IT <span class="footer-updated">· last updated {{ site.time | date: "%-d %b %Y" }}</span></p>
   <div class="footer-links">
     <a href="https://linkedin.com/in/diegobardella" target="_blank">LinkedIn</a>
     <a href="https://www.credly.com/users/diego-bardella/badges#credly" target="_blank">Credly</a>

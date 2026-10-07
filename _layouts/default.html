@@ -323,6 +323,9 @@
       letter-spacing: 0.08em;
     }
 
+    .read-time { font-size: 0.7rem; font-weight: 500; color: var(--muted, #6b7280); opacity: 0.85; margin-left: 0.6rem; vertical-align: middle; white-space: nowrap; }
+    .read-time--long { border: 1px solid currentColor; border-radius: 999px; padding: 1px 8px; }
+    .footer-updated { opacity: 0.75; }
   </style>
 </head>
 <body>
@@ -357,7 +360,7 @@
 </div>
 
 <footer>
-  <div class="footer-left">Dielabs · Diego Bardella · Casale Monferrato, IT</div>
+  <div class="footer-left">Dielabs · Diego Bardella · Casale Monferrato, IT <span class="footer-updated">· last updated {{ site.time | date: "%-d %b %Y" }}</span></div>
   <div class="footer-links">
     <a href="https://linkedin.com/in/diegobardella" target="_blank">LinkedIn</a>
     <a href="https://www.credly.com/users/diego-bardella/badges#credly" target="_blank">Credly</a>

@@ -1,4 +1,5 @@
 ---
+published: false
 redirect_from:
   - /manuals/from-idea-to-production.html
 layout: default

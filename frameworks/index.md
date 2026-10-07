@@ -14,26 +14,26 @@ Proprietary frameworks for reasoning about LLM inference systems. Four of them f
 
 ## The Cycle
 
-### 01 · [AI Use-Case Discovery](ai-use-case-discovery.md)
+### 01 · [AI Use-Case Discovery](ai-use-case-discovery.md) <span class="read-time">7 min</span>
 How to qualify an AI use case before anything gets sized: the business–operating–technical value chain, five independent coordinates that place a system between a chat and an agent (autonomy, knowledge access, flow control, action level, supervision), and eight discovery areas from economic value to acceptance. The golden set is agreed before the PoV starts.
 
-### 02 · [From Idea to Production](from-idea-to-production.md)
+### 02 · [From Idea to Production](from-idea-to-production.md) <span class="read-time">4 min</span>
 An 11-step methodology that goes from a business need to an empirically validated inference deployment. Distinguishes customer inputs (use case, workload, traffic, SLO) from the architectural response (model, sizing, runtime, hardware, stack) and closes the loop with benchmark and conscious scaling.
 
-### 03 · [One Capacity Is Not Enough](one-capacity-is-not-enough.md)
+### 03 · [One Capacity Is Not Enough](one-capacity-is-not-enough.md) <span class="read-time">8 min</span>
 The Dielabs benchmark framework. Why a single capacity number does not exist, and how CrossP (the regime boundary), Cr_closed (hardware-anchored, closed loop) and Cr_open (SLO-anchored, open loop) break it down into three measurable quantities, anchored to the three vLLM benchmarks. The output is a capacity card, not a number.
 
-### 04 · [Observability KPI](observability-kpi.md)
+### 04 · [Observability KPI](observability-kpi.md) <span class="read-time">14 min</span>
 A monitoring, diagnostics and incident response framework for LLM inference systems built on vLLM + Prometheus + Grafana + DCGM. Covers the golden metrics (TTFT, ITL, TPOT, E2E), the TPOT vs ITL distinction, Observed vs Compute throughput, percentile statistics, diagnostic tree from symptom to root cause, and operational PromQL queries.
 
 ---
 
 ## Reference Models
 
-### [The LLM Inference Stack Model](inference-stack-model.md)
+### [The LLM Inference Stack Model](inference-stack-model.md) <span class="read-time">2 min</span>
 A layered model of an LLM inference system, from physical hardware (L0) to the client (L6). Each layer does one thing and enables the one above. The conceptual map used across the lab to reason about where every component sits and how dependencies flow.
 
-### [LLM Parameter Topology](llm-parameter-topology.md)
+### [LLM Parameter Topology](llm-parameter-topology.md) <span class="read-time">7 min</span>
 A structured framework for understanding where every LLM parameter lives: Artifact, Startup, or Request. Covers the full parameter flow from model weights to runtime enforcement, with conflict zones and troubleshooting tables.
 
 <div class="private-card">
