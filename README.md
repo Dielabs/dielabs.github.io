@@ -17,10 +17,10 @@ Original technical papers from real lab work. Topics include degenerative decodi
 The part of inference that does not age: mechanics, math and trade-offs — inference stack, KV cache economics.
 
 ### [Technologies](technologies/)
-The moving layer: GPU fabric, communication libraries, network critical path, parallelism strategies, CPU-GPU memory topology.
+The moving layer: GPU fabric, communication libraries, network critical path, parallelism strategies, disaggregated serving.
 
 ### [Frameworks](frameworks/)
-Proprietary conceptual models for reasoning about inference systems: the L0–L6 diagnostic framework, the A–G technology model, the Artifact/Startup/Request parameter topology, an 11-step sizing methodology, and an observability KPI framework for incident response.
+Proprietary conceptual models for reasoning about inference systems: use-case discovery, an 11-step sizing methodology, the Cr/CrossP benchmark framework and an observability KPI framework, plus the L0–L6 stack model and the parameter topology.
 
 ---
 

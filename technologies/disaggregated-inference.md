@@ -1,6 +1,8 @@
 ---
 redirect_from:
   - /architectures/disaggregated-inference.html
+  - /frameworks/workload-characterization-disaggregation
+  - /frameworks/workload-characterization-disaggregation.html
 layout: default
 title: "Disaggregated Inference"
 ---
