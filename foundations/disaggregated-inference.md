@@ -431,10 +431,8 @@ Disaggregated inference is one of the few topics where network infrastructure, s
 - CPU inference benchmarking on enterprise hardware (TP, DP, NUMA analysis) — covered in detail in the dedicated document on CPU inference.
 - Dielabs Inference Engineering Manual — memory wall, KV cache economics, parallelism
 
+**How it is done on NVIDIA Dynamo:** [Disaggregation OS — NVIDIA Dynamo](disaggregation-os-dynamo.md) →
+
 ---
 
 _Dielabs — AI Inference Engineering Lab_ _dielabs.github.io_
-
----
-
-**How it is done on NVIDIA Dynamo:** [Disaggregation OS — NVIDIA Dynamo](disaggregation-os-dynamo.md) →
