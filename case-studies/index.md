@@ -72,7 +72,7 @@ layout: default
   </div>
   <div class="poc-card lab">
     <span class="pill p-prog">In progress</span>
-    <h3>Personal agent</h3>
+    <h3>Managed personal agent</h3>
     <span class="sub">Agentic harness</span>
     <p>A personal agent used every day, built one permission at a time. Five rules: its own identity, minimal permissions, every action logged, a human OK for anything that can't be undone, a repeatable test for every step. The lab behind a future agent starter kit.</p>
   </div>
