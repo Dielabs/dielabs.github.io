@@ -249,6 +249,9 @@
     .thesis{color:#3A3D42;}
     .site-nav{display:none;}
   }
+    .site-nav .links a.nav-pocs{ color:var(--edge-text); font-weight:700; border:1.5px solid var(--edge); border-radius:999px; padding:3px 11px; }
+    .site-nav .links a.nav-pocs:hover{ background:var(--edge); color:var(--ink); }
+    .site-nav .links{align-items:center;}
     .nav-new::after {
       content: "New";
       margin-left: 0.35rem;
@@ -284,11 +287,11 @@
 <nav class="site-nav">
   <a class="back" href="/">← dielabs</a>
   <div class="links">
+    <a class="current nav-pocs" href="/case-studies/">POCs</a>
     <a href="/frameworks/">Frameworks</a>
     <a href="/foundations/">Foundations</a>
             <a class="nav-new" href="/agentic/">Agentic</a>
     <a href="/papers/">Papers</a>
-    <a class="current" href="/case-studies/">POCs</a>
     <a class="cv" href="https://www.kickresume.com/cv/4b8kvR/" target="_blank">CV ↗</a>
   </div>
 </nav>
