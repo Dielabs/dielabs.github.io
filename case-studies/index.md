@@ -37,7 +37,7 @@ layout: default
   @media (max-width:760px){ .poc-grid,.poc-grid.three{grid-template-columns:1fr;} }
 </style>
 
-<p class="poc-intro">Working proofs of concept, built in the Dielabs lab and presented to companies as the first step of a project. Each write-up covers architecture, decisions, problems solved and measured results.</p>
+<p class="poc-intro">Proofs of concept built in the Dielabs lab — the first step from idea to production. Some are already presented to companies, others are still in the making. The published write-ups cover architecture, decisions, problems solved and measured results.</p>
 
 <div class="poc-label">Published</div>
 <div class="poc-grid">
