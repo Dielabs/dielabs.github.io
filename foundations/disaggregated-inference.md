@@ -1,5 +1,7 @@
 ---
 redirect_from:
+  - /technologies/disaggregated-inference
+  - /technologies/disaggregated-inference.html
   - /architectures/disaggregated-inference.html
   - /frameworks/workload-characterization-disaggregation
   - /frameworks/workload-characterization-disaggregation.html

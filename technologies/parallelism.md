@@ -126,7 +126,7 @@ The network is in the critical path when a communication is required to proceed 
 
 - **TP (§20):** all-reduce at every layer. If TP is confined to an NVLink domain, communication stays on the fabric and is not a bottleneck; if it extends across nodes (IB, Ethernet, QPI), the network is in the critical path at every step, for every token.
 - **DCP (§22):** all-gather of the query and reduce-scatter of the output at every attention layer during decode. Same regime as TP: it only lives inside the NVLink domain.
-- **Disaggregation ([Disaggregated Inference](disaggregated-inference.md)):** the KV from prefill must reach decode before generation starts. Blocking.
+- **Disaggregation ([Disaggregated Inference](../foundations/disaggregated-inference.md)):** the KV from prefill must reach decode before generation starts. Blocking.
 - **EP on MoE (§21.3):** token → expert routing with all-to-all traffic. It scales worse than all-reduce: every node can potentially talk to every other, and volume depends on the router's dynamic decisions.
 
 In pure DP (§19) the network is not in the critical path: it distributes requests and collects responses.
@@ -264,7 +264,7 @@ Principle: give the fastest interconnect to the strategy with the highest commun
 
 **Step 4 — Is it MoE?** EP for the experts with TP for attention, or DEP; measure expert imbalance on real traffic.
 
-**Step 5 — Is it disaggregated?** Per-phase parallelism: PCP or chunked PP on the prefillers, DCP or DEP on the decoders. See [Disaggregated Inference](disaggregated-inference.md).
+**Step 5 — Is it disaggregated?** Per-phase parallelism: PCP or chunked PP on the prefillers, DCP or DEP on the decoders. See [Disaggregated Inference](../foundations/disaggregated-inference.md).
 
 **Cross-cutting — interconnect quality.** At every step, check that the bandwidth supports the strategy (§6, §20). TP on a slow interconnect can be worse than no TP; if the network is the bottleneck (§16), no software optimization solves it.
 
@@ -288,7 +288,7 @@ Principle: give the fastest interconnect to the strategy with the highest commun
 
 ### 26. Disaggregation and Parallelism
 
-Disaggregation is not a parallelism strategy but a pattern that changes how strategies are applied: prefillers with PCP or aggressive TP on compute-intensive GPUs, decoders with DCP or DEP on memory-bandwidth GPUs, KV transferred via NIXL. The P/D ratio is found with vLLM's two-phase methodology: separate saturation of prefill-only and decode-only workers across parallelism and size, then a concurrency sweep on the combined system. Covered in [Disaggregated Inference](disaggregated-inference.md).
+Disaggregation is not a parallelism strategy but a pattern that changes how strategies are applied: prefillers with PCP or aggressive TP on compute-intensive GPUs, decoders with DCP or DEP on memory-bandwidth GPUs, KV transferred via NIXL. The P/D ratio is found with vLLM's two-phase methodology: separate saturation of prefill-only and decode-only workers across parallelism and size, then a concurrency sweep on the combined system. Covered in [Disaggregated Inference](../foundations/disaggregated-inference.md).
 
 ### 27. Engine Constraints — September 2026
 
