@@ -8,7 +8,7 @@ layout: default
 <div class="poc-wrap" markdown="0">
 <style>
   .poc-wrap{--amber:#E2A33D; --teal:#57C2D6; --green:#1F6B4F; --mint:#2BA38A; --violet:#6B4FD8;}
-  .poc-intro{font-size:1.08rem; line-height:1.6; color:#3a3a55; max-width:720px; margin:0 0 2.4rem;}
+  .poc-intro{font-size:1.08rem; line-height:1.6; color:#3a3a55; margin:0 0 2.4rem;}
   .poc-label{font-family:'IBM Plex Mono',monospace; font-size:.74rem; letter-spacing:.18em; text-transform:uppercase; color:#8a8aa3; margin:2.2rem 0 .9rem; display:flex; align-items:center; gap:.7rem;}
   .poc-label::after{content:""; flex:1; height:1px; background:rgba(0,0,0,.08);}
   .poc-grid{display:grid; grid-template-columns:1fr 1fr; gap:1.1rem;}
