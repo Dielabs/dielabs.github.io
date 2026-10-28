@@ -252,6 +252,8 @@
     .site-nav .links a.nav-pocs{ color:var(--edge-text); font-weight:700; border:1.5px solid var(--edge); border-radius:999px; padding:3px 11px; }
     .site-nav .links a.nav-pocs:hover{ background:var(--edge); color:var(--ink); }
     .site-nav .links{align-items:center;}
+    .site-nav .back{display:inline-flex; align-items:center; gap:8px;}
+    .site-nav .back img{width:22px; height:22px; display:block;}
     .nav-new::after {
       content: "New";
       margin-left: 0.35rem;
@@ -282,10 +284,12 @@
   }
   @media print{ .diff{page-break-inside:avoid;} }
 </style>
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/logo/apple-touch-icon.png">
 </head>
 <body>
 <nav class="site-nav">
-  <a class="back" href="/">← dielabs</a>
+  <a class="back" href="/"><span class="back-arrow">←</span><img src="/assets/logo/dielabs-mark-white.png" alt="Dielabs logo">dielabs</a>
   <div class="links">
     <a class="current nav-pocs" href="/case-studies/">Works</a>
     <a href="/frameworks/">Frameworks</a>
