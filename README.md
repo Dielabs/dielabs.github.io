@@ -14,10 +14,7 @@ Rather than focusing on model training or data science, Dielabs investigates the
 Original technical papers from real lab work. Topics include degenerative decoding analysis, KV cache offloading investigation, CPU-GPU inference isomorphism, and bottleneck migration in capacity sizing.
 
 ### [Foundations](foundations/)
-The part of inference that does not age: mechanics, math and trade-offs — inference stack, KV cache economics, disaggregated serving.
-
-### [Technologies](technologies/)
-The moving layer: GPU fabric, communication libraries, network critical path, parallelism strategies.
+The part of inference that does not age: mechanics, math and trade-offs — inference stack, KV cache economics, parallelism, disaggregated serving.
 
 ### [Frameworks](frameworks/)
 Proprietary conceptual models for reasoning about inference systems: an 11-step sizing methodology, the Cr/CrossP benchmark framework and an observability KPI framework, plus the Model/Engine/Request parameter framework.

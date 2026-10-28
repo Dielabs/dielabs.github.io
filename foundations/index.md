@@ -1,5 +1,12 @@
 ---
 redirect_from:
+  - /technologies/
+  - /technologies/index.html
+  - /architectures/
+  - /architectures/index.html
+  - /technologies/cpu-gpu-memory-topology
+  - /technologies/cpu-gpu-memory-topology.html
+  - /architectures/cpu-gpu-memory-topology.html
   - /manuals/
   - /manuals/index.html
   - /papers/testing-is-the-product.html
@@ -9,7 +16,7 @@ layout: default
 
 # Foundations
 
-The part of inference that does not age: mechanics, math, and trade-offs. Product names, versions and measured numbers live in [Technologies](/technologies/) and get rewritten when the landscape moves. These pages do not.
+The mechanics, math and trade-offs of inference. Where a page carries product versions or measured numbers, it says as of when.
 
 ---
 
@@ -20,6 +27,9 @@ Comprehensive reference covering the full LLM inference stack: from model lifecy
 
 ### [KV Cache Manual](kv-cache-workbook.md)
 End-to-end manual on KV cache mechanics and management. Covers anatomy and per-token consumption, PagedAttention and pool management in vLLM, behavior under load, prefix caching, tuning parameters, policy levers (TTL, quotas, eviction), the storage tier hierarchy and offload lifecycle, the 2026 software ecosystem (LMCache, NIXL, Dynamo, CMX), the economics of long chats, observability metrics, and the path from single-node to distributed inference.
+
+
+### [Parallelism — Fabric, Libraries and Strategies](parallelism.md)
 
 ### [Disaggregated Inference](disaggregated-inference.md)
 Architectural reference for the disaggregated serving pattern: prefill/decode separation, KV cache transfer over RDMA, NIC vs DPU on the data path, KV pooling tiers (NVMe-oF today, CXL as direction), performance analysis with fair-baseline methodology, speculative decoding interactions, and a decision framework for when disaggregation pays off versus when it adds complexity without benefit. The guiding principle: KV cache transfer dominates the design space, and TTFT — not GB/s — is the KPI that matters.

@@ -902,7 +902,7 @@ Hardware choice is based not only on TFLOPS, but on the balance between **Capaci
 
 ## L0.5 – Interconnects and Fabric
 
-They turn isolated GPUs into a coherent system, inside the same server and across servers. On a single node the fabric is almost invisible; multi-node, or with prefill and decode disaggregated, it often becomes the real bottleneck, because the KV cache has to travel between GPUs on different nodes. Communication libraries, topologies and parallelism strategies are covered in [Parallelism — Fabric, Libraries and Strategies](/technologies/parallelism.html).
+They turn isolated GPUs into a coherent system, inside the same server and across servers. On a single node the fabric is almost invisible; multi-node, or with prefill and decode disaggregated, it often becomes the real bottleneck, because the KV cache has to travel between GPUs on different nodes. Communication libraries, topologies and parallelism strategies are covered in [Parallelism — Fabric, Libraries and Strategies](parallelism.md).
 
 - **NVLink (900 GB/s):** The "private tunnel" **intra-node**. The only one fast enough for **Tensor Parallelism** (splitting a computation across GPUs in the same server) thanks to ultra-low latency (~1-2 μs). About 15-20× faster than PCIe.
 
@@ -1361,7 +1361,7 @@ This manual does not predict the future: an earlier version of this section did,
 Technologies live in dedicated documents, rewritten when the landscape moves:
 
 - **Disaggregated serving — why, when it pays off, trade-offs:** [Disaggregated Inference](disaggregated-inference.md)
-- **Parallelism — fabric, libraries, DP/TP/PP/EP and context parallelism (Ch 4):** [Parallelism — Fabric, Libraries and Strategies](/technologies/parallelism.html)
+- **Parallelism — fabric, libraries, DP/TP/PP/EP and context parallelism (Ch 4):** [Parallelism — Fabric, Libraries and Strategies](parallelism.md)
 - **KV cache — connectors, tiering, LMCache, Dynamo:** the [KV Cache Manual](kv-cache-workbook.md), ecosystem section
 - **Serving — admission, routing, scheduling (level 4 of this manual), disaggregation on NVIDIA Dynamo, quantization and compression:** in preparation
 
