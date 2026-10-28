@@ -52,6 +52,15 @@ A structured framework for understanding where every LLM parameter lives: Model,
   <p class="private-note">Not published. Reserved for direct conversations &mdash; reach out if relevant to your context.</p>
 </div>
 
+<div class="private-card">
+  <div class="private-title-row">
+    <span class="private-title">Delivery Frameworks</span>
+    <a class="private-pill" href="mailto:info@dielabs.eu?subject=Delivery%20Frameworks%20%E2%80%94%20request" title="Request access via email">Available on request</a>
+  </div>
+  <p class="private-desc">The four working frameworks used after the presales phase, when a use case becomes a system. <em>Agent Design</em>: six attributes of a qualified agent, four capability families, least privilege and graduated human-in-the-loop. <em>RAG Discovery</em>: corpus nature, retrieval intelligence, faithfulness and citation, permissions and system boundaries. <em>Data Preparation for Knowledge Bases</em>: how to prepare data for the three ways of giving an LLM a knowledge base (MCP navigation, RAG ingestion, preloaded context), from MCP to RAG in seven steps. <em>Governance for Agentic Workflows</em>: interpretation by the LLM, decisions in deterministic code, validation by a human, with approval rate as a data-driven path to more autonomy.</p>
+  <p class="private-note">Not published. Reserved for direct conversations &mdash; reach out if relevant to your context.</p>
+</div>
+
 ---
 
 *All frameworks are original Dielabs work by Diego Bardella.*

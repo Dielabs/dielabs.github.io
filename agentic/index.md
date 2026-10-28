@@ -19,16 +19,38 @@ This is the newest part of the lab. It reads the same problems as the inference 
 
 ---
 
-## Documents
+## Agents
 
 ### [From the Stateless Model to the Agentic Harness](agentic-systems.md)
 Agentic systems explained for people who know inference but not agents. The model as a pure function, tool use as structured generation plus external execution, the gather-act-verify loop, context engineering as the central discipline, the four context management strategies, MCP, reasoning policy — then what an agentic workload does to serving: prefill amplification, the bottleneck shifting from memory bandwidth to compute, TTFT times N_steps, layered prefix caching, three services to size separately, an agentic sizing checklist, and six families of agentic observability.
+
+### [Minimum Requirements of an Agentic Harness](agentic-harness-requirements.md)
+What a harness must provide before an agent is ready for production, in three families: memory (project context, phases, decisions with their why), control (tracing, read/write boundaries, budgets, stop criteria, identity fixed per session) and verification (external proof, rollback, replay). One quality criterion: how long it takes someone to pick up the work cold.
+
+### [The Agentic Ecosystem — MCP, A2A and Observability Tooling](agentic-ecosystem.md)
+The technology companion of the manual above, the layer that ages: the state of the art on agent-to-agent with its four open problems (identity, cost accounting, latency stacking, error semantics), why mature production systems are hierarchical plus MCP, where A2A still makes sense, and the 2026 tooling stack for agentic observability.
+
+### [MCP — The Integration Protocol for Agentic Platforms](mcp-integration-protocol.md)
+MCP as an infrastructure decoupling protocol, in the same family as CSI and CNI: from N×M to N+M integrations, the end-to-end flow, the three compatibilities to validate, deployment topologies (stdio, co-located, centralized gateway), enterprise governance and identity, and the attack vectors specific to MCP (prompt injection via tool descriptions, tool result poisoning, scope creep).
 
 ### [Context Engineering vs KV Cache Engineering](context-vs-kv-cache-engineering.md)
 Why designing an agent is a capacity planning decision. Compaction, sub-agents and loop structure decide the prefix reuse pattern; the resulting cache hit rate is an input of Cr_open. Three concrete couplings between the harness and the rack, and why sizing an agentic deployment starts with reading the harness.
 
 ### [Effectiveness vs Efficiency in an Agentic Architecture](effectiveness-vs-efficiency.md)
 Quality of outcomes and cost of outcomes as two separate axes, with context engineering as the hinge that moves both. Why agentic workloads break chat-style sizing, why you cannot infer the workload from the interface, and what that means for fixed-capacity on-premises deployments.
+
+<div class="private-card">
+  <div class="private-title-row">
+    <span class="private-title">Designing AI Agents from Scratch</span>
+    <a class="private-pill" href="mailto:info@dielabs.eu?subject=Designing%20AI%20Agents%20%E2%80%94%20request" title="Request access via email">Available on request</a>
+  </div>
+  <p class="private-desc">A design handbook: the agent contract (objective, input/output, boundaries, budget, risk), the components (system prompt, context, skills, RAG, tools, deterministic code, state, memory, policy, validator, observability), the control loop, planning, security by design, human-in-the-loop, evaluation, and a production readiness checklist.</p>
+  <p class="private-note">Not published. Reserved for direct conversations &mdash; reach out if relevant to your context.</p>
+</div>
+
+---
+
+## Retrieval
 
 ### [RAG for Dummies](rag-for-dummies.md)
 How a system that answers from company documents actually works, with the library analogy: the four models of the chain (rewriter, embedding, reranker, generator), the ingestion and query flows, the judge and its metrics, chunking, and a tour of the advanced variants — hybrid search, GraphRAG, agentic, adaptive, multimodal, federated. No maturity framework and no sizing: this is the one to read before deciding how deep a retrieval system needs to go.
@@ -39,15 +61,6 @@ How a system that answers from company documents actually works, with the librar
     <a class="private-pill" href="mailto:info@dielabs.eu?subject=From%20Zero%20to%20RAG%20%E2%80%94%20request" title="Request access via email">Available on request</a>
   </div>
   <p class="private-desc">The quantitative companion to the page above: a four-level framework (Production layer, Knowledge Representation, Retrieval Intelligence, Agent Orchestration) with a requirement &rarr; pattern &rarr; cost selection table, and the impact of each level on inference sizing.</p>
-  <p class="private-note">Not published. Reserved for direct conversations &mdash; reach out if relevant to your context.</p>
-</div>
-
-<div class="private-card">
-  <div class="private-title-row">
-    <span class="private-title">Designing AI Agents from Scratch</span>
-    <a class="private-pill" href="mailto:info@dielabs.eu?subject=Designing%20AI%20Agents%20%E2%80%94%20request" title="Request access via email">Available on request</a>
-  </div>
-  <p class="private-desc">A design handbook: the agent contract (objective, input/output, boundaries, budget, risk), the components (system prompt, context, skills, RAG, tools, deterministic code, state, memory, policy, validator, observability), the control loop, planning, security by design, human-in-the-loop, evaluation, and a production readiness checklist.</p>
   <p class="private-note">Not published. Reserved for direct conversations &mdash; reach out if relevant to your context.</p>
 </div>
 

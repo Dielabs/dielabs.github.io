@@ -24,6 +24,9 @@ End-to-end manual on KV cache mechanics and management. Covers anatomy and per-t
 ### [Disaggregated Inference](disaggregated-inference.md)
 Architectural reference for the disaggregated serving pattern: prefill/decode separation, KV cache transfer over RDMA, NIC vs DPU on the data path, KV pooling tiers (NVMe-oF today, CXL as direction), performance analysis with fair-baseline methodology, speculative decoding interactions, and a decision framework for when disaggregation pays off versus when it adds complexity without benefit. The guiding principle: KV cache transfer dominates the design space, and TTFT — not GB/s — is the KPI that matters.
 
+### [Semantic Routing](semantic-routing.md)
+Why a semantic router must be fine-tuned on the tier boundaries of its real domain: the decision layer (a small embedding model) is separate from the deterministic tier-to-backend map, and misrouting is born in the first. Why pre-trained embeddings confuse similarity with complexity, what fine-tuning really costs, routing accuracy as an SLO rather than uptime, and why in sovereign deployments routing is where data residency becomes configurable.
+
 <div class="private-card">
   <div class="private-title-row">
     <span class="private-title">Testing Is the Product</span>
