@@ -1,9 +1,9 @@
 ---
-title: POCs
+title: Works
 layout: default
 ---
 
-# POCs
+# From POC to production
 
 <div class="poc-wrap" markdown="0">
 <style>
