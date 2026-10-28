@@ -31,8 +31,8 @@ A monitoring, diagnostics and incident response framework for LLM inference syst
 
 ## Reference Model
 
-### [LLM Parameter Topology](llm-parameter-topology.md)
-A structured framework for understanding where every LLM parameter lives: Artifact, Startup, or Request. Covers the full parameter flow from model weights to runtime enforcement, with conflict zones and troubleshooting tables.
+### [LLM Parameters — Model, Engine, Request](llm-parameter-topology.md)
+A structured framework for understanding where every LLM parameter lives: Model, Engine, or Request. Covers the full parameter flow from model weights to runtime enforcement, with conflict zones and troubleshooting tables.
 
 <div class="private-card">
   <div class="private-title-row">

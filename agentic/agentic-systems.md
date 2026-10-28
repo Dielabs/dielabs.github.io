@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "Agentic Systems for Inference Infrastructure People"
+title: "From the Stateless Model to the Agentic Harness"
 ---
 
-# Agentic Systems for Inference Infrastructure People
+# From the Stateless Model to the Agentic Harness
 
-*From the stateless model to the agentic harness.*
+*Agentic systems for inference infrastructure people.*
 
 ## Preface
 
@@ -27,7 +27,7 @@ This manual has one precise goal: to take the reader from "I know inference but 
 
 **Style**: mid-level senior, technical but not specialist. No over-explanation of fundamentals — KV cache, prefill and decode are used without redefining them — but no assumptions about agentic patterns either.
 
-This is the foundations volume: the mechanics that do not age. Products, protocols, the state of the art on agent-to-agent, and the observability tooling landscape live in a separate technology companion, which is not published.
+This is the foundations volume: the mechanics that do not age. Products, protocols, the state of the art on agent-to-agent, and the observability tooling landscape live in the technology companion, [The Agentic Ecosystem](agentic-ecosystem.md).
 
 ---
 
@@ -1209,6 +1209,27 @@ A synthetic workload for an open-loop agentic benchmark is a **multi-dimensional
 **4. The capacity card includes caching efficiency.** When you produce a capacity card, a key metric is the **layered prefix cache hit rate**: per-layer hit rates, and the effective prefill reduction they produce.
 
 That is what converts "we have X GPUs" into "we can serve Y agent-tasks per second at this SLO". It is the correct translation from hardware to business metric.
+
+### Three services to size separately
+
+The three-layer stack (runtime, inference engine, tools) introduces services that scale on different resources, and each one has to be sized on its own:
+
+| Service | Resource | Scales with |
+|---|---|---|
+| Inference engine (vLLM) | GPU (VRAM, compute) | Token/s throughput, prefix cache hit rate |
+| Agent runtime | CPU + RAM | Concurrent sessions, complexity of the loop graph |
+| Tool backend | CPU + network + external backend | Tool calls/s, external latency |
+
+Plus one more dimension: **network latency between layers**. On a single node it is negligible; in production, the runtime and the GPU nodes must sit physically close, because the round trip is paid on every iteration of the loop.
+
+### Agentic sizing checklist
+
+1. **Estimate mean and p95 N_steps** per task category. Without this number, every sizing is a guess.
+2. **Check that prefix caching is enabled** in the serving layer, and size TTL and eviction on the typical length of an agentic session.
+3. **Measure on synthetic agentic traffic**, not on chat. At the same SLO, a capacity that holds 100 req/s in chat can drop to 15 req/s with an agent (indicative example): the metric is Cr_open, anchored to the SLO, not Cr_closed.
+4. **Count the tool definitions** in the system prompt: they are a fixed overhead that weighs on prefill and on how much the prefix cache pays off.
+5. **Keep LLM metrics and tool metrics separate** in observability (see Agentic observability below): diagnosing the latency tail only works if you know where the delay lives.
+6. **Consider disaggregated serving when N_steps ≥ 5**: a prefill-heavy, decode-light profile is the textbook case for prefill/decode disaggregation. When it really pays off is covered in [Disaggregated Inference](../foundations/disaggregated-inference.md).
 
 ### Anticipating the customer's question
 

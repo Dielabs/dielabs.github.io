@@ -21,8 +21,8 @@ This is the newest part of the lab. It reads the same problems as the inference 
 
 ## Documents
 
-### [Agentic Systems for Inference Infrastructure People](agentic-systems.md)
-From the stateless model to the agentic harness, written for people who know inference but not agents. The model as a pure function, tool use as structured generation plus external execution, the gather-act-verify loop, context engineering as the central discipline, the four context management strategies, MCP, reasoning policy — then what an agentic workload does to serving: prefill amplification, the bottleneck shifting from memory bandwidth to compute, TTFT times N_steps, layered prefix caching, and six families of agentic observability.
+### [From the Stateless Model to the Agentic Harness](agentic-systems.md)
+Agentic systems explained for people who know inference but not agents. The model as a pure function, tool use as structured generation plus external execution, the gather-act-verify loop, context engineering as the central discipline, the four context management strategies, MCP, reasoning policy — then what an agentic workload does to serving: prefill amplification, the bottleneck shifting from memory bandwidth to compute, TTFT times N_steps, layered prefix caching, three services to size separately, an agentic sizing checklist, and six families of agentic observability.
 
 ### [Context Engineering vs KV Cache Engineering](context-vs-kv-cache-engineering.md)
 Why designing an agent is a capacity planning decision. Compaction, sub-agents and loop structure decide the prefix reuse pattern; the resulting cache hit rate is an input of Cr_open. Three concrete couplings between the harness and the rack, and why sizing an agentic deployment starts with reading the harness.

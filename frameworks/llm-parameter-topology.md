@@ -1,13 +1,15 @@
 ---
 layout: default
-title: "LLM Parameter Topology"
+title: "LLM Parameters — Model, Engine, Request"
 ---
 
-# LLM Parameter Topology — Artifact, Startup, Request
+# LLM Parameters — Model, Engine, Request
+
+## Where parameters live in an inference system
 
 > **Dielabs core principle**
 >
-> Every LLM parameter lives in exactly one of three places: **Artifact**, **Startup**, or **Request**. If you don't know where a parameter lives, you can't understand when it takes effect or who controls it.
+> Every LLM parameter lives in exactly one of three places: **Model**, **Engine**, or **Request**. If you don't know where a parameter lives, you can't understand when it takes effect or who controls it.
 
 ---
 
@@ -16,9 +18,9 @@ title: "LLM Parameter Topology"
 The real path of a request through an inference system:
 
 ```
-[A] Model Artifact
+[M] Model Artifact
         ↓
-[S] Server Startup Configuration
+[E] Engine Startup Configuration
         ↓
 [R] Incoming Request Parameters
         ↓
@@ -29,11 +31,11 @@ The real path of a request through an inference system:
 
 This schema represents the real parameter topology in LLM systems (vLLM, TGI, TensorRT-LLM, SGLang, Ollama, etc.).
 
-**Convention:** each parameter is labeled `[A]`, `[S]` or `[R]`. Where relevant, `enforced-by-server: yes` is added for parameters that travel in the request but are applied by the server during generation.
+**Convention:** each parameter is labeled `[M]`, `[E]` or `[R]`. Where relevant, `enforced-by-server: yes` is added for parameters that travel in the request but are applied by the server during generation.
 
 ---
 
-## 1. [A] Artifact — Model Artifact
+## 1. [M] Model — Model Artifact
 
 Defines the model as an object/version. This is what gets downloaded from HuggingFace or saved as a checkpoint. Contains weights, architectural configuration, tokenizer, metadata and any chat template.
 
@@ -68,7 +70,7 @@ Dialogue formatting rules (system/user/assistant roles, special tokens, EOS). **
 
 ---
 
-## 2. [S] Startup — Inference Engine Configuration
+## 2. [E] Engine — Inference Engine Configuration
 
 Defines how the server runs. These parameters are set at container startup, in the engine process or Kubernetes pod, and **remain fixed for the entire instance lifetime**.
 
@@ -84,13 +86,15 @@ This level is pure Inference Engineering.
 
 **`kv_cache_dtype`** KV cache precision: FP16, FP8. FP8 reduces VRAM for the same context/concurrency, but may slightly degrade quality on long outputs.
 
+*For the inner workings of the KV pool, PagedAttention and tuning under load, see the [KV Cache Manual](../foundations/kv-cache-workbook.md).*
+
 ### Concurrency and Scheduling
 
 **`max_num_seqs`** Maximum number of sequences the continuous batching scheduler can keep active (resident) simultaneously in the engine. This is the primary lever to balance latency and throughput.
 
 Lowering it protects latency: fewer active sequences mean less pressure on the KV cache and less GPU contention during decode steps, but aggregate throughput drops. Raising it increases throughput at the cost of latency; beyond a certain threshold VRAM saturates, forcing preemption or sequence swap with non-linear degradations.
 
-The Crossover Point (Cp) — the concurrency at which the system transitions from latency-first to throughput-first behavior — guides tuning: below Cp → latency-first, above Cp → throughput-first. The correspondence between external concurrency and active sequences in the scheduler is not 1:1 (it depends on the input/output length distribution), so the value must be validated empirically against the target workload.
+The Crossover Point (CrossP) of the benchmark framework guides tuning: below CrossP → latency-first, above → throughput-first (see [One Capacity Is Not Enough](one-capacity-is-not-enough.md)). The correspondence between external concurrency and active sequences in the scheduler is not 1:1 (it depends on the input/output length distribution), so the value must be validated empirically against the target workload.
 
 **`max_num_batched_tokens`** Token limit processable in the same batch. Trade-off: TTFT ↔ throughput. On engines like vLLM, this parameter can transform a "slow" server into a powerhouse without touching the model or the request.
 
@@ -168,22 +172,22 @@ Parameters that define when to stop and how to return the response. Sent in the 
 The real hierarchy is descending:
 
 ```
-[S] Startup       ← commands everything (defines the operational fence)
+[E] Engine        ← commands everything (defines the operational fence)
       ↓
-[A] Artifact      ← defines the model's physical limits
+[M] Model         ← defines the model's physical limits
       ↓
-[R] Request       ← the user plays inside the fence built by A and S
+[R] Request       ← the user plays inside the fence built by M and E
 ```
 
 **Practical example:**
 
 ```
-[S] server started with max_tokens = 512
+[E] server started with max_tokens = 512
 [R] request sends max_tokens = 2048
 → Result: 512 (the server wins)
 ```
 
-**[A] defines physical limits** — you cannot ask a 2B model to have the same logical coherence as a 70B, regardless of S and R.
+**[M] defines physical limits** — you cannot ask a 2B model to have the same logical coherence as a 70B, regardless of E and R.
 
 ---
 
@@ -191,32 +195,32 @@ The real hierarchy is descending:
 
 Many problems do not reside in a single parameter, but in **misalignment between levels**.
 
-### Context Conflict [A vs S vs R]
+### Context Conflict [M vs E vs R]
 
 ```
-[A] model trained for 32k tokens
-[S] max_model_len = 8k (to save VRAM)
+[M] model trained for 32k tokens
+[E] max_model_len = 8k (to save VRAM)
 [R] prompt of 10k tokens
 
 → Result: 400 error or aggressive truncation,
   despite the model "on paper" supporting 32k
 ```
 
-### Template Mismatch [A vs R]
+### Template Mismatch [M vs R]
 
 ```
-[A] model trained with Llama-3 (<|begin_of_text|>)
+[M] model trained with Llama-3 (<|begin_of_text|>)
 [R] client sends ChatML format (<|im_start|>)
 
 → Result: hallucinations, incoherent output,
   failed EOS stopping
 ```
 
-### Precision Tradeoff [A vs S]
+### Precision Tradeoff [M vs E]
 
 ```
-[A] FP16 weights
-[S] kv_cache_dtype = FP8 (to double concurrency)
+[M] FP16 weights
+[E] kv_cache_dtype = FP8 (to double concurrency)
 
 → Result: slight degradation on long responses,
   invisible in short tests, emerges only under real load
@@ -228,14 +232,14 @@ Many problems do not reside in a single parameter, but in **misalignment between
 
 | Symptom | Probable Cause | Level |
 |---|---|---|
-| Model hallucinates or speaks in another language | Chat template or tokenizer mismatch | **[A]** |
-| Out of Memory (OOM) at startup | Insufficient VRAM for weights or `gpu_memory_utilization` too high | **[S]** |
-| Very high TTFT with many users | Unoptimized batching or saturated KV cache | **[S]** |
+| Model hallucinates or speaks in another language | Chat template or tokenizer mismatch | **[M]** |
+| Out of Memory (OOM) at startup | Insufficient VRAM for weights or `gpu_memory_utilization` too high | **[E]** |
+| Very high TTFT with many users | Unoptimized batching or saturated KV cache | **[E]** |
 | Response truncated mid-sentence | `max_tokens` too low or stop sequence encountered | **[R]** |
 | Model keeps repeating the same phrase | `temperature = 0` without `repetition_penalty`, or unhandled loop | **[R]** |
-| Malformed JSON returned | `response_format` not supported or prompt not aligned | **[S] / [R]** |
-| Performance degrades gradually | KV cache full, sub-optimal batching | **[S]** |
-| Different behavior with the same prompt | Checkpoint changed, different template or quantization | **[A]** |
+| Malformed JSON returned | `response_format` not supported or prompt not aligned | **[E] / [R]** |
+| Performance degrades gradually | KV cache full, sub-optimal batching | **[E]** |
+| Different behavior with the same prompt | Checkpoint changed, different template or quantization | **[M]** |
 
 ---
 
@@ -243,16 +247,16 @@ Many problems do not reside in a single parameter, but in **misalignment between
 
 When analyzing a problem, follow this order:
 
-1. **Is it a model problem?** → check `[A]` Artifact (checkpoint, template, tokenizer, quantization)
-2. **Is it a performance or memory problem?** → check `[S]` Startup (max_model_len, KV cache, batching, concurrency limits)
+1. **Is it a model problem?** → check `[M]` Model (checkpoint, template, tokenizer, quantization)
+2. **Is it a performance or memory problem?** → check `[E]` Engine (max_model_len, KV cache, batching, concurrency limits)
 3. **Is it a generative behavior problem?** → check `[R]` Request (temperature, sampling, stop, max_tokens)
 
 **Quick rule:**
 
-- Quality/style changes "at same prompt" → **[A]**
-- Latency/throughput/concurrency changes → **[S]**
+- Quality/style changes "at same prompt" → **[M]**
+- Latency/throughput/concurrency changes → **[E]**
 - Creativity/variance/loop changes → **[R]** sampling
-- Stops "weird", cuts, broken format → **[R]** output + guardrail **[S]**
+- Stops "weird", cuts, broken format → **[R]** output + guardrail **[E]**
 
 ---
 
@@ -269,4 +273,4 @@ This framework applies to any LLM serving stack:
 
 ---
 
-*Dielabs KB — LLM Parameter Topology v2.0*
+*Dielabs KB — LLM Parameters: Model, Engine, Request*
