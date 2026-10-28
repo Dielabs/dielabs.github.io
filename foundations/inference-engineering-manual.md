@@ -1363,7 +1363,8 @@ Technologies live in dedicated documents, rewritten when the landscape moves:
 - **Disaggregated serving — why, when it pays off, trade-offs:** [Disaggregated Inference](disaggregated-inference.md)
 - **Parallelism — fabric, libraries, DP/TP/PP/EP and context parallelism (Ch 4):** [Parallelism — Fabric, Libraries and Strategies](parallelism.md)
 - **KV cache — connectors, tiering, LMCache, Dynamo:** the [KV Cache Manual](kv-cache-workbook.md), ecosystem section
-- **Serving — admission, routing, scheduling (level 4 of this manual), disaggregation on NVIDIA Dynamo, quantization and compression:** in preparation
+- **Disaggregated serving — how, on NVIDIA Dynamo:** [Disaggregation OS — NVIDIA Dynamo](disaggregation-os-dynamo.md)
+- **Serving — admission, routing, scheduling (level 4 of this manual), quantization and compression:** in preparation
 
 Topics without a dedicated document, to follow elsewhere: inference-specific hardware and multi-level speculative decoding.
 

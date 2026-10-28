@@ -434,3 +434,7 @@ Disaggregated inference is one of the few topics where network infrastructure, s
 ---
 
 _Dielabs — AI Inference Engineering Lab_ _dielabs.github.io_
+
+---
+
+**How it is done on NVIDIA Dynamo:** [Disaggregation OS — NVIDIA Dynamo](disaggregation-os-dynamo.md) →

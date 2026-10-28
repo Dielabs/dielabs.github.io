@@ -34,6 +34,9 @@ End-to-end manual on KV cache mechanics and management. Covers anatomy and per-t
 ### [Disaggregated Inference](disaggregated-inference.md)
 Architectural reference for the disaggregated serving pattern: prefill/decode separation, KV cache transfer over RDMA, NIC vs DPU on the data path, KV pooling tiers (NVMe-oF today, CXL as direction), performance analysis with fair-baseline methodology, speculative decoding interactions, and a decision framework for when disaggregation pays off versus when it adds complexity without benefit. The guiding principle: KV cache transfer dominates the design space, and TTFT — not GB/s — is the KPI that matters.
 
+### [Disaggregation OS — NVIDIA Dynamo](disaggregation-os-dynamo.md)
+The technology companion of the page above: how disaggregation is done on NVIDIA Dynamo, as of June 2026. The three planes (request, control, storage/events), the KV-aware Router and its cost function, KVBM and NIXL (who manages the cache vs who moves it), offloading tiers including the emerging context-memory tier, Planner, AIConfigurator and AIPerf, Grove and gang scheduling on Kubernetes, fault tolerance, a sizing workflow, the metrics to watch, and three reasoning scenarios by workload shape.
+
 ### [Semantic Routing](semantic-routing.md)
 Why a semantic router must be fine-tuned on the tier boundaries of its real domain: the decision layer (a small embedding model) is separate from the deterministic tier-to-backend map, and misrouting is born in the first. Why pre-trained embeddings confuse similarity with complexity, what fine-tuning really costs, routing accuracy as an SLO rather than uptime, and why in sovereign deployments routing is where data residency becomes configurable.
 
