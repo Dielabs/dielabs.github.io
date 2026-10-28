@@ -184,6 +184,8 @@ As an Inference Engineer, you will often face a full-precision model (FP16/BF16)
 |**Portability / Low VRAM**|**GGUF (K-Quants)**|`.gguf`|**llama.cpp / Ollama**|
 |**Extreme Speed (Single GPU)**|**EXL2**|`Folder/File`|**ExLlamaV2**|
 
+> **Dating note.** The algorithms, formats and engines in this table are a late-2025 example. What stays valid is the fork: first you choose how to compress, then the format your engine can read.
+
 ---
 
 #### Technical Box: Latency vs Throughput
@@ -228,6 +230,8 @@ vLLM is designed for servers that do nothing but AI inference.
 >
 > **Pro Tip:** In production, Lazy Loading is almost never used. The preference is to keep the model always "hot" in memory to guarantee consistent and low response times (TTFT - Time To First Token).
 
+> **Dating note.** Ollama's 5 minutes and vLLM's 90% of VRAM are late-2025 defaults and change from one version to the next. The trade-off stays valid: loading on demand frees the GPU and pays the cold start; allocating everything at startup gives steady response times and keeps the GPU busy.
+
 ## 0.3 Model Efficiency: Beyond the Number of Parameters
 
 We can say that **the number of parameters represents the potential "brain capacity,"** but actual intelligence depends on how that capacity is used.
@@ -255,6 +259,8 @@ Here the distinction becomes technical.
 - **MoE Models (e.g., Mixtral):** The model has many parameters (e.g., 47B), but for each word it activates only a small portion (e.g., 12B).
 
 **Result:** You get the intelligence of a large model with the inference speed of a small one.
+
+**Watch the VRAM: the total counts, not the active.** The dense/MoE distinction above is about compute and speed — how many parameters fire per token. Weight VRAM (§0.1) follows a different rule: the router can call any expert on any token, so every parameter of the model must be resident in memory before serving even a single request, active or not. Example — Kimi K2.6 (Moonshot AI, MoE, 1T total parameters, 32B active per token, 384 experts with 8 selected + 1 shared): the 32B active set compute and token/s, the 1T total sets VRAM. At INT4 (0.5 byte/parameter) the weights take `1T × 0.5 byte × 1.2 (overhead) = 600GB` — not 16GB, as a naive reading of the "active" count would suggest. It is the most common sizing mistake on MoE models: sizing VRAM on the active parameters instead of the total.
 
 #### Who Chooses Which Experts to Activate? (The Router)
 
@@ -894,7 +900,9 @@ Hardware choice is based not only on TFLOPS, but on the balance between **Capaci
 
 - **DGX Spark / Unified Systems**: 256GB VRAM, 273 GB/s Bandwidth. It is the truck: can load enormous models (high capacity) but generates tokens much more slowly.
 
-##### **Interconnects**: Transform isolated GPUs into a coherent system.
+## L0.5 – Interconnects and Fabric
+
+They turn isolated GPUs into a coherent system, inside the same server and across servers. On a single node the fabric is almost invisible; multi-node, or with prefill and decode disaggregated, it often becomes the real bottleneck, because the KV cache has to travel between GPUs on different nodes. Communication libraries, topologies and parallelism strategies are covered in [Parallelism — Fabric, Libraries and Strategies](/technologies/parallelism.html).
 
 - **NVLink (900 GB/s):** The "private tunnel" **intra-node**. The only one fast enough for **Tensor Parallelism** (splitting a computation across GPUs in the same server) thanks to ultra-low latency (~1-2 μs). About 15-20× faster than PCIe.
 
@@ -903,6 +911,8 @@ Hardware choice is based not only on TFLOPS, but on the balance between **Capaci
 - **RoCE — RDMA over Converged Ethernet (25-100 GB/s):** RDMA implemented over standard Ethernet. Same mechanism as InfiniBand — direct transfer between memories of different servers without involving the CPU — but on already-existing Ethernet infrastructure. Slightly higher latency than InfiniBand, significantly lower cost. In modern AI datacenters it is the prevalent choice for **inter-node** connectivity.
 
 - **PCIe (32-64 GB/s):** The system bus — connects GPU to CPU and system RAM. It is the "default" channel present in any **x86** server. Used to transfer data from disk or network to GPU, but too slow to coordinate distributed computations between GPUs. If two GPUs communicate only via PCIe, the bottleneck is immediate.
+
+> **Dating note.** The L0 and L0.5 numbers (H100, DGX Spark, NVLink 900 GB/s, driver versions) are Hopper-generation reference values, late 2025. Blackwell has already doubled NVLink and changed the reference GPUs. Use the proportions between capacity, bandwidth and interconnect, not the absolute numbers.
 
 ## **L1 - Drivers**
 
@@ -923,6 +933,12 @@ L2 is the layer that isolates and distributes the execution environment. In prac
 The components are containerd or Docker as the container runtime, nvidia-container-runtime as the bridge between the container and the host's GPU driver, CUDA-based images as the base for the entire environment, and compiled libraries — PyTorch, TensorRT-LLM, vLLM — distributed as part of the image.
 
 Decisions made at L2 are binding for all upper layers: which CUDA version to use, which libraries to link, which backend version to deploy. This layer is also the source of one of the most frequent problems in multi-node environments: **image drift**. The model works on node A and crashes on node B for no apparent reason. The cause is almost always a different image, a different library, or a different runtime version between nodes. L2 not managed with rigor becomes an infinite source of irreproducibility.
+
+## L2.5 – Model Artifact
+
+This is the *what* gets executed: model weights, numeric format (FP16, BF16, FP8, INT4…), tokenizer, chat template, any LoRA adapters. It is not hardware, not scheduling, not kernels. The same GPU and the same engine give different results depending on the artifact loaded: a wrong chat template or a different format changes the output without any layer below raising an error.
+
+The parameters of this level are the model parameters: a short table in the [KV Cache Manual](kv-cache-workbook.md) §3, the detail in [LLM Parameters — Model, Engine, Request](/frameworks/llm-parameter-topology.html) §1.
 
 ---
 
@@ -1136,6 +1152,8 @@ In inference, you cannot have everything. You must choose which "bottleneck" to 
 
 - **Constraint**: **Bandwidth**. Unified memory is 7-8× slower than HBM. If an H100 generates 50 tokens/s, here you will generate 6-7.
 
+> **Dating note.** The hardware examples (M3 Max, Grace Hopper, H100) and their numbers are late-2025 references. The lesson is the 7–8× ratio between unified bandwidth and HBM, not the models named.
+
 ### C. Cloud API (The Public Bus)
 
 - **Architecture**: Managed services (OpenAI, AWS Bedrock). Pay-per-use.
@@ -1191,9 +1209,11 @@ Optimization is a direct financial saving. Let's analyze an 8x H100 server:
 
 - **Deployment B (vLLM + Caching + Quant)**: 1000 token/s goodput → **$2.34 per 1M tokens**.
 
+> **Dating note.** Prices, power draw and cost per token are a late-2025 example on 8×H100. What stays valid is the method: amortized CAPEX + OPEX with PUE, divided by goodput. Redo the math with current numbers before using it in an offer.
+
 ---
 
-## 5.6 Decision Tree: Which Architecture for You?
+## 5.5 Decision Tree: Which Architecture for You?
 
 **START: Identify your primary constraint**
 
@@ -1220,6 +1240,8 @@ Being an Inference Engineer means mediating between mathematics and physics. The
 - **Optimized 7B model**: 180 token/s on 1x RTX 4090 → **$1.20 per 1M tokens**.
 
 A smaller, correctly optimized model beats a poorly managed giant model on every economic and operational metric.
+
+> **Dating note.** The costs and hardware in this example (H100, RTX 4090) are late-2025 reference values. What counts is the proportion between the two configurations, not the absolute value.
 
 ---
 
@@ -1332,39 +1354,18 @@ These omissions are intentional. The manual provides a durable mental model; imp
 
 ---
 
-## Emerging Directions (Watch This Space)
+## Where to Follow the Technologies
 
-Inference engineering evolves rapidly. Three trends with production traction deserve attention:
+This manual does not predict the future: an earlier version of this section did, and saw its predictions overtaken in less than a year (disaggregated serving went from "only beyond 100 nodes" to standard; sub-4-bit quantization from "research" to day-0 checkpoints; hybrid Mamba models from "alternative" to production). Technologies change every few months; the physical constraints described here do not.
 
-### 1. Disaggregated Serving
+Technologies live in dedicated documents, rewritten when the landscape moves:
 
-Physical separation between prefill clusters and decode clusters. Prefill cluster (compute-intensive, TP-heavy, 60-70% GPU utilization) optimized for matrix parallelism. Separate decode cluster (memory-intensive, batching-heavy, bandwidth-optimized) optimized for multi-user serving. KV cache transferred between clusters via high-bandwidth RDMA network.
+- **Disaggregated serving — why, when it pays off, trade-offs:** [Disaggregated Inference](disaggregated-inference.md)
+- **Parallelism — fabric, libraries, DP/TP/PP/EP and context parallelism (Ch 4):** [Parallelism — Fabric, Libraries and Strategies](/technologies/parallelism.html)
+- **KV cache — connectors, tiering, LMCache, Dynamo:** the [KV Cache Manual](kv-cache-workbook.md), ecosystem section
+- **Serving — admission, routing, scheduling (level 4 of this manual), disaggregation on NVIDIA Dynamo, quantization and compression:** in preparation
 
-**Rationale**: opposing hardware requirements. Prefill benefits from high TFLOPS (A100, H100). Decode benefits from high bandwidth and large capacity (potentially less expensive hardware with memory-optimized HBM). Disaggregation allows right-sizing hardware for workload phase-specific needs instead of a single compromise.
-
-**Status**: production deployment in scale-out datacenter (>100 nodes). Complexity overhead justified only at massive scale where hardware specialization ROI exceeds orchestration cost.
-
-### 2. Sub-4-bit Quantization with Mixed Precision
-
-INT3, INT2, even binary weights for non-critical layers. Dynamic mixed precision: attention-heavy layers maintain FP8/INT8 for quality, feedforward layers tolerate INT2. Automatic calibration via runtime profiling instead of offline calibration datasets. Model adapts precision per layer based on activation statistics observed during serving.
-
-**Rationale**: pushing the quality-efficiency trade-off frontier. INT4 is the current sweet spot (4× compression, 5-10% quality loss). INT2 could be the next frontier (8× compression) if quality degradation is controllable via selective per-layer precision.
-
-**Status**: active research, some production deployments with INT3 on specific models. Not yet ubiquitous like INT4/INT8.
-
-### 3. End-to-End Kernel Fusion
-
-Compilers (Triton, XLA, TVM) fuse multiple operations into a single kernel launch. Instead of memory roundtrips after each layer (read input → compute → write output → read for next layer), the compute pipeline processes an entire block of layers in a single kernel with intermediate results in fast SRAM instead of slow HBM.
-
-**Rationale**: dramatically reduces memory traffic. If each layer requires read+write from HBM, 80 layers = 160 memory operations. Kernel fusion reduces to read input → compute all 80 layers in SRAM → write final output = 2 memory operations. Theoretical bandwidth savings of 80×.
-
-**Status**: production in framework-specific deployments (TensorRT-LLM aggressive fusion, vLLM via Triton kernels). Not yet universal across all serving frameworks.
-
----
-
-**Other active areas**: inference-specific hardware (AWS Inferentia, Google TPU v5e, Groq LPU) sacrifices flexibility for fixed-function pipeline efficiency. Multi-model speculative decoding: draft chains (tiny → small → medium → large) with hierarchical verification. Alternative attention mechanisms (linear attention, state space models Mamba/RWKV) that eliminate quadratic KV cache complexity.
-
-**But fundamentals remain invariant**: physical memory wall, cache economics (linear growth with context), batching amortization, cost per token as business metric. Techniques change, constraints do not. An inference engineer who masters the principles adapts rapidly to new techniques; one who memorizes current config YAML becomes obsolete with every framework release.
+Topics without a dedicated document, to follow elsewhere: inference-specific hardware and multi-level speculative decoding.
 
 ---
 
