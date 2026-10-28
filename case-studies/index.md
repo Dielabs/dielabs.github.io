@@ -29,7 +29,7 @@ layout: default
   .lab::before{display:none;}
   .lab h3{color:#2a2a44;}
   .lab .sub{color:#8a8aa3;}
-  .pill{font-family:'IBM Plex Mono',monospace; font-size:.68rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; padding:.18rem .55rem; border-radius:999px; position:absolute; top:1.15rem; right:1.1rem;}
+  .pill{font-family:'IBM Plex Mono',monospace; font-size:.68rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; padding:.18rem .55rem; border-radius:999px; display:inline-block; margin-bottom:.75rem;}
   .p-prog{color:#9A6412; background:#FBF0D9;}
   .p-des{color:var(--violet); background:#EFEAFD;}
   .p-beta{color:#1F6B4F; background:#E3F1EA;}
