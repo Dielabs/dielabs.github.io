@@ -361,9 +361,53 @@
     <p style="margin-top:16px; font-size:13px; color:var(--text-dim); font-style:italic;"><b>Hidden, still working.</b> Titles, tags and follow-ups run on a separate non-reasoning model (gemma4-31b), hidden from the menu — a reasoning model there would spend tokens thinking about a three-word title.</p>
   </section>
 
+  <!-- KNOWLEDGE -->
+  <section class="knowledge">
+    <div class="sec-head"><span class="num">03</span><h2>Company knowledge</h2></div>
+    <p class="lead">Open WebUI's built-in RAG, wired to Regolo. Users build their own knowledge bases — contracts, price lists, procedures — share them with colleagues, and recall them in any chat. Answers come from the company's documents, not from the model's memory.</p>
+
+    <div class="pipeline">
+      <div class="stage client"><span class="role">Upload</span><span class="name">PDF · Word · text</span></div>
+      <div class="conn"><span class="ar">→</span></div>
+      <div class="stage edge"><span class="role">Customer VM</span><span class="name">Split · ~1000-char chunks</span></div>
+      <div class="conn crossing"><span class="ar">→</span><span class="tag">text</span></div>
+      <div class="stage cloud"><span class="role">Regolo · Italy</span><span class="name">Embed · Qwen3‑Embedding‑8B</span></div>
+      <div class="conn crossing"><span class="ar">→</span><span class="tag">vectors</span></div>
+      <div class="stage edge"><span class="role">Customer VM</span><span class="name">Store · vector database</span></div>
+    </div>
+    <div class="pipeline">
+      <div class="stage client"><span class="role">Chat</span><span class="name">Question</span></div>
+      <div class="conn crossing"><span class="ar">→</span></div>
+      <div class="stage cloud"><span class="role">Regolo · Italy</span><span class="name">Embed the question</span></div>
+      <div class="conn crossing"><span class="ar">→</span></div>
+      <div class="stage edge"><span class="role">Customer VM</span><span class="name">Find · 20 closest chunks</span></div>
+      <div class="conn crossing"><span class="ar">→</span><span class="tag">text</span></div>
+      <div class="stage cloud"><span class="role">Regolo · Italy</span><span class="name">Answer · chat model</span></div>
+    </div>
+
+    <div class="cards outcomes-grid">
+      <div class="card">
+        <h4>Personal or shared</h4>
+        <p class="desc">Every user can build knowledge bases and share them with colleagues or groups. Public sharing stays off.</p>
+      </div>
+      <div class="card">
+        <h4>Kept until removed</h4>
+        <p class="desc">Knowledge base documents don't expire with the 90-day purge — chat attachments do. Both are stated in the privacy notice.</p>
+      </div>
+      <div class="card">
+        <h4>What it doesn't do (yet)</h4>
+        <p class="desc">No OCR: scanned PDFs and images aren't read. No reranker. Files up to 25 MB.</p>
+      </div>
+    </div>
+
+    <div class="boundary-note">
+      <b>Documents stay home; only the indexing travels.</b> Text goes to Regolo in Italy to become vectors — a numeric fingerprint of its meaning — and comes back. Vectors and documents live on the customer's server. Changing the embedding model means re-indexing every knowledge base, so it's chosen once, on purpose.
+    </div>
+  </section>
+
   <!-- DEFAULTS -->
   <section class="defaults">
-    <div class="sec-head"><span class="num">03</span><h2>Defaults changed</h2></div>
+    <div class="sec-head"><span class="num">04</span><h2>Defaults changed</h2></div>
     <p class="lead">Open WebUI's defaults aren't mistakes: they were made for local models with small contexts and zero marginal cost. On paid APIs with large-context, tool-calling models, the same defaults leave value on the table — or open a budget with no ceiling.</p>
 
     <table class="diff">
@@ -388,7 +432,7 @@
 
   <!-- FEATURES -->
   <section class="features">
-    <div class="sec-head"><span class="num">04</span><h2>Features</h2></div>
+    <div class="sec-head"><span class="num">05</span><h2>Features</h2></div>
     <p class="lead">What a small company actually asks for: a chat that is safer than the free tools employees already use, that works on their files, and that someone else keeps running.</p>
 
     <div class="cards features-grid">
@@ -427,7 +471,7 @@
 
   <!-- STACK -->
   <section class="stack">
-    <div class="sec-head"><span class="num">05</span><h2>Technology stack</h2></div>
+    <div class="sec-head"><span class="num">06</span><h2>Technology stack</h2></div>
     <div class="stack-grid">
       <div class="stack-col edge-col">
         <h3>Customer VM</h3>
@@ -464,7 +508,7 @@
 
   <!-- DECISIONS -->
   <section class="decisions">
-    <div class="sec-head"><span class="num">06</span><h2>Key architectural decisions</h2></div>
+    <div class="sec-head"><span class="num">07</span><h2>Key architectural decisions</h2></div>
     <div class="cards decisions-grid">
 
       <div class="card decision">
@@ -508,13 +552,19 @@
         <div class="row"><span class="tag">Choice</span>Three sources per model: engine error, provider metadata, real long prompt.</div>
         <div class="row"><span class="tag result">Result</span>One model excluded for a 30k declared input window; thresholds set on data, not on labels.</div>
       </div>
+      <div class="card decision">
+        <h4>Vector search only, no reranker</h4>
+        <div class="row"><span class="tag">Problem</span>Regolo's reranker ranked Italian passages badly; a local one would need a GPU.</div>
+        <div class="row"><span class="tag">Choice</span>Semantic search only, 20 chunks passed to large-context models.</div>
+        <div class="row"><span class="tag result">Result</span>No GPU, one provider. To be re-measured on the first customer's real documents.</div>
+      </div>
 
     </div>
   </section>
 
   <!-- PROBLEMS SOLVED -->
   <section class="incidents">
-    <div class="sec-head"><span class="num">07</span><h2>Problems solved</h2></div>
+    <div class="sec-head"><span class="num">08</span><h2>Problems solved</h2></div>
     <div class="cards incidents-grid">
 
       <div class="card incident">
@@ -564,7 +614,7 @@
 
   <!-- ROADMAP -->
   <section class="roadmap">
-    <div class="sec-head"><span class="num">08</span><h2>What's next</h2></div>
+    <div class="sec-head"><span class="num">09</span><h2>What's next</h2></div>
     <div class="roadmap-list">
       <div class="roadmap-item">
         <h4>One-command deploy</h4>
@@ -591,7 +641,7 @@
 
   <!-- MEASURED RESULTS -->
   <section class="results">
-    <div class="sec-head"><span class="num">09</span><h2>Some measured results</h2></div>
+    <div class="sec-head"><span class="num">10</span><h2>Some measured results</h2></div>
     <p class="lead">Measured on the template instance, not on a benchmark suite.</p>
     <div class="metrics" aria-label="Measured results">
       <div class="metric"><span class="v">~1 GB</span><span class="l">app RAM at rest, 8 GB VM</span></div>
