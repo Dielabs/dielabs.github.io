@@ -85,6 +85,15 @@ layout: null
     .release-desc { font-size: 0.92rem; color: var(--muted); line-height: 1.7; max-width: 640px; margin-bottom: 1rem; }
     .release-link { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #B07D14; display: inline-flex; align-items: center; gap: 4px; transition: gap 0.2s; }
     .release-banner:hover .release-link { gap: 8px; }
+.nebius-banner { display: flex; align-items: center; gap: 1.8rem; text-decoration: none; color: #FFFFFF; background: #052B42; border: 1.5px solid #E0FF4F; border-radius: 16px; padding: 1.6rem 2.2rem; margin: 1.2rem 0 0; box-shadow: 0 4px 18px rgba(224,255,79,0.15); transition: transform 0.2s, box-shadow 0.2s; }
+.nebius-banner:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(224,255,79,0.28); }
+.nebius-banner img { height: 40px; width: auto; flex-shrink: 0; }
+.nebius-tag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #E0FF4F; margin-bottom: 0.4rem; }
+.nebius-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.7rem; letter-spacing: 0.04em; color: #FFFFFF; margin: 0 0 0.4rem; }
+.nebius-desc { font-size: 0.9rem; color: rgba(255,255,255,0.78); line-height: 1.65; margin: 0 0 0.6rem; max-width: 640px; }
+.nebius-link { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #E0FF4F; display: inline-flex; gap: 4px; transition: gap 0.2s; }
+.nebius-banner:hover .nebius-link { gap: 8px; }
+@media (max-width: 640px) { .nebius-banner { flex-direction: column; align-items: flex-start; gap: 1rem; padding: 1.4rem 1.4rem; } }
     .focus-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5px; background: var(--border); border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; }
     .focus-card { background: var(--white); padding: 2rem; transition: background 0.25s; position: relative; }
     .focus-card:hover { background: var(--off); }
@@ -190,6 +199,15 @@ layout: null
     <h3 class="release-title">Platone</h3>
     <p class="release-desc">Voice RAG with a hybrid edge/cloud architecture, measured against latency, cost and privacy. Ask your knowledge bases and get grounded answers, advice or a web lookup &mdash; and watch the pipeline work: the retrieval score, the policy that fired, and the source every answer rests on, live in the WebGUI.</p>
     <span class="release-link">Read the case study &rarr;</span>
+  </a>
+  <a class="nebius-banner" href="https://dev.nebius.com/builders" target="_blank" rel="noopener">
+    <img src="/assets/logos/nebius.svg" alt="Nebius logo" loading="lazy">
+    <div>
+      <span class="nebius-tag">Community &middot; October 2026</span>
+      <h3 class="nebius-title">Nebius AI Builder Program member</h3>
+      <p class="nebius-desc">Dielabs is part of the Nebius AI Builder Program: builders, founders and engineers creating AI on open models and independent tools, alongside partners such as NVIDIA, Hugging Face and LangChain.</p>
+      <span class="nebius-link">About the program &rarr;</span>
+    </div>
   </a>
 </div></div>
 <div class="section" id="frameworkset" style="background: var(--off);"><div class="section-inner">
