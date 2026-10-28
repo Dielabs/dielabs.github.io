@@ -32,6 +32,7 @@ layout: default
   .pill{font-family:'IBM Plex Mono',monospace; font-size:.68rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; padding:.18rem .55rem; border-radius:999px; position:absolute; top:1.15rem; right:1.1rem;}
   .p-prog{color:#9A6412; background:#FBF0D9;}
   .p-des{color:var(--violet); background:#EFEAFD;}
+  .p-beta{color:#1F6B4F; background:#E3F1EA;}
   .poc-grid.three{grid-template-columns:repeat(3,1fr);}
   .poc-foot{margin-top:2.6rem; padding-top:1.2rem; border-top:1px solid rgba(0,0,0,.08); font-size:.9rem; color:#7a7a96; font-style:italic;}
   @media (max-width:760px){ .poc-grid,.poc-grid.three{grid-template-columns:1fr;} }
@@ -58,16 +59,16 @@ layout: default
 <div class="poc-label">In the lab</div>
 <div class="poc-grid three">
   <div class="poc-card lab">
+    <span class="pill p-beta">Beta · available</span>
+    <h3>NewsRAG</h3>
+    <span class="sub">Newspaper archives</span>
+    <p>A RAG for newspaper archives, built for a company that runs the digital platforms of several papers. Scanned print editions and web history are two separate sources, linked in one document model. Built for questions a documentation RAG never meets: how a story unfolded, what changed from web to print, and saying "the archive has no answer" — because every article it could stitch together is real.</p>
+  </div>
+  <div class="poc-card lab">
     <span class="pill p-prog">In progress</span>
     <h3>Dielabs RAG</h3>
     <span class="sub">Versioned docs RAG</span>
     <p>A RAG on the official documentation of fast-moving software — today vLLM and GuideLLM. Every version lives in its own knowledge base, so answers never mix releases, and each one cites software, version and page. It can also report exactly what changed between two versions.</p>
-  </div>
-  <div class="poc-card lab">
-    <span class="pill p-des">Designed</span>
-    <h3>NewsRAG</h3>
-    <span class="sub">Newspaper archives</span>
-    <p>A RAG for newspaper archives, designed for a company that runs the digital platforms of several papers. Scanned print editions and web history are two separate sources, linked in one document model. Built for questions a documentation RAG never meets: how a story unfolded, what changed from web to print, and saying "the archive has no answer" — because every article it could stitch together is real.</p>
   </div>
   <div class="poc-card lab">
     <span class="pill p-prog">In progress</span>
