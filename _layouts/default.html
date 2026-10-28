@@ -346,7 +346,7 @@
   <div class="breadcrumb">
     <a href="/">dielabs</a>
     <span class="sep">/</span>
-    <span>{{ page.dir | remove: '/' | default: page.title }}</span>
+    {% assign crumb = page.dir | remove: '/' %}<span>{% if crumb == 'case-studies' %}works{% else %}{{ crumb | default: page.title }}{% endif %}</span>
     {% if page.name != 'index.md' and page.name != 'README.md' %}
     <span class="sep">/</span>
     <span>{{ page.title | default: page.name | remove: '.md' }}</span>
