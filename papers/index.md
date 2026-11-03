@@ -23,6 +23,9 @@ Benchmark of SN / TP-2 / DP-2 architectures on Dell PowerEdge R730 with vLLM. Pr
 ### [The Shifting Bottleneck](the-shifting-bottleneck.md)
 Three benchmarks on a single RTX 4070 Super with Qwen3-8B-AWQ via vLLM. Shows how the binding constraint moves from KV capacity (FP16, prompt-heavy) to a higher KV ceiling (FP8) to memory bandwidth (FP8, chat-like). A methodology for inference sizing that starts from workload and SLO.
 
+### [The Small Slice That Matters](the-small-slice-that-matters.md)
+Local AI on a consumer GPU: a 35B MoE model (Qwen3.6-35B-A3B) served by llama.cpp on a 12 GB RTX 4070 Super, with experts offloaded to RAM. Shows that the first 3.5 GB of VRAM are worth more than the next 7, that prefill is bound by PCIe and decode by GPU-CPU handovers, and how to spend VRAM on the metric you care about.
+
 ---
 
 *All content is original Dielabs work by Diego Bardella.*
