@@ -12,6 +12,8 @@ layout: default
 
 # Frameworks
 
+*Frameworks we use on every engagement.*
+
 Proprietary frameworks for reasoning about LLM inference systems. Three of them follow the life of a deployment, from sizing to production; the other is the reference model the lab uses to structure analysis, design and engineering work.
 
 ---
