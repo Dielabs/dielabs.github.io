@@ -79,6 +79,8 @@ layout: null
     .section-desc { font-size: 0.95rem; color: var(--muted); line-height: 1.75; margin-bottom: 2.5rem; }
     .about-text p { font-size: 0.95rem; color: var(--muted); line-height: 1.9; }
     .about-text p + p { margin-top: 12px; }
+    .about-role { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: -0.3rem 0 1rem; }
+    .overview-text p { font-size: 1.05rem; color: var(--text); max-width: 820px; }
     .about-note { font-size: 0.9rem; font-style: italic; color: var(--text); margin-top: 18px !important; }
 .nebius-strip { display: inline-flex; align-items: center; gap: 14px; margin-top: 2rem; padding: 10px 18px 10px 10px; background: #052B42; border: 1.5px solid #E0FF4F; border-radius: 100px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; }
 .nebius-strip:hover { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(224,255,79,0.25); }
@@ -207,7 +209,11 @@ layout: null
   </div>
 </section>
 <div class="section" style="background: var(--white);"><div class="section-inner">
-  <p class="whatido-label">What I do</p>
+  <p class="section-label">Overview</p>
+  <div class="about-text overview-text">
+    <p>Dielabs takes LLMs and agentic harnesses from use case to a working system. Alongside client work, we run a hands-on inference lab that benchmarks LLM serving and agentic workloads under production-like conditions: latency, throughput, capacity and cost per task. What we learn there becomes opinionated frameworks for day 0&ndash;1 decisions: what to deploy, where, and at what scale.</p>
+  </div>
+  <p class="whatido-label">What we do</p>
   <div class="focus-grid">
     <div class="focus-card"><div class="focus-accent a-blue"></div><h3>Technical use-case assessment</h3><p>From requirements to workload profile, SLOs and costs.</p></div>
     <div class="focus-card"><div class="focus-accent a-violet"></div><h3>Inference workload</h3><p>Workload modeling, capacity planning, SLO-driven GPU sizing. Deploying and tuning open-source models with vLLM, model parallelism and KV cache management.</p></div>
@@ -236,11 +242,11 @@ layout: null
   </a>
 </div></div>
 <div class="section" style="background: var(--white); padding-top: 0;"><div class="section-inner">
-  <p class="section-label">About me</p><h2 class="section-title about-name">Diego Bardella</h2>
+  <p class="section-label">The founder</p><h2 class="section-title about-name">Diego Bardella</h2>
+  <p class="about-role">Founder &amp; Principal Architect</p>
   <div class="about-text">
-    <p>I help companies run private AI from first idea to production: on-premises, hybrid or on EU sovereign clouds. At Dielabs, I architect, benchmark and deliver the right LLM serving and agentic harness for each AI application.</p>
-    <p>My background is 15+ years in datacenter infrastructure (enterprise private cloud, MSP, Telco NFV), in delivery and technical presales. I first worked on AI infrastructure at Dell Technologies, on early DGX deals.</p>
-    <p class="about-note">I design, test and deploy systems. AI accelerates the build.</p>
+    <p>15+ years in datacenter infrastructure (enterprise private cloud, MSP, Telco NFV), in delivery and technical presales. First worked on AI infrastructure at Dell Technologies, on early DGX deals.</p>
+    <p class="about-note">Designs, tests and deploys systems. AI accelerates the build.</p>
   </div>
 </div></div>
 <div class="section" style="background: var(--off);"><div class="section-inner" style="text-align:center;">
