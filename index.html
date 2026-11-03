@@ -57,6 +57,10 @@ layout: null
     .sub { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 0.8rem; margin-bottom: 1.6rem; white-space: nowrap; }
     .tagline { font-size: clamp(14px, 1.8vw, 18px); font-weight: 300; font-style: italic; color: var(--muted); line-height: 1.6; margin-bottom: 2rem; }
     .status { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.05em; color: var(--muted); }
+    .cert-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.2rem; }
+    .cert-row .cert-badge { margin: 0; width: 100%; box-sizing: border-box; }
+    @media (max-width: 1200px) { .cert-row .cert-badge { gap: 12px; padding: 10px 14px 10px 10px; } .cert-row .cert-badge img { height: 56px; width: 56px; } .cert-row .cert-badge .cert-name { font-size: 0.86rem; } }
+    @media (max-width: 760px) { .cert-row { grid-template-columns: 1fr; max-width: 520px; margin-left: auto; margin-right: auto; } .cert-row .cert-badge img { height: 72px; width: 72px; } .cert-row .cert-badge .cert-name { font-size: 0.98rem; } }
     .cert-badge { display: inline-flex; align-items: center; gap: 16px; margin: 1.2rem auto 0; text-align: left; padding: 12px 18px 12px 12px; border: 1.5px solid rgba(0,87,255,0.22); border-radius: 14px; background: rgba(0,87,255,0.04); text-decoration: none; transition: border-color 0.2s, background 0.2s, transform 0.2s; }
     .cert-badge:hover { border-color: rgba(0,87,255,0.5); background: rgba(0,87,255,0.07); transform: translateY(-1px); }
     .cert-badge img { height: 72px; width: 72px; object-fit: contain; display: block; flex-shrink: 0; }
@@ -253,7 +257,7 @@ layout: null
 </div></div>
 <div class="section" style="background: var(--off);"><div class="section-inner" style="text-align:center;">
   <p class="section-label">Certifications</p>
-  <div style="display:flex;flex-direction:column;align-items:center;gap:1.2rem;">
+  <div class="cert-row">
   <a class="cert-badge" href="https://www.credly.com/users/diego-bardella/badges" target="_blank" rel="noopener" title="Verify on Credly">
     <img src="https://images.credly.com/images/3d924691-436a-4fb6-b19b-1005ccbb6135/blob" alt="NVIDIA-Certified Associate: AI Infrastructure and Operations badge" loading="lazy">
     <span class="cert-meta">
