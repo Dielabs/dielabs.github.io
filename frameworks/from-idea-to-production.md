@@ -76,10 +76,9 @@ title: "From Idea to Production"
 <div class="private-card">
   <div class="private-title-row">
     <span class="private-title">From Idea to Production &mdash; the manual</span>
-    <a class="private-pill" href="mailto:info@dielabs.eu?subject=From%20Idea%20to%20Production%20%E2%80%94%20request" title="Request access via email">Available on request</a>
+    <a class="private-pill" href="from-idea-to-production-manual.html" title="Read the full manual">Read the manual &rarr;</a>
   </div>
   <p class="private-desc">The full operational manual behind this framework. End-to-end presales architect playbook: from business pain statement to validated production deployment, with discovery templates, sizing worksheets, runtime decision matrices, hardware constraint tables, benchmark protocols, and scaling decision trees. Each of the 11 steps is expanded into actionable artifacts usable in real customer engagements.</p>
-  <p class="private-note">Not published. Reserved for direct conversations &mdash; reach out if relevant to your context.</p>
 </div>
 
 ---
