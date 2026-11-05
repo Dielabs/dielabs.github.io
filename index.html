@@ -55,8 +55,6 @@ layout: null
     h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 5vw, 72px); line-height: 1.0; letter-spacing: 0.03em; color: var(--text); margin-bottom: 0.5em; white-space: nowrap; }
     h1 em { font-style: normal; background: linear-gradient(135deg, var(--blue) 0%, var(--violet) 55%, var(--pink) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .sub { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-top: 0.8rem; margin-bottom: 1.6rem; white-space: nowrap; }
-    .founder-line { font-size: 0.95rem; color: var(--muted); margin: -0.6rem 0 1rem; }
-    .founder-line a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
     .tagline { font-size: clamp(14px, 1.8vw, 18px); font-weight: 300; font-style: italic; color: var(--muted); line-height: 1.6; margin-bottom: 2rem; }
     .status { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; font-weight: 500; letter-spacing: 0.05em; color: var(--muted); }
     .cert-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.2rem; }
@@ -210,7 +208,6 @@ layout: null
   <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div><div class="orb orb-4"></div>
   <div class="hero-content">
     <h1>Private AI, <em>from idea to production</em></h1>
-    <p class="founder-line">An independent AI infrastructure lab founded by <a href="#founder">Diego Bardella</a></p>
     <p class="tagline">LLMs and agentic harnesses, benchmarked and deployed on-premises, hybrid or on EU sovereign clouds.</p>
     <div class="status"><span class="dot" style="background:#5A9A3E;"></span> <strong>Serving</strong><span class="stack-list">Docker &middot; LMCache &middot; vLLM &middot; NVIDIA Dynamo &middot; LiteLLM &middot; OpenWebUI</span></div>
     <div class="status" style="margin-top:8px;"><span class="dot" style="background:var(--blue);"></span> <strong>Testing &amp; observability</strong><span class="stack-list">GuideLLM &middot; LMEval &middot; Prometheus &middot; Grafana</span></div>
@@ -290,7 +287,7 @@ layout: null
 </div></div>
 <footer>
   <span class="footer-logo">Dielabs</span>
-  <p>Diego Bardella · Private AI · Casale Monferrato, IT <span class="footer-updated">· last updated {{ site.time | date: "%-d %b %Y" }}</span></p>
+  <p>Dielabs · Private AI · An independent AI infrastructure lab founded by <a href="#founder">Diego Bardella</a> · Casale Monferrato, IT <span class="footer-updated">· last updated {{ site.time | date: "%-d %b %Y" }}</span></p>
   <div class="footer-links">
     <a href="https://www.kickresume.com/cv/4b8kvR/" target="_blank">Contact</a>
     <a href="https://linkedin.com/in/diegobardella" target="_blank">LinkedIn</a>
