@@ -7,7 +7,7 @@ title: "Testing Is the Product"
 
 ## A manifesto for on-premise inference due diligence
 
-**Lab:** Dielabs **Focus:** on-premise inference, sovereign AI, presales due diligence **Date:** July 2026, updated October 2026
+**Lab:** Dielabs **Focus:** on-premise inference, sovereign AI, presales due diligence **Date:** July 2026, updated November 2026
 
 > **Thesis.** The industry has learned to assemble sovereign inference. It hasn't learned to certify it. The gap between *"it works"* and *"I can put my signature on it"* is where the value gets created — and it's empty.
 
@@ -21,7 +21,7 @@ The post gathers nearly four hundred comments in four days. CISOs, enterprise ar
 
 **The post isn't the interesting document. The thread is.** Those four hundred replies contain, for free and unsolicited, the complete list of objections, questions, and blind spots of anyone evaluating on-premise inference. It should be read as discovery material, not as a technical debate.
 
-This piece pulls the first eleven principles (I–XI) out of that material, checks them against public third-party data, and turns them into an operational protocol. The later principles (XII–XIV) come from our own experimental investigation, from a second industry field report and from an analysis of a serving engine's code: they don't come from the DGX Spark thread, but from the same verification criterion — separating what can be sourced from what is a field report before certifying it in an acceptance test. The document stays anchored to a founding case, but is no longer limited to it: it grows every time a verified source adds a principle that stands on its own.
+This piece pulls the first eleven principles (I–XI) out of that material, checks them against public third-party data, and turns them into an operational protocol. The later principles (XII–XV) come from our own experimental investigation, from a second industry field report, from an analysis of a serving engine's code and from an independent measurement of inference providers: they don't come from the DGX Spark thread, but from the same verification criterion — separating what can be sourced from what is a field report before certifying it in an acceptance test. The document stays anchored to a founding case, but is no longer limited to it: it grows every time a verified source adds a principle that stands on its own.
 
 ---
 
@@ -136,6 +136,8 @@ This is the only value metric in the entire discussion, and it's expressed in un
 
 **Note (August 2026).** The same objection shows up, independently, in a separate thread months later: a commenter notes that **publishing tokens/second without energy cost and total hardware cost can make a very expensive system look efficient.** Same principle, different vendor, different model — cost should always be reported per unit of work delivered, never in isolation.
 
+**Note (November 2026).** A third independent confirmation, from an industry panel (GTC) with companies serving open models at large scale. The CTO of a legal AI platform says it explicitly: you measure cost per completed task, not cost per output token, because some models are cheap per token but run for a long time without finishing the task, and end up costing more. On the same panel, a development platform reports that adapting the model to its own task gave higher quality with 30% fewer tokens or steps: faster and cheaper answers for the user, with no change of hardware. Field report, not citable: it confirms the pattern, it doesn't provide thresholds.
+
 ## 8. VII — Localizing the data isn't controlling its use
 
 The most mature thread of the discussion is raised by two security architects, and it's the sharpest objection in the whole exchange: **data locality is not access control.**
@@ -194,7 +196,7 @@ Across four hundred comments, these four points never come up. Not by coincidenc
 
 **1. Quality after compression.** Four hundred comments about speed, zero about accuracy. Yet to fit the model into available memory, some recipes circulating don't just compress the weights to 2 bits — they **prune the experts from 256 down to 208 per layer**. That's not losing numerical precision, that's removing model capacity. A system that works but answers worse than the model you think you bought is the silent risk of this entire category — and nobody in the whole thread proposed **a regression evaluation** against the reference checkpoint.
 
-**2. The lifecycle.** There's already talk of a successor beyond a trillion parameters, with projections for summer 2026. Hardware doesn't grow alongside models. This cluster's depreciation isn't measured in time, it's **tied to the next release**: in six months the same hardware might no longer fit the reference model of its category. A three-year depreciation schedule on an asset whose relevance is measured in quarters is a financial-model error, not an engineering one.
+**2. The lifecycle.** There's already talk of a successor beyond a trillion parameters, with projections for summer 2026. Hardware doesn't grow alongside models. This cluster's depreciation isn't measured in time, it's **tied to the next release**: in six months the same hardware might no longer fit the reference model of its category. A three-year depreciation schedule on an asset whose relevance is measured in quarters is a financial-model error, not an engineering one. The reverse holds for the cloud: a closed model has a retirement date set by the vendor, and an agent built on top of it has to be migrated when that date arrives. An operator of voice agents for large enterprises raises this as an argument for open weights: whoever owns the weights also owns continuity (field report, GTC panel, November 2026). These are two different continuity risks — the hardware becoming irrelevant on one side, the model being retired on the other — and the buyer needs to see both, not just one.
 
 **3. The failure domain.** Four nodes working as one machine means if one goes down, the service goes down. Zero redundancy, overall availability equal to the product of the four. Nobody asked about recovery time, continuity target, or what happens during a firmware update. For a company, that's the first question, not the last.
 
@@ -273,7 +275,21 @@ The mechanism is the same as in XII: a true value, obtained in conditions no use
 
 ---
 
-## 16. The eight-question checklist
+## 16. XV — Same model, different service
+
+*Source: independent measurement of public endpoints (September 2026), with an industry field report as illustration. The principle holds even for people who will never use an external provider: an on-premise deployment is a provider like any other.*
+
+An industry panel (GTC, open models in production) describes an experiment by a company serving trillions of tokens a week: same model, same harness, same production traffic, seven inference providers in parallel for about two months, with daily scorecards on quality, latency and cost. The differences turned out to be large. The most instructive case: one provider was the fastest on the single call, but the slowest for the user. One of its model-compression choices made the answers just bad enough to need more turns to close the same request. Every per-call metric was better; the user's real wait was worse.
+
+An independent measurement confirms the phenomenon with a stated method. Six open models, dozens of providers, three measurement waves over 43 days: the same model changes in quality, latency, availability and price depending on who serves it. On a 70-billion-parameter model, eleven providers range from 56% to 96% accuracy on the same reasoning test. Price predicts speed, not quality. The same quantization label doesn't guarantee the same accuracy. Degradation is task-selective: the same deployment can be nearly normal on knowledge questions and collapse on multi-step reasoning. And the map ages: with prices unchanged, the best choice shifts because of availability, rate limits, providers leaving and silent quality drops.
+
+For on-premise the lesson is direct. Quantization, serving engine, kernels, sampling configuration: every choice made to fit the model into the client's hardware produces exactly this kind of variance. The model name on the spec sheet isn't a service contract. And it's the same family of failures as XIII: none of these drops throws an error.
+
+**Principle.** The acceptance test certifies a service, not a model name. It measures the task the user completes — turns, total time, outcome — not the single call. Quality is compared against the same model served at full precision, task by task, because a deployment can pass one test and fail another. And the certification expires: it has to be repeated at every change of version, quantization or engine, as part of day two (VIII).
+
+---
+
+## 17. The eight-question checklist
 
 Counting the questions commenters spontaneously ask the author produces a recurring list. It isn't a questionnaire designed at a desk: it's **free discovery, validated by a sample of four hundred professionals in the middle of an actual purchase evaluation**. Use it as a qualification grid.
 
@@ -290,7 +306,7 @@ Whoever answers these eight makes a sale. Whoever answers the first and the four
 
 ---
 
-## 17. The acceptance protocol
+## 18. The acceptance protocol
 
 The operational consequence of all of the above is that an artifact is missing, and the missing artifact isn't a benchmark: **it's an acceptance test report.**
 
@@ -298,7 +314,7 @@ Given any cluster — Spark, appliance, traditional GPU server — an acceptance
 
 **Performance.** Context/throughput curve with prefill and decode separated and reported distinctly. Capacity measured two ways: hardware-anchored in closed loop (*Cr_closed*) to know what the hardware can do, and SLO-anchored in open loop (*Cr_open*) to know how many users it actually holds at acceptable latency. The theoretical ceiling calculated from memory bandwidth, reported alongside the measured one, as a sanity check. For every number, the benchmark mode, the arrival distribution and the end-of-response rule are stated (principle XIV).
 
-**Quality.** Regression comparison between the quantized checkpoint in production and the uncompressed reference model, on a task set representative of the client's use. This is the piece everyone is missing, and it's the piece that tells the client **how much intelligence they actually bought**.
+**Quality.** Regression comparison between the quantized checkpoint in production and the uncompressed reference model, on a task set representative of the client's use. This is the piece everyone is missing, and it's the piece that tells the client **how much intelligence they actually bought**. Three method rules. First: if production traces can't be read for confidentiality reasons — the typical case of the regulated buyer — the test cases are written by domain experts close to the client, not by the integrator. Second: the offline test isn't enough; a gradual rollout to real users is needed, because some defects no metric catches (a model that passes every test and fills contracts with emojis). Third: the model is tested together with the layer that drives it — prompts, tools, checks, the so-called harness — because a harness that's excellent for one model can be harmful for another. The comparison is done task by task and repeated at every update (principle XV).
 
 **Resilience.** Behavior on node failure, measured recovery time, behavior after memory exhaustion, zero-downtime update procedure (or an explicit statement that none exists).
 
@@ -310,7 +326,7 @@ All of it mapped onto the *-ilities* (AMPRS), so the report speaks the language 
 
 ---
 
-## 18. The commercial consequence
+## 19. The commercial consequence
 
 Don't sell the hardware. Clients buy that on their own, and the thread proves they can even assemble it themselves: four nodes over RoCE, RDMA at 98% of line rate, first bring-up successful. Assembly competence is widespread and growing fast.
 
@@ -354,3 +370,9 @@ Our own experimental investigation — [When Offloading Doesn't Offload](/papers
 **Added source (September 2026), principle XIII.** The taxonomy of the four load profiles, the gateway/router distinction, the cache-aware routing pattern and the list of silent failures come from the same industry talk cited in principle XII. The architectural principle (the admission layer can refuse before the compute cost is spent; blind routing is counterproductive when the session cache matters) is structural and verifiable regardless of the source. The corollary numbers — latency degradation by utilization, cold-start times, the specific case of a 98% cache hit rate with TTFT going from 786 ms to 16 ms — remain field reports that can't be reproduced without a stated configuration, reported to illustrate the size of the effect and not as acceptance thresholds.
 
 **Added source (September 2026), principle XIV.** The description of vLLM's three benchmark commands (`throughput`, `latency`, `serve`), of the `ignore_eos` behavior and of the auto-tuning script comes from A. Gordić, *"Inside vLLM: Anatomy of a High-Throughput LLM Inference System"* (August 2025), an analysis of the source code at commit 42172ad, reviewed by core project contributors before publication. Evidence tier: citable, because it describes how the tools behave by construction, not a measured result; no performance number is taken from this source.
+
+**Added sources (November 2026), principle XV and notes to VI, X and the protocol.**
+
+- L. He et al. (University of Sydney, Johns Hopkins, Stanford, City University of Hong Kong), *"You Cannot Pick a Provider From the Price List: Market-Aware Routing for Open-Weight LLM Inference"* (September 2026): [arxiv.org/pdf/2609.37902](https://arxiv.org/pdf/2609.37902). Independent measurement with a stated method: 6 open models, multiple providers, three waves over 43 days, requests pinned to a single provider through an aggregator. Evidence tier: citable for the phenomenon (quality variance across providers of the same model, task selectivity, drift over time, price not predicting quality). The authors explicitly don't attribute a cause: the drop may come from quantization, kernels, serving bugs, configuration or the aggregator. The 56–96% figure (Llama-3.3-70B, GSM8K, eleven providers) is taken from this source.
+- Open-models panel at NVIDIA GTC with Base44, Lovable, Parloa and Legora (transcript). Evidence tier: field report — direct experience of large-scale operators, no stated methodology or configuration. Used as illustration (seven providers in parallel, compression lengthening the turns per request, cost per task, 30% fewer tokens after adaptation, retirement date of closed models, tests written by domain experts, the emoji defect), not as an acceptance threshold.
+- Not cited as evidence: the case study published by the inference provider Base44 chose (vendor material, not verified).

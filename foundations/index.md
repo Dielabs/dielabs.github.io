@@ -43,7 +43,7 @@ Why a semantic router must be fine-tuned on the tier boundaries of its real doma
 <div class="open-featured" markdown="1">
 
 ### [Testing Is the Product](testing-is-the-product.md) <span class="new-flag">New</span>
-A manifesto for on-premise inference due diligence, built from a public case study: a viral four-node DGX Spark deployment and the four hundred comments it drew. Fourteen principles (eleven from the case, three from lab work and from the vLLM benchmark tools), an eight-question qualification checklist, and a five-axis acceptance protocol (performance, quality, resilience, operations, governance).
+A manifesto for on-premise inference due diligence, built from a public case study: a viral four-node DGX Spark deployment and the four hundred comments it drew. Fifteen principles (eleven from the case, four from lab work, the vLLM benchmark tools and an independent measurement of inference providers), an eight-question qualification checklist, and a five-axis acceptance protocol (performance, quality, resilience, operations, governance).
 
 </div>
 
