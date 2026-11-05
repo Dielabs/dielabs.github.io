@@ -15,6 +15,7 @@ description: "Coding Benchmark @Dielabs: 17 LLM configurations on 50 coding exer
   .content .table-scroll.wide td { padding: 8px 7px; }
   @media (max-width: 860px) { .content .table-scroll.wide table { min-width: 820px; } }
   .content .paper-meta { font-size: 0.85rem; }
+  .content .lead-result { font-size: 1.12rem; line-height: 1.6; color: var(--text); margin: 1.4rem 0 1.2rem; }
   .content .tldr { border: 1.5px solid rgba(0,87,255,0.18); border-left: 4px solid var(--blue); background: linear-gradient(120deg, #F3F7FF 0%, #FFFFFF 70%); border-radius: 12px; padding: 1.4rem 1.6rem 0.6rem; margin: 2rem 0; }
   .content .tldr h2 { margin-top: 0; border-bottom: none; }
   .content details { border: 1.5px solid var(--border); border-radius: 10px; padding: 0.9rem 1.3rem; margin: 1rem 0; background: var(--off); }
@@ -35,7 +36,7 @@ description: "Coding Benchmark @Dielabs: 17 LLM configurations on 50 coding exer
 
 <p class="paper-meta"><strong>Lab:</strong> Dielabs &nbsp;<strong>Benchmark:</strong> Aider Polyglot, 50 fixed exercises in 6 languages &nbsp;<strong>Local:</strong> llama.cpp on RTX 4070 Super 12 GB VRAM, 32 GB RAM &nbsp;<strong>Remote:</strong> pinned providers via OpenRouter &nbsp;<strong>Measured:</strong> November 2026 (prices as of 4 November 2026)</p>
 
-17 LLM configurations, 50 coding exercises: quality, cost and time. What they tell us about how models work, and how (and where) to choose them.
+<p class="lead-result"><strong>On our local node, enabling reasoning on Qwen3.6 tripled first-try passes, from 6 to 18 out of 50. The cost was just over three extra minutes per exercise.</strong></p>
 
 <a class="pdf-link" href="/assets/papers/what-it-costs-to-be-right/what-it-costs-to-be-right.pdf">Download the PDF</a>
 
