@@ -43,13 +43,13 @@ description: "Coding Benchmark @Dielabs: 17 LLM configurations on 50 coding exer
 
 ## In short
 
-We measured 17 configurations of 10 models (16 planned plus one control run) on the same 50 programming exercises in six languages, with automated tests deciding the outcome. Besides the score we recorded first-try passes, malformed responses, tokens, time and cost. The main findings:
+We measured 17 configurations of 10 models (16 planned plus one control run) on the same 50 programming exercises in six languages, with automated tests deciding the outcome: 13 configurations completed all 50 exercises, 4 were stopped early. Besides the score we recorded first-try passes, malformed responses, tokens, time and cost. The main findings:
 
 - **One model is in a league of its own.** Claude Opus 5.5 solves 49 exercises out of 50, 46 on the first try. The runner-up, Kimi K3.1 Pro, solves 42, but only 22 on the first try.
-- **Below that, a tight cluster.** Six configurations between 62% and 70%, very different in size and price, land close together. With 50 exercises the uncertainty is wide: this first campaign is not enough to rank them, only to group them into tiers.
+- **Below that, a tight cluster.** Six remote configurations between 62% and 70%, very different in size and price, land close together. With 50 exercises the uncertainty is wide: this first campaign is not enough to rank them, only to group them into tiers.
 - **Within the cluster, price varies more than tenfold.** GLM-5.3 scores close to GLM-5.3-Flash (70% vs 68%) and the same as Haiku 5.5, at a cost per solved exercise up to 10 times higher.
 - **Size alone does not predict the result.** 2026 general-purpose models, even with fewer declared active parameters, match or beat the 2025 Qwen3-Coder-480B, which is specialized for code.
-- **Reasoning (test-time compute) works, but it is a trade-off.** In thinking mode, with the sampling profile Qwen recommends for code, Qwen3.6 on the local node goes from 27 to 35 exercises and from 7 to 18 on the first try; a control run shows the gain comes from reasoning, not from the sampling profile. Haiku, where only reasoning changes, goes from 35 to 41. At high doses, GLM-5.3-Flash and DeepSeek-V4.1-Flash become too slow for real use.
+- **Reasoning (test-time compute) works, but it is a trade-off.** On the local node, with the same sampling settings, enabling thinking on Qwen3.6 increased solved exercises from 22 to 35 out of 50. First-try passes rose from 6 to 18, while average time per exercise rose from 72 to 261 seconds. Haiku, where only reasoning changes, goes from 35 to 41. At high doses, GLM-5.3-Flash and DeepSeek-V4.1-Flash become too slow for real use.
 - **In this test, quantization took away little compared to what it saves.** Qwen3-Coder-Next at 3 bits takes about 77% less space than the BF16 version and solves 3 fewer exercises out of 50, a gap that with these numbers may well be chance. In our comparison, which also changes the runtime environment, a few malformed responses and more output tokens appear.
 - **On the local node, the best coding model is the everyday one, as long as you let it think.** Qwen3.6 with thinking reaches 70%, close to the cheap cloud models, paying for it in time.
 
@@ -129,7 +129,7 @@ The table lists all base configurations. Cost per solved exercise is in US cents
 
 </div>
 
-*Thinking low\* = minimum level, because the provider does not allow turning it off. MXFP4\* = native weight format. Local quantizations: Unsloth UD-Q4_K_XL and UD-Q3_K_XL. Score = solved within two tries out of 50. Tokens out / ex. = tokens generated per exercise (reasoning tokens included). Costs estimated as described in the Method. For remote models, seconds per exercise measure provider and network and are not comparable with local ones.*
+*Thinking low\* = minimum level, because the provider does not allow turning it off. MXFP4\* = native weight format. Local quantizations: Unsloth UD-Q4_K_XL and UD-Q3_K_XL. Score = solved within two tries out of 50. Tokens out / ex. = tokens generated per exercise (reasoning tokens included). Costs estimated as described in the Method. Seconds per exercise are end-to-end: both tries and test runs, plus network and provider service for remote models. They can be compared across deployments as total wait time; isolating inference speed would require separate measurements.*
 
 ---
 
@@ -155,12 +155,12 @@ Haiku 5.5, GLM-5.3-Flash, DeepSeek-V4.1-Flash, Qwen3-Coder-Next and Qwen3-Coder-
 - **Price:** DeepSeek-V4.1-Flash (0.23 ¢), GLM-5.3-Flash (0.26 ¢) and Haiku 5.5 (0.35 ¢) per solved exercise.
 - **First try:** DeepSeek-V4.1-Flash is the best of the group (18).
 - **Speed:** Haiku 5.5 is the fastest in the test (8 seconds per exercise).
-- **Discipline:** Qwen3-Coder-Next produces no malformed responses at all.
+- **Discipline:** Qwen3-Coder-Next in BF16 produces no malformed responses at all (the local 3-bit version produced 3).
 - **Open weights:** GLM-5.3-Flash and DeepSeek-V4.1-Flash are open and served by dozens of providers, so pricing is competitive and you can switch provider without switching model. Haiku is closed.
 
 ### The code-specialized models
 
-The Qwen3-Coder line (30B, 480B, Next) has no thinking by design: it is meant to work inside an agent, where context comes from the environment (executions, tests, errors) rather than from reasoning. In the test the "Coder" label gave no advantage: the 480B (62%) trails smaller and newer general-purpose models, and the 4-bit Coder-30B was stopped at 44 exercises with 11 solved. Coder-Next remains interesting for its discipline and because it is the only one of the group that runs on our node, using VRAM (12 GB) and RAM (32 GB) together.
+The Qwen3-Coder line (30B, 480B, Next) has no thinking by design: it is meant to work inside an agent, where context comes from the environment (executions, tests, errors) rather than from reasoning. In the test the "Coder" label gave no advantage: the 480B (62%) trails smaller and newer general-purpose models, and the 4-bit Coder-30B was stopped at 44 exercises with 11 solved. Coder-Next remains interesting for its discipline (in BF16) and because it is the only one of the group that runs on our node, using VRAM (12 GB) and RAM (32 GB) together.
 
 ### The local node
 
@@ -190,13 +190,21 @@ The benchmark shows two ways to get a better result. The first is **intelligence
 The mechanism is simple: for each token the model does a fixed amount of computation. By writing intermediate steps, each one becomes context for the next, and the model can chain many small computations instead of doing a single one. It's the difference between doing long multiplication in your head or on paper. External feedback is even stronger, because it brings information the model could not have known.
 
 <figure>
-  <img src="/assets/papers/what-it-costs-to-be-right/chart-thinking.svg" alt="Bar charts comparing thinking off and on for Haiku 5.5 and Qwen3.6">
-  <figcaption>Chart 3. Same model, two modes. For Haiku only reasoning changes; for Qwen3.6 thinking mode also uses the sampling profile Qwen recommends for code (the control run is discussed in the text).</figcaption>
+  <img src="/assets/papers/what-it-costs-to-be-right/chart-thinking.svg" alt="Bar charts comparing thinking off and on for Haiku 5.5, and three runs of Qwen3.6">
+  <figcaption>Chart 3. Same model, more reasoning. For Haiku only reasoning changes. For Qwen3.6 on the local node, three runs: standard profile without thinking, code profile without thinking (control run), code profile with thinking. The clean comparison is between the last two, where only reasoning changes.</figcaption>
 </figure>
 
-The prediction, written before the runs, was: with thinking, the first try is what goes up most. It was confirmed in two ways. **Qwen3.6** goes from 7 to 18 exercises on the first try and from 27 to 35 solved, with zero malformed responses instead of 3. **Haiku 5.5** goes from 14 to 24 on the first try and from 35 to 41 solved. Counting exercises, Haiku with thinking gains 7 and loses 1; Qwen3.6 in thinking mode gains 10 and loses 2 (Appendix C).
+Qwen3.6 was run three ways on the local node:
 
-We recommend using the vendor's recommended settings for each mode: for Qwen3.6, thinking mode with its dedicated code sampling profile takes it from 27 to 35 exercises. A control run with the same sampling but no reasoning solved 22: the improvement comes from reasoning, not from the sampling profile. With sampling held equal, reasoning gains 14 exercises and loses 1, the clearest comparison in the whole benchmark (Appendix C).
+| Qwen3.6 on the Dielabs node | Thinking | Solved (out of 50) | First try | Avg time per exercise |
+| --- | --- | --- | --- | --- |
+| Standard profile | off | 27 | 7 | 73 s |
+| Code profile | off | 22 | 6 | 72 s |
+| Code profile | on | 35 | 18 | 261 s |
+
+The prediction, written before the runs, was: with thinking, the first try is what improves most. In relative terms the data confirm it. In the controlled comparison on **Qwen3.6** (same sampling, only reasoning changes) first-try passes tripled, from 6 to 18, while solved exercises rose by 59%, from 22 to 35, and malformed responses went from 2 to 0. **Haiku 5.5** goes from 14 to 24 on the first try (+71%) and from 35 to 41 solved (+17%). Counting exercises, Haiku with thinking gains 7 and loses 1; Qwen3.6, with sampling held equal, gains 14 and loses 1 (Appendix C).
+
+With the vendor's recommended settings for each mode, Qwen3.6 goes from 27 to 35 exercises, but that comparison changes two things at once: reasoning and sampling profile. The control run isolates reasoning: with the code profile held fixed, thinking gains 14 exercises and loses 1, the clearest comparison in the whole benchmark (Appendix C). The improvement comes from reasoning, not from the sampling profile.
 
 Qwen3.6 is an instructive case: it is trained to reason before answering. Our interpretation: without thinking, its first answer is a draft missing the step the model takes for granted. Consistent with this, it was the model with the lowest first-try rate in the test.
 
@@ -220,9 +228,9 @@ The "high" level is adaptive: on trivial tasks models may decide not to reason a
 
 > **Rule of thumb:** maximum reasoning does not automatically give the best result per euro or per second. The right level depends on model, task and acceptable wait time, and it has to be measured: for Haiku "high" paid off, for GLM-5.3-Flash and DeepSeek-V4.1-Flash it did not.
 
-### Reasoning and sampling come as a pair
+### Thinking and sampling in Qwen3.6
 
-> **In short:** the sampling parameters recommended by the vendor are designed together with reasoning: they form a single reasoning profile. The thinking profile, used without reasoning, did not help Qwen3.6 on code. Use profiles as packages, thinking + dedicated sampling, without mixing their parts.
+> **In short:** Qwen's model card recommends different sampling profiles depending on mode and task, and we used exactly those values. What our data show for certain: with the code profile fixed, thinking gained 14 exercises and lost 1. The code profile used without thinking scored 22 vs 27 for the standard profile, a gap compatible with chance: how much each parameter weighs remains open. We treat thinking and its sampling settings as one operational unit, which we call the reasoning profile.
 
 The Qwen3.6 control run was the only unexpected result of the benchmark: with reasoning off and the thinking-mode sampling profile the model solved 22 exercises, against 27 with the standard non-thinking profile. We expected the opposite. It is worth understanding why.
 
@@ -235,19 +243,19 @@ The Qwen3.6 control run was the only unexpected result of the benchmark: with re
 | top_k | 20 | 20 | unchanged |
 | Presence penalty | 1.5 | 0 | no push to vary words |
 
-The first counterintuitive point: the "code" profile **is not stricter**, it is wider. The slight temperature drop matters less than opening top_p from 0.8 to 0.95.
+The first counterintuitive point: the "code" profile **is not stricter**, it is wider: top_p opens from 0.8 to 0.95, while temperature drops only slightly. Which of the two changes matters more, our runs do not say.
 
 **Why randomness weighs differently in code.** Studies on code generation distinguish two kinds of tokens: **hard** ones, concentrated mostly at the start of a block, where the model decides the structure (a loop, a condition, a call), and **safe** ones, almost dictated by syntax (a bracket, the name of an already defined variable). More randomness helps find the right path at the hard points, but introduces errors at the safe ones: a rare word picked where the syntax allowed only one breaks the program.
 
-**Why thinking changes things.** With reasoning on, the exploratory part happens in the reasoning text: there, wide sampling is useful, because the model tries different paths and, if it takes a wrong one, has the chance to notice and correct itself before writing the answer. By the time it reaches the final code it has already decided the structure, and most tokens are "safe": wide sampling does little damage. Without reasoning, instead, the model explores and writes at the same time. An unlikely token, let in by the wide top_p, ends up straight in the code, and there is no step to catch it.
+**Our hypothesis: why thinking changes things.** With reasoning on, the exploratory part happens in the reasoning text: there, wide sampling is useful, because the model tries different paths and, if it takes a wrong one, has the chance to notice and correct itself before writing the answer. By the time it reaches the final code it has already decided the structure, and most tokens are "safe": wide sampling does little damage. Without reasoning, instead, the model explores and writes at the same time. An unlikely token, let in by the wide top_p, ends up straight in the code, and there is no step to catch it.
 
 This is consistent with Qwen's choices, which recommend a narrower top_p (0.8) for non-thinking mode and a wider one (0.95) for thinking mode. Presence penalty, on the other hand, is presented by Qwen as a remedy for endless repetition; in our control run there was no looping (the model actually wrote fewer tokens than in the standard run), so it does not seem to have been the decisive variable. Our initial hypothesis, that presence penalty hurt code, was not confirmed.
 
 **How solid this explanation is.** It is a plausible mechanism, consistent with the vendor's design and with the literature, but our data alone do not prove it: 27 vs 22 exercises, with 8 won by the standard profile and 3 by the code one, is a gap compatible with chance (p 0.23), and each configuration was run only once. Verifying it would take repeated runs, or a run that changes only top_p. The certain data point is another one: with sampling held equal, reasoning gained 14 exercises and lost 1.
 
-> **Rule of thumb:** reasoning and sampling are the same dial, the reasoning profile. Use the vendor's recommended profile for the chosen mode, without mixing parts. A wide profile makes sense when the model reasons before answering; without reasoning, for code, the narrower sampling indicated by the vendor is the prudent choice.
+> **Rule of thumb:** use the vendor's recommended profile for the chosen mode, and treat thinking and its sampling as one package. Whether mixing parts hurts in general, our data do not show; without reasoning, for code, the narrower sampling indicated by the vendor is the prudent choice.
 
-*Source on token behaviour in code: "Hot or Cold? Adaptive Temperature Sampling for Code Generation with Large Language Models", arXiv 2309.02772. Recommended parameters: Qwen3.6-35B-A3B model card.*
+*Source on token behaviour in code: "Hot or Cold? Adaptive Temperature Sampling for Code Generation with Large Language Models", arXiv 2309.02772. Recommended parameters: Qwen3.6-35B-A3B model card. The explanation of what happens during Qwen's thinking is our hypothesis.*
 
 ### How much quantization takes away
 
@@ -264,19 +272,19 @@ The real question on the node was not "BF16 or 3-bit", because BF16 does not fit
 
 ### Three dials on the same triangle
 
-Model size, reasoning profile and quantization are three dials acting on the same three axes: **effectiveness, cost and time**. Every configuration must be read on all three together. Sampling is not a dial of its own: together with thinking it forms the **reasoning profile**. The name is our own convention, to make an already complex set of settings a little easier to handle; we use it because the vendor designs sampling together with thinking, and our control run shows that separating them brings no gain.
+Model size, reasoning profile and quantization are three dials acting on the same three axes: **effectiveness, cost and time**. Every configuration must be read on all three together. Sampling is not a dial of its own: together with thinking it forms the **reasoning profile**. The name is our own convention, to make an already complex set of settings a little easier to handle; we use it because the vendor recommends sampling settings per mode, and in our control run separating them brought no gain.
 
 | Dial | What you gain | What you lose |
 | --- | --- | --- |
 | Model size | quality in the weights, first try | hardware, cost per token |
-| Reasoning profile (thinking and sampling together) | quality in the context, especially on the first try, fewer malformed responses | time and tokens; at high doses, usability; mixing profiles and modes, no gain |
+| Reasoning profile (thinking and sampling together) | quality in the context, especially on the first try, fewer malformed responses | time and tokens; at high doses, usability; mixing profiles and modes brought no gain in our test |
 | Quantization | the model fits the available hardware | probably precision and discipline, more tokens (observed on a single model) |
 
 ### First try and malformed responses as indicators
 
 The score says whether the model gets there; first try and malformed responses say how efficiently it gets there. Two models with the same score can be very different to use: Haiku 5.5 and GLM-5.3 both score 70%, but GLM-5.3 produces 7 malformed responses vs 1. In an agent, every edit that fails to apply is a wasted round, more tokens and more waiting.
 
-Reasoning pays for itself here too: with thinking, Haiku receives fewer input tokens (588 thousand vs 835 thousand), because by making fewer mistakes on the first try it has fewer second tries, and every second try sends the whole conversation back to the model.
+Reasoning also changes the token mix: with thinking, Haiku receives fewer input tokens (588 thousand vs 835 thousand), because by making fewer mistakes on the first try it has fewer second tries, and every second try sends the whole conversation back to the model. Fewer retries reduced input tokens, although cost per solved exercise rose by about 30% (from 0.35 to 0.45 cents): being right more often still costs more.
 
 ---
 
@@ -288,7 +296,7 @@ Reasoning pays for itself here too: with thinking, Haiku receives fewer input to
 | Cloud, closed, cheap and fast | 70%, 8 s per exercise, headroom with thinking | Claude Haiku 5.5 (thinking on if time allows) |
 | Cloud, open, cheap | central cluster at the lowest cost, many FP8 providers | DeepSeek-V4.1-Flash off or GLM-5.3-Flash low |
 | Open, maximum quality | 84%, but cost per solved exercise close to Opus | Kimi K3.1 Pro |
-| Inside a coding agent | zero malformed responses, built for the agentic loop | Qwen3-Coder-Next |
+| Inside a coding agent | zero malformed responses in BF16 (3 in the local 3-bit version), built for the agentic loop | Qwen3-Coder-Next BF16 (Parasail) |
 | On the local node (12 GB VRAM + 32 GB RAM), quality | 70%, leaves headroom in RAM | Qwen3.6-35B-A3B in thinking mode |
 | On the local node, without waiting for reasoning | 60%, no thinking (time to first response not measured) | Qwen3-Coder-Next 3-bit |
 | Is a dedicated Coder model worth it? | not per se: in the test size and label do not predict the result | — |
@@ -316,7 +324,7 @@ Reasoning pays for itself here too: with thinking, Haiku receives fewer input to
 - The reasoning level must be chosen and written down beforehand, together with the prediction to be verified: that way the result cannot be adjusted afterwards.
 - Sampling parameters must be verified on the server (llama.cpp shows them for each slot), not just set in the client.
 - Numbers declared by vendors should be taken with caution: they are measured on other benchmarks and other harnesses.
-- Use the vendor's recommended settings for each mode, but test your hypotheses about what produces the improvement: our idea that the code sampling profile alone would help Qwen3.6 was wrong; the lever was reasoning, and profiles must be used as packages.
+- Use the vendor's recommended settings for each mode, but test your hypotheses about what produces the improvement: our idea that the code sampling profile alone would help Qwen3.6 was wrong; the lever was reasoning.
 - When comparing two modes, change one thing at a time, or add a control run.
 
 ### On infrastructure
