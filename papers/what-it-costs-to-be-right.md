@@ -15,6 +15,7 @@ description: "Coding Benchmark @Dielabs: 17 LLM configurations on 50 coding exer
   .content .table-scroll.wide td { padding: 8px 7px; }
   @media (max-width: 860px) { .content .table-scroll.wide table { min-width: 820px; } }
   .content .paper-meta { font-size: 0.85rem; }
+  .content .paper-byline { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: -0.4rem 0 1.6rem; }
   .content .lead-result { font-size: 1.12rem; line-height: 1.6; color: var(--text); margin: 1.4rem 0 1.2rem; }
   .content .tldr { border: 1.5px solid rgba(0,87,255,0.18); border-left: 4px solid var(--blue); background: linear-gradient(120deg, #F3F7FF 0%, #FFFFFF 70%); border-radius: 12px; padding: 1.4rem 1.6rem 0.6rem; margin: 2rem 0; }
   .content .tldr h2 { margin-top: 0; border-bottom: none; }
@@ -32,6 +33,8 @@ description: "Coding Benchmark @Dielabs: 17 LLM configurations on 50 coding exer
 
 # What It Costs to Be Right
 
+<p class="paper-byline">Diego Bardella · Dielabs · November 2026</p>
+
 ## Coding Benchmark @Dielabs: a journey inside LLMs
 
 <p class="paper-meta"><strong>Lab:</strong> Dielabs &nbsp;<strong>Benchmark:</strong> Aider Polyglot, 50 fixed exercises in 6 languages &nbsp;<strong>Local:</strong> llama.cpp on RTX 4070 Super 12 GB VRAM, 32 GB RAM &nbsp;<strong>Remote:</strong> pinned providers via OpenRouter &nbsp;<strong>Measured:</strong> November 2026 (prices as of 4 November 2026)</p>
@@ -46,11 +49,11 @@ description: "Coding Benchmark @Dielabs: 17 LLM configurations on 50 coding exer
 
 We measured 17 configurations of 10 models (16 planned plus one control run) on the same 50 programming exercises in six languages, with automated tests deciding the outcome: 13 configurations completed all 50 exercises, 4 were stopped early. Besides the score we recorded first-try passes, malformed responses, tokens, time and cost. The main findings:
 
+- **Reasoning (test-time compute) works, but it is a trade-off.** On the local node, with the same sampling settings, enabling thinking on Qwen3.6 increased solved exercises from 22 to 35 out of 50. First-try passes rose from 6 to 18, while average time per exercise rose from 72 to 261 seconds. Haiku, where only reasoning changes, goes from 35 to 41. At high doses, GLM-5.3-Flash and DeepSeek-V4.1-Flash become too slow for real use.
 - **One model is in a league of its own.** Claude Opus 5.5 solves 49 exercises out of 50, 46 on the first try. The runner-up, Kimi K3.1 Pro, solves 42, but only 22 on the first try.
 - **Below that, a tight cluster.** Six remote configurations between 62% and 70%, very different in size and price, land close together. With 50 exercises the uncertainty is wide: this first campaign is not enough to rank them, only to group them into tiers.
 - **Within the cluster, price varies more than tenfold.** GLM-5.3 scores close to GLM-5.3-Flash (70% vs 68%) and the same as Haiku 5.5, at a cost per solved exercise up to 10 times higher.
 - **Size alone does not predict the result.** 2026 general-purpose models, even with fewer declared active parameters, match or beat the 2025 Qwen3-Coder-480B, which is specialized for code.
-- **Reasoning (test-time compute) works, but it is a trade-off.** On the local node, with the same sampling settings, enabling thinking on Qwen3.6 increased solved exercises from 22 to 35 out of 50. First-try passes rose from 6 to 18, while average time per exercise rose from 72 to 261 seconds. Haiku, where only reasoning changes, goes from 35 to 41. At high doses, GLM-5.3-Flash and DeepSeek-V4.1-Flash become too slow for real use.
 - **In this test, quantization took away little compared to what it saves.** Qwen3-Coder-Next at 3 bits takes about 77% less space than the BF16 version and solves 3 fewer exercises out of 50, a gap that with these numbers may well be chance. In our comparison, which also changes the runtime environment, a few malformed responses and more output tokens appear.
 - **On the local node, the best coding model is the everyday one, as long as you let it think.** Qwen3.6 with thinking reaches 70%, close to the cheap cloud models, paying for it in time.
 
