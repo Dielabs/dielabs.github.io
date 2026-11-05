@@ -1,5 +1,4 @@
 ---
-published: false
 layout: default
 title: "Testing Is the Product"
 ---
@@ -8,7 +7,7 @@ title: "Testing Is the Product"
 
 ## A manifesto for on-premise inference due diligence
 
-**Lab:** Dielabs **Focus:** on-premise inference, sovereign AI, presales due diligence **Date:** July 2026
+**Lab:** Dielabs **Focus:** on-premise inference, sovereign AI, presales due diligence **Date:** July 2026, updated October 2026
 
 > **Thesis.** The industry has learned to assemble sovereign inference. It hasn't learned to certify it. The gap between *"it works"* and *"I can put my signature on it"* is where the value gets created — and it's empty.
 
@@ -22,7 +21,7 @@ The post gathers nearly four hundred comments in four days. CISOs, enterprise ar
 
 **The post isn't the interesting document. The thread is.** Those four hundred replies contain, for free and unsolicited, the complete list of objections, questions, and blind spots of anyone evaluating on-premise inference. It should be read as discovery material, not as a technical debate.
 
-This piece pulls eleven principles out of that material, checks them against public third-party data, and turns them into an operational protocol.
+This piece pulls the first eleven principles (I–XI) out of that material, checks them against public third-party data, and turns them into an operational protocol. The later principles (XII–XIV) come from our own experimental investigation, from a second industry field report and from an analysis of a serving engine's code: they don't come from the DGX Spark thread, but from the same verification criterion — separating what can be sourced from what is a field report before certifying it in an acceptance test. The document stays anchored to a founding case, but is no longer limited to it: it grows every time a verified source adds a principle that stands on its own.
 
 ---
 
@@ -153,6 +152,10 @@ And there's the flip side of the sales pitch: a machine that reads 160,000 token
 
 ---
 
+**Specific case: the shared KV cache.** The same principle applies inside the system, not just at its perimeter. The `fs`/`obj` KV cache offload tiers in vLLM can share blocks across different sessions or tenants to reuse prefixes: without robust content-addressed naming, a predictably fixed `PYTHONHASHSEED` or weak isolation between tenants opens a side channel — one tenant can infer or read fragments of another tenant's context from the shared cache.
+
+---
+
 ## 9. VIII — The missing product is day two
 
 The most valuable comment in the whole thread comes from someone running eight Sparks on the same stack. The account is disarming: CUDA driver issues, unstable integration between the inference engine and the model, malformed and mis-nested JSON in the responses, low-level crashes. The conclusion — *if you manage to appease the patch gods and get it working, then don't touch it again* — is the exact opposite of what a company can accept.
@@ -205,7 +208,7 @@ Across four hundred comments, these four points never come up. Not by coincidenc
 
 The last reading of the thread isn't technical. It's about segmentation.
 
-Look at **who** comments: security leads, bank CISOs, a legal engineer building institutional memory for law firms, healthcare consultants, enterprise architects, defense people, trading quants. And look at what they ask for: competitiveness, access control, stability, confidentiality.
+Look at **who** comments: security leads, bank CISOs, a legal engineer building institutional memory for law firms, healthcare consultants, enterprise architects, defense people, trading quants. And look at what they ask for: concurrency, access control, stability, confidentiality.
 
 Then look at who's shouting that two hundred dollars a month gets you more. They're technically right. They're not the buyer.
 
@@ -215,7 +218,62 @@ Then look at who's shouting that two hundred dollars a month gets you more. They
 
 ---
 
-## 13. The eight-question checklist
+## 13. XII — The declared concurrency number isn't the one the system holds
+
+*From here on, the principles no longer come from the DGX Spark thread. The source changes — an industry talk on the serving stack, checked against our own experimental investigation — but the criterion stays the same: separate what can be sourced from what is a field report before treating it as a principle.*
+
+An industry talk on inference serving architectures describes a field-report case: a node with eight H100 GPUs, configured for a maximum context of 4,000 tokens, held 370 concurrent users. Raising that limit to 128,000 tokens — a seemingly harmless product request, *"we want to support longer contexts"* — made the observed capacity collapse to 12 users. No error, no crash, no log. The system stayed green on every infrastructure metric while losing 97% of its serving capacity.
+
+The mechanism isn't a failure: it's planning arithmetic. The memory pool dedicated to the conversation cache is a fixed quantity. The share each session can take at its declared limit grows with the configured maximum context. If that maximum rises by a factor of 32, the number of sessions the system can guarantee to hold at the same time drops by the same order of magnitude — not because physical memory disappeared, but because the system has to reserve, for every admitted session, the space for the case where that session actually reaches its declared limit.
+
+This is principle IX applied not to the model's weights but to per-user context: *"supports 128k context"* and *"holds 370 concurrent users"* are two claims sold separately that have to be multiplied, not added, at sizing time. A well-designed inference engine can be more optimistic than the planning number it declares at startup — allocating memory based on how much a session is actually using, not on its theoretical maximum — but that margin of optimism has to be verified under real load, not assumed from the spec sheet.
+
+**Principle.** The concurrency number a vendor or a benchmark declares is almost always a worst-case planning value, calculated assuming every active session fills its maximum context. The number that matters for acceptance is the concurrency observed under the client's real traffic, with the real distribution of context lengths — not the theoretical one, not the worst case, not the best case.
+
+---
+
+## 14. XIII — The load isn't just one, and the layer that refuses comes before the layer that computes
+
+The same industry talk cited in principle XII offers a taxonomy that's useful even to people who will never run that benchmark: four load profiles, with requirements that contradict each other on the same stack.
+
+- **High-concurrency chat** — short inputs, medium outputs, thousands of users. The bottleneck is memory bandwidth while writing. You optimize by increasing the batch size.
+- **Long context, document search** — large inputs, short outputs. The tightest constraint is time to first token. The typical flaw is prefix reuse close to zero, because every retrieval request pulls different chunks.
+- **Multi-turn agents** — system prompt, schema and history repeated almost identically at every turn, tens of thousands of tokens per turn. The prefix cache hit rate is the whole economics of the workload: not a technical detail, the number that decides whether the service is sustainable.
+- **Deferred processing** — evaluations, embeddings, data pipelines. No latency limit to meet; the only metric is how many tokens are produced per euro spent.
+
+No production system serves a single profile: the typical pattern is chat and agents during the day, deferred processing at night, on the same cluster. An infrastructure sized for one load profile is oversized for the other three and undersized for the one it didn't foresee.
+
+**The layer that decides whether a request starts is separate from the one that computes it, and it has a property no other layer has: it can say no before the compute cost is already spent.** Once a request is past that gate, the GPU is already committed — whether the answer arrives in one second or in nine no longer changes what was spent to compute it. A system without that gate doesn't crash under load: it queues silently, and the user waits nine seconds instead of getting an immediate refusal in a millisecond. It's a failure that no log records as a failure.
+
+The same distinction applies to routing the request to the right machine. Sending a request to the least busy server, as a traditional load balancer would, is almost always a mistake in this domain: the free server is free because it doesn't have the session history already loaded. The time saved in the queue is paid for with a full recomputation of the context from scratch — a trade-off that is almost always unfavorable once the context goes beyond a few thousand tokens. Correct routing sends the request to the server that already holds the system prompt, the tool definitions and the history in cache: not a marginal optimization, but the difference between a tenth of a second and a full second of repeated compute.
+
+**Principle.** The layer that admits or refuses a request, and the one that decides which machine to route it to, matter as much as the compute engine downstream — and they have to be sized on the specific load profile, not on a generic profile assumed to be the same for chat, search, agents and batch.
+
+### The failure that leaves no trace
+
+The pattern generalizes. No admission control, blind routing, the context reading and writing phases put on the same device, missed cache reuse, fixed-size instead of adaptive compute batches, a slow network interconnect: none of these produces an error. All of them silently degrade throughput or latency while every health indicator of the system stays green. It's the same family of behavior as the two sources of non-determinism in inference: neither ever throws an exception, both silently change what the system returns or how much load it holds. *"The system is green"* doesn't imply *"the system does what the client expects"*, and that equivalence has to be verified explicitly in the acceptance test, not assumed.
+
+A concrete field-report case, useful as an illustration even without verifying its numbers: four requests to a ticketing system all come back successful at the transport level. Three pass validation but take an order of magnitude longer than the agreed limit; one fails validation because of a missing character in the data structure — there was no upstream check — and is still forwarded to the compute engine, which produces an answer nobody asked for. None of the four generates a system error. All four are a failure for the end user.
+
+Two quantitative corollaries, reported as field-report orders of magnitude and not as certified thresholds. Latency under load doesn't degrade linearly but much more steeply close to saturation, which makes unused capacity headroom a structural cost of serving a load with latency limits, not waste to eliminate. And the time between a traffic spike arriving and a fully operational node being available adds up to several minutes — provisioning, image download, weight loading, engine warm-up — a time that no standard autoscaling manages to bring below thirty seconds, whatever the optimization applied.
+
+---
+
+## 15. XIV — The vendor's number and the acceptance number come from two different tools
+
+*Source: analysis of the vLLM engine code (technical post reviewed by core contributors, August 2025). Not a field report: it's what the engine's benchmark tools do by construction.*
+
+The most widely used inference engine, vLLM, has three benchmark commands. `throughput` sends all the requests at once, as if traffic were infinite, and reports tokens per second: it's the number you see in slides. `latency` uses a small batch and a short input, and measures time only: it's the demo number. `serve` simulates users arriving at random intervals, with a concurrency cap, and measures time to first token, time between tokens and how many requests meet the declared target: it's the only one that resembles the client. On the same hardware and the same model, the three commands give three different numbers — and none of the three is wrong.
+
+There's one more detail. In benchmarks the engine is told to ignore the end-of-response signal and to generate a fixed number of tokens anyway. That's correct for comparing two configurations, because it makes the load repeatable; but it isn't real traffic, where answers end when they end. A number measured this way is clean and optimistic at the same time.
+
+The mechanism is the same as in XII: a true value, obtained in conditions no user experiences, presented without the conditions. The difference is that here you don't need a talk to find out. You only have to read which command was run.
+
+**Principle.** A performance number without its measurement mode isn't a number. Whoever presents a throughput has to state which tool produced it, with which arrival distribution and which end-of-response rule. The acceptance test uses only the mode that simulates users — random arrivals, capped concurrency, declared SLO — with the client's traffic profile. The infinite-traffic number stays useful for one thing only: knowing how much margin there is between where you operate and where the hardware saturates. The method to derive both is in [One Capacity Is Not Enough](/frameworks/one-capacity-is-not-enough.html).
+
+---
+
+## 16. The eight-question checklist
 
 Counting the questions commenters spontaneously ask the author produces a recurring list. It isn't a questionnaire designed at a desk: it's **free discovery, validated by a sample of four hundred professionals in the middle of an actual purchase evaluation**. Use it as a qualification grid.
 
@@ -232,13 +290,13 @@ Whoever answers these eight makes a sale. Whoever answers the first and the four
 
 ---
 
-## 14. The acceptance protocol
+## 17. The acceptance protocol
 
 The operational consequence of all of the above is that an artifact is missing, and the missing artifact isn't a benchmark: **it's an acceptance test report.**
 
 Given any cluster — Spark, appliance, traditional GPU server — an acceptance test produces, in half a day:
 
-**Performance.** Context/throughput curve with prefill and decode separated and reported distinctly. Capacity measured two ways: hardware-anchored in closed loop (*Cr_closed*) to know what the hardware can do, and SLO-anchored in open loop (*Cr_open*) to know how many users it actually holds at acceptable latency. The theoretical ceiling calculated from memory bandwidth, reported alongside the measured one, as a sanity check.
+**Performance.** Context/throughput curve with prefill and decode separated and reported distinctly. Capacity measured two ways: hardware-anchored in closed loop (*Cr_closed*) to know what the hardware can do, and SLO-anchored in open loop (*Cr_open*) to know how many users it actually holds at acceptable latency. The theoretical ceiling calculated from memory bandwidth, reported alongside the measured one, as a sanity check. For every number, the benchmark mode, the arrival distribution and the end-of-response rule are stated (principle XIV).
 
 **Quality.** Regression comparison between the quantized checkpoint in production and the uncompressed reference model, on a task set representative of the client's use. This is the piece everyone is missing, and it's the piece that tells the client **how much intelligence they actually bought**.
 
@@ -252,7 +310,7 @@ All of it mapped onto the *-ilities* (AMPRS), so the report speaks the language 
 
 ---
 
-## 15. The commercial consequence
+## 18. The commercial consequence
 
 Don't sell the hardware. Clients buy that on their own, and the thread proves they can even assemble it themselves: four nodes over RoCE, RDMA at 98% of line rate, first bring-up successful. Assembly competence is widespread and growing fast.
 
@@ -288,3 +346,11 @@ All quantitative data cited comes from public third-party sources, not from the 
 
 - Kimi K3 documentation (Unsloth): [unsloth.ai/docs/models/kimi-k3](https://unsloth.ai/docs/models/kimi-k3)
 - GGUF repository (Hugging Face): [huggingface.co/unsloth/Kimi-K3-GGUF](https://huggingface.co/unsloth/Kimi-K3-GGUF)
+
+**Added source (September 2026), principle XII.** The 370→12 concurrent users figure comes from an industry talk, reported as the speaker's direct experience on their own experiment (70B model, 8×H100 node). The talk states no inference engine version, scheduler configuration or measurement methodology: field-report evidence tier, not citable for acceptance purposes. The number is used here to illustrate the size of the effect, not as a reference figure for real sizing — sizing always has to be redone on the client's hardware, engine and traffic.
+
+Our own experimental investigation — [When Offloading Doesn't Offload](/papers/when-offloading-doesnt-offload.html), section 5.4, on vLLM 0.15.1 — isolated the underlying mechanism with a stated methodology: the concurrency number the inference engine reports at startup is a worst-case planning value, and the scheduler can admit substantially more requests at runtime through on-demand allocation. It's possible, though not verified here, that the talk's number describes exactly that planning value and not the concurrency observable under real load — in which case the apparent collapse would be partly an artifact of the formula, not only a physical memory limit.
+
+**Added source (September 2026), principle XIII.** The taxonomy of the four load profiles, the gateway/router distinction, the cache-aware routing pattern and the list of silent failures come from the same industry talk cited in principle XII. The architectural principle (the admission layer can refuse before the compute cost is spent; blind routing is counterproductive when the session cache matters) is structural and verifiable regardless of the source. The corollary numbers — latency degradation by utilization, cold-start times, the specific case of a 98% cache hit rate with TTFT going from 786 ms to 16 ms — remain field reports that can't be reproduced without a stated configuration, reported to illustrate the size of the effect and not as acceptance thresholds.
+
+**Added source (September 2026), principle XIV.** The description of vLLM's three benchmark commands (`throughput`, `latency`, `serve`), of the `ignore_eos` behavior and of the auto-tuning script comes from A. Gordić, *"Inside vLLM: Anatomy of a High-Throughput LLM Inference System"* (August 2025), an analysis of the source code at commit 42172ad, reviewed by core project contributors before publication. Evidence tier: citable, because it describes how the tools behave by construction, not a measured result; no performance number is taken from this source.
