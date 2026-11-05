@@ -26,6 +26,9 @@ Three benchmarks on a single RTX 4070 Super with Qwen3-8B-AWQ via vLLM. Shows ho
 ### [The Small Slice That Matters](the-small-slice-that-matters.md)
 Local AI on a consumer GPU: a 35B MoE model (Qwen3.6-35B-A3B) served by llama.cpp on a 12 GB RTX 4070 Super, with experts offloaded to RAM. Shows that the first 3.5 GB of VRAM are worth more than the next 7, that prefill is bound by PCIe and decode by GPU-CPU handovers, and how to spend VRAM on the metric you care about.
 
+### [What It Costs to Be Right](what-it-costs-to-be-right.md)
+Coding Benchmark @Dielabs: 17 LLM configurations on 50 Aider Polyglot exercises, local (llama.cpp on a 12 GB GPU) and remote (pinned providers via OpenRouter). Quality, cost and time per solved exercise; what model size, reasoning, sampling and quantization really change, and how to choose a model for code.
+
 ---
 
 *All content is original Dielabs work by Diego Bardella.*
