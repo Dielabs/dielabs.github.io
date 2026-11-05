@@ -36,12 +36,11 @@ A monitoring, diagnostics and incident response framework for LLM inference syst
 ### [LLM Parameters — Model, Engine, Request](llm-parameter-topology.md)
 A structured framework for understanding where every LLM parameter lives: Model, Engine, or Request. Covers the full parameter flow from model weights to runtime enforcement, with conflict zones and troubleshooting tables.
 
-<div class="private-card">
-  <div class="private-title-row">
-    <span class="private-title">From Idea to Production &mdash; the manual</span>
-    <a class="private-pill" href="from-idea-to-production-manual.html" title="Read the full manual">Read the manual &rarr;</a>
-  </div>
-  <p class="private-desc">The full operational manual behind the <em>Inference Sizing in 11 Steps</em> framework. End-to-end presales architect playbook: from business pain statement to validated production deployment, with discovery templates, sizing worksheets, runtime decision matrices, hardware constraint tables, benchmark protocols, and scaling decision trees. Each of the 11 steps is expanded into actionable artifacts usable in real customer engagements.</p>
+<div class="open-featured" markdown="1">
+
+### [From Idea to Production &mdash; the manual](from-idea-to-production-manual.md) <span class="new-flag">New</span>
+The full operational manual behind the <em>Inference Sizing in 11 Steps</em> framework. End-to-end presales architect playbook: from business pain statement to validated production deployment, with discovery templates, sizing worksheets, runtime decision matrices, hardware constraint tables, benchmark protocols, and scaling decision trees. Each of the 11 steps is expanded into actionable artifacts usable in real customer engagements.
+
 </div>
 
 <div class="private-card">

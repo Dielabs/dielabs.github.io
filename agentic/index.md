@@ -55,8 +55,12 @@ Quality of outcomes and cost of outcomes as two separate axes, with context engi
 ### [RAG for Dummies](rag-for-dummies.md)
 How a system that answers from company documents actually works, with the library analogy: the four models of the chain (rewriter, embedding, reranker, generator), the ingestion and query flows, the judge and its metrics, chunking, and a tour of the advanced variants — hybrid search, GraphRAG, agentic, adaptive, multimodal, federated. No maturity framework and no sizing: this is the one to read before deciding how deep a retrieval system needs to go.
 
-### [From Zero to RAG](from-zero-to-rag.md)
+<div class="open-featured" markdown="1">
+
+### [From Zero to RAG](from-zero-to-rag.md) <span class="new-flag">New</span>
 The quantitative companion to the page above: a four-level framework (Production layer, Knowledge Representation, Retrieval Intelligence, Agent Orchestration) with a requirement &rarr; pattern &rarr; cost selection table, and the impact of each level on inference sizing.
+
+</div>
 
 ---
 

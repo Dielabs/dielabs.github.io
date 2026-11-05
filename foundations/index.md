@@ -40,8 +40,12 @@ The technology companion of the page above: how disaggregation is done on NVIDIA
 ### [Semantic Routing](semantic-routing.md)
 Why a semantic router must be fine-tuned on the tier boundaries of its real domain: the decision layer (a small embedding model) is separate from the deterministic tier-to-backend map, and misrouting is born in the first. Why pre-trained embeddings confuse similarity with complexity, what fine-tuning really costs, routing accuracy as an SLO rather than uptime, and why in sovereign deployments routing is where data residency becomes configurable.
 
-### [Testing Is the Product](testing-is-the-product.md)
+<div class="open-featured" markdown="1">
+
+### [Testing Is the Product](testing-is-the-product.md) <span class="new-flag">New</span>
 A manifesto for on-premise inference due diligence, built from a public case study: a viral four-node DGX Spark deployment and the four hundred comments it drew. Fourteen principles (eleven from the case, three from lab work and from the vLLM benchmark tools), an eight-question qualification checklist, and a five-axis acceptance protocol (performance, quality, resilience, operations, governance).
+
+</div>
 
 ---
 
