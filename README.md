@@ -13,8 +13,8 @@ Rather than focusing on model training or data science, Dielabs investigates the
 ### [Papers](papers/)
 Original technical papers from real lab work. Topics include degenerative decoding analysis, KV cache offloading investigation, CPU-GPU inference isomorphism, and bottleneck migration in capacity sizing.
 
-### [Foundations](foundations/)
-The part of inference that does not age: mechanics, math and trade-offs — inference stack, KV cache economics, parallelism, disaggregated serving.
+### [Manifesto](manifesto/)
+Testing Is the Product: fifteen principles for qualifying, testing and operating private AI, grounded in lab lessons, field reports and published research.
 
 ### [Frameworks](frameworks/)
 Proprietary conceptual models for reasoning about inference systems: an 11-step sizing methodology, the Cr/CrossP benchmark framework and an observability KPI framework, plus the Model/Engine/Request parameter framework.

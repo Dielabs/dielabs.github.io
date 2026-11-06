@@ -1,11 +1,32 @@
 ---
 layout: default
 title: "Testing Is the Product"
+description: "The Dielabs manifesto: fifteen principles for testing, sizing and operating private AI, grounded in lab lessons, field reports and research."
+redirect_from:
+  - /technologies/
+  - /technologies/index.html
+  - /architectures/
+  - /architectures/index.html
+  - /technologies/cpu-gpu-memory-topology
+  - /technologies/cpu-gpu-memory-topology.html
+  - /architectures/cpu-gpu-memory-topology.html
+  - /manuals/
+  - /manuals/index.html
+  - /papers/testing-is-the-product.html
+  - /foundations/
+  - /foundations/index.html
+  - /foundations/testing-is-the-product
+  - /foundations/testing-is-the-product.html
+  - /manifesto/testing-is-the-product.html
 ---
+
 
 # Testing Is the Product
 
 ## A manifesto for on-premise inference due diligence
+
+The Dielabs manifesto: fifteen principles for deciding what to deploy, proving that it works for the intended task, and keeping it dependable in production. They bring together lessons from our lab, field reports and published research, with the evidence behind each made explicit. The case below is the starting point; the principles are the working method.
+
 
 **Lab:** Dielabs **Focus:** on-premise inference, sovereign AI, presales due diligence **Date:** July 2026, updated November 2026
 

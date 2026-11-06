@@ -86,8 +86,6 @@ This level is pure Inference Engineering.
 
 **`kv_cache_dtype`** KV cache precision: FP16, FP8. FP8 reduces VRAM for the same context/concurrency, but may slightly degrade quality on long outputs.
 
-*For the inner workings of the KV pool, PagedAttention and tuning under load, see the [KV Cache Manual](../foundations/kv-cache-workbook.md).*
-
 ### Concurrency and Scheduling
 
 **`max_num_seqs`** Maximum number of sequences the continuous batching scheduler can keep active (resident) simultaneously in the engine. This is the primary lever to balance latency and throughput.

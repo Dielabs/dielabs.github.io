@@ -1229,7 +1229,7 @@ Plus one more dimension: **network latency between layers**. On a single node it
 3. **Measure on synthetic agentic traffic**, not on chat. At the same SLO, a capacity that holds 100 req/s in chat can drop to 15 req/s with an agent (indicative example): the metric is Cr_open, anchored to the SLO, not Cr_closed.
 4. **Count the tool definitions** in the system prompt: they are a fixed overhead that weighs on prefill and on how much the prefix cache pays off.
 5. **Keep LLM metrics and tool metrics separate** in observability (see Agentic observability below): diagnosing the latency tail only works if you know where the delay lives.
-6. **Consider disaggregated serving when N_steps ≥ 5**: a prefill-heavy, decode-light profile is the textbook case for prefill/decode disaggregation. When it really pays off is covered in [Disaggregated Inference](../foundations/disaggregated-inference.md).
+6. **Evaluate disaggregated serving for multi-step workloads**: a prefill-heavy, decode-light profile can benefit from prefill/decode separation. Measure the KV transfer cost and the effect on end-to-end latency under the actual workload before adopting it.
 
 ### Anticipating the customer's question
 
