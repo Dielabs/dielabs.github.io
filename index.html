@@ -104,10 +104,9 @@ layout: null
 .cloud-logo.cloud-dark { background: #0B1220; border-color: #0B1220; }
     .shortcuts-label { margin-top: 3.6rem; margin-bottom: 1rem; }
     .shortcuts-label + .release-banner { margin-top: 0; }
-    .release-banner { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 2rem; text-decoration: none; color: inherit; border: 1.5px solid var(--border); background: linear-gradient(120deg, #F3F7FF 0%, #FFFFFF 60%); border-radius: 14px; padding: 1.2rem 1.6rem 1.2rem 1.8rem; margin: 1.5rem 0 0; overflow: hidden; transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s; }
+    .release-banner { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 2rem; text-decoration: none; color: inherit; border: 1.5px solid var(--border); background: linear-gradient(120deg, #F3F7FF 0%, #FFFFFF 60%); border-radius: 14px; padding: 1rem 1.6rem 1rem 1.8rem; margin: 1.5rem 0 0; overflow: hidden; transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s; }
     .release-banner::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, var(--blue), var(--cyan)); }
     .release-banner:hover { border-color: rgba(0,87,255,0.35); box-shadow: 0 10px 28px rgba(0,87,255,0.10); transform: translateY(-2px); }
-    .release-tag { display: inline-block; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 0.35rem; }
     .release-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.04em; color: var(--text); margin-bottom: 0.3rem; transition: color 0.2s; }
     .release-banner:hover .release-title { color: var(--blue); }
     .release-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; margin: 0; }
@@ -117,7 +116,7 @@ layout: null
     .release-banner:hover .release-go i { transform: translateX(4px); }
     .release-banner.release-lab { margin-top: 1rem; background: linear-gradient(120deg, #EFFBFD 0%, #FFFFFF 60%); }
     .release-banner.release-lab::before { background: linear-gradient(180deg, var(--cyan), var(--violet)); }
-    @media (max-width: 700px) { .release-banner { flex-direction: column; align-items: flex-start; gap: 1.1rem; } }
+    @media (max-width: 700px) { .release-banner { flex-direction: column; align-items: flex-start; gap: 0.8rem; } }
     .focus-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5px; background: var(--border); border: 1.5px solid var(--border); border-radius: 16px; overflow: hidden; }
     .focus-card { background: var(--white); padding: 2rem; transition: background 0.25s; position: relative; }
     .focus-card:hover { background: var(--off); }
@@ -231,7 +230,6 @@ layout: null
   <p class="section-label shortcuts-label">Shortcuts</p>
   <a class="release-banner" href="/case-studies/">
   <div>
-    <span class="release-tag">Systems built at Dielabs</span>
     <h3 class="release-title">From POC to production</h3>
     <p class="release-desc">Working systems, documented end to end &mdash; architecture, decisions, problems solved and measured results.</p>
     <span class="release-link">See the works &rarr;</span>
@@ -240,7 +238,6 @@ layout: null
   </a>
   <a class="release-banner release-lab" href="/papers/what-it-costs-to-be-right.html">
   <div>
-    <span class="release-tag">New in the lab</span>
     <h3 class="release-title">Coding benchmark: what it costs to be right</h3>
     <p class="release-desc">17 LLM configurations, 50 coding exercises: quality, cost and time. One model in a league of its own, a tight cluster where price varies tenfold, and a 12 GB local node that reaches 70% &mdash; if you let it think.</p>
     <span class="release-link">Read the paper &rarr;</span>
