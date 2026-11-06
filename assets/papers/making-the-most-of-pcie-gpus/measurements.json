@@ -1,0 +1,263 @@
+{
+  "source": "Dielabs retained precheck notes, Verda FIN-03, 2026-10-09",
+  "scope": "Curated extracts; not complete original logs. No confidence intervals or cross-node replication.",
+  "bandwidth_unit": "GB/s as reported by nvbandwidth",
+  "p2p_read_one_pair_at_a_time": [
+    [
+      null,
+      53.6,
+      52.75,
+      52.83,
+      37.23,
+      39.73,
+      39.42,
+      39.65
+    ],
+    [
+      53.28,
+      null,
+      53.04,
+      52.8,
+      39.25,
+      37.32,
+      39.49,
+      40.11
+    ],
+    [
+      53.19,
+      53.57,
+      null,
+      52.7,
+      38.75,
+      36.49,
+      39.92,
+      39.46
+    ],
+    [
+      53.27,
+      53.12,
+      53.25,
+      null,
+      36.98,
+      40.02,
+      39.5,
+      39.64
+    ],
+    [
+      39.29,
+      37.59,
+      39.75,
+      39.33,
+      null,
+      52.85,
+      52.68,
+      52.8
+    ],
+    [
+      39.7,
+      39.45,
+      37.59,
+      37.54,
+      52.68,
+      null,
+      53.1,
+      52.97
+    ],
+    [
+      39.78,
+      40.49,
+      37.49,
+      36.97,
+      52.99,
+      53.57,
+      null,
+      52.61
+    ],
+    [
+      39.38,
+      37.91,
+      39.59,
+      39.63,
+      53.49,
+      53.84,
+      53.68,
+      null
+    ]
+  ],
+  "concurrent_pairs": {
+    "within": {
+      "0-1": 52.75,
+      "2-3": 53.71,
+      "4-5": 52.75,
+      "6-7": 53.03
+    },
+    "across": {
+      "0-4": 21.12,
+      "1-5": 20.6,
+      "2-6": 24.28,
+      "3-7": 24.95
+    }
+  },
+  "all_gpus_host_transfers": {
+    "gpu_to_host": [
+      28.33,
+      28.46,
+      30.06,
+      29.91,
+      47.23,
+      47.43,
+      50.43,
+      50.33
+    ],
+    "host_to_gpu": [
+      35.38,
+      35.43,
+      35.89,
+      35.87,
+      48.0,
+      48.26,
+      50.16,
+      49.99
+    ]
+  },
+  "thermal_summary": [
+    {
+      "gpu": 0.0,
+      "samples": 151.0,
+      "temperature_avg_C": 66.5,
+      "temperature_max_C": 69.0,
+      "power_avg_W": 597.1,
+      "clock_avg_MHz": 2220.0,
+      "clock_min_MHz": 2197.0,
+      "powercap_percent": 100.0,
+      "thermal": 0.0
+    },
+    {
+      "gpu": 1.0,
+      "samples": 151.0,
+      "temperature_avg_C": 68.0,
+      "temperature_max_C": 71.0,
+      "power_avg_W": 597.2,
+      "clock_avg_MHz": 2210.0,
+      "clock_min_MHz": 2182.0,
+      "powercap_percent": 100.0,
+      "thermal": 0.0
+    },
+    {
+      "gpu": 2.0,
+      "samples": 151.0,
+      "temperature_avg_C": 66.5,
+      "temperature_max_C": 70.0,
+      "power_avg_W": 594.5,
+      "clock_avg_MHz": 2219.0,
+      "clock_min_MHz": 2197.0,
+      "powercap_percent": 100.0,
+      "thermal": 0.0
+    },
+    {
+      "gpu": 3.0,
+      "samples": 150.0,
+      "temperature_avg_C": 67.5,
+      "temperature_max_C": 70.0,
+      "power_avg_W": 596.8,
+      "clock_avg_MHz": 2230.0,
+      "clock_min_MHz": 2212.0,
+      "powercap_percent": 99.0,
+      "thermal": 0.0
+    },
+    {
+      "gpu": 4.0,
+      "samples": 150.0,
+      "temperature_avg_C": 67.7,
+      "temperature_max_C": 71.0,
+      "power_avg_W": 597.0,
+      "clock_avg_MHz": 2208.0,
+      "clock_min_MHz": 2182.0,
+      "powercap_percent": 100.0,
+      "thermal": 0.0
+    },
+    {
+      "gpu": 5.0,
+      "samples": 150.0,
+      "temperature_avg_C": 68.2,
+      "temperature_max_C": 71.0,
+      "power_avg_W": 597.2,
+      "clock_avg_MHz": 2212.0,
+      "clock_min_MHz": 2182.0,
+      "powercap_percent": 99.0,
+      "thermal": 0.0
+    },
+    {
+      "gpu": 6.0,
+      "samples": 151.0,
+      "temperature_avg_C": 67.6,
+      "temperature_max_C": 71.0,
+      "power_avg_W": 594.4,
+      "clock_avg_MHz": 2214.0,
+      "clock_min_MHz": 2190.0,
+      "powercap_percent": 100.0,
+      "thermal": 0.0
+    },
+    {
+      "gpu": 7.0,
+      "samples": 150.0,
+      "temperature_avg_C": 67.6,
+      "temperature_max_C": 71.0,
+      "power_avg_W": 597.0,
+      "clock_avg_MHz": 2249.0,
+      "clock_min_MHz": 2220.0,
+      "powercap_percent": 99.0,
+      "thermal": 0.0
+    }
+  ],
+  "buffer_MiB": [
+    1,
+    4,
+    16,
+    64
+  ],
+  "buffer_sweep": {
+    "0-1": [
+      36.71,
+      49.53,
+      53.78,
+      54.51
+    ],
+    "0-4": [
+      35.85,
+      40.16,
+      40.9,
+      38.72
+    ]
+  },
+  "host_subsets": {
+    "0,1,4,5": {
+      "gpu_to_host": [
+        56.55,
+        56.55,
+        56.58,
+        56.58
+      ],
+      "host_to_gpu": [
+        39.42,
+        39.29,
+        57.61,
+        57.63
+      ]
+    },
+    "0,2,4,6": {
+      "gpu_to_host": [
+        56.58,
+        56.58,
+        56.58,
+        56.58
+      ],
+      "host_to_gpu": [
+        57.9,
+        57.91,
+        57.91,
+        57.92
+      ]
+    }
+  }
+}

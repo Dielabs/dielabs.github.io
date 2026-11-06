@@ -43,6 +43,13 @@ Coding Benchmark @Dielabs: 17 LLM configurations on 50 Aider Polyglot exercises,
 
 </div>
 
+<div class="paper-featured" markdown="1">
+
+### [Making the Most of PCIe GPUs](making-the-most-of-pcie-gpus.md) <span class="new-flag">New</span>
+Measured best practices for an eight-GPU, air-cooled PCIe cloud server: discover the effective topology, test contention, place communicating workers within fast domains, and qualify RAM paths and whole-node thermals before the LLM benchmark.
+
+</div>
+
 ---
 
 *All content is original Dielabs work by Diego Bardella.*
