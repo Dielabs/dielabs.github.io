@@ -4,11 +4,31 @@ title: "The Small Slice That Matters"
 description: "MoE expert offloading in llama.cpp on a 12 GB GPU: a 35B model on a consumer card, and what the VRAM actually buys."
 ---
 
+<style>
+  .content .tldr { border: 1.5px solid rgba(0,87,255,0.18); border-left: 4px solid var(--blue); background: linear-gradient(120deg, #F3F7FF 0%, #FFFFFF 70%); border-radius: 12px; padding: 1.4rem 1.6rem 0.6rem; margin: 2rem 0; }
+  .content .tldr h2 { margin-top: 0; border-bottom: none; }
+</style>
+
 # The Small Slice That Matters
 
 ## MoE expert offloading in llama.cpp on a 12 GB GPU
 
 **Lab:** Dielabs **Hardware:** NVIDIA RTX 4070 Super (12 GB GDDR6X), Intel Core i7-14700F, 32 GB DDR5-5600 **Model:** Qwen3.6-35B-A3B, Unsloth UD-Q4_K_XL GGUF (22.4 GB) **Stack:** llama.cpp b12063 on k3s, custom measuring proxy, Prometheus + Grafana, DCGM, Intel RAPL **Date:** November 2026
+
+<div class="tldr" markdown="1">
+
+## In short
+
+A 35B Mixture-of-Experts model can run on a 12 GB consumer GPU with part of its weights in system RAM. We tested three placements of the same model: all CPU, all experts in RAM with 3.5 GB of VRAM used, and experts split between RAM and VRAM with 10.6 GB used. The main findings:
+
+- **The first 3.5 GB of VRAM deliver the biggest gain.** Keeping attention, KV cache and shared weights on the GPU, while leaving all experts in RAM, raised short-prompt decode from 18 to 50 tok/s and cut long-prompt time to first token from 48.2 to 10.34 seconds.
+- **Another 7.1 GB helps, with smaller returns.** Moving more experts into VRAM raised short-prompt decode from 50 to 65 tok/s and reduced long-prompt time to first token to 7.38 seconds, about 29% less.
+- **Prefill and decode need different explanations.** During prefill, experts held in RAM are copied to the GPU; keeping more in VRAM avoids traffic. During decode, little data crosses PCIe. The measurements suggest that CPU work and GPU–CPU handovers limit speed, although that diagnosis still needs a controlled test.
+- **Spend VRAM on the objective.** Once the GPU base is covered, experts in VRAM help long-prompt response time; context, concurrency and model precision are other possible uses to evaluate. Estimated energy per generated token fell from about 3.8 to 3.1 J between the two GPU configurations.
+
+These are short, single-user tests on one model and one machine, with thinking disabled. The CPU-only baseline also suffered memory pressure and disk reads; power and transfer-volume figures include estimates. The results do not establish multi-user capacity.
+
+</div>
 
 ---
 

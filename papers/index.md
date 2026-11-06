@@ -15,8 +15,6 @@ Technical papers produced from real lab work at Dielabs. Each paper documents or
 
 ---
 
-## Documents
-
 ### [When Good GPUs Produce Bad Tokens](when-good-gpus-produce-bad-tokens.md)
 Degenerative decoding loops in vLLM: diagnosis, three-plane framework, and cross-model comparison (Qwen2.5-7B vs Mistral-7B). Identifies sampling entropy collapse and model-specific coherence thresholds.
 
