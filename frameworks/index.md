@@ -10,61 +10,75 @@ title: Frameworks
 layout: default
 ---
 
+<style>
+  .content .framework-intro { margin-bottom: 2rem; }
+  .content .framework-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1.3rem 0 2.4rem; }
+  .content .framework-card { display: flex; flex-direction: column; padding: 1.3rem 1.4rem; border: 1px solid var(--border); border-radius: 10px; background: var(--white); min-width: 0; }
+  .content .framework-card h3 { margin: 0 0 0.8rem; font-size: 0.94rem; line-height: 1.45; letter-spacing: 0.01em; text-transform: none; color: var(--text); }
+  .content .framework-card p { margin: 0 0 1rem; font-size: 0.88rem; line-height: 1.7; }
+  .content .framework-action { align-self: flex-start; margin-top: auto; padding: 0.2rem 0; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; }
+  .content .framework-action:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
+  .content .framework-group.single { grid-template-columns: 1fr; }
+  @media (max-width: 700px) { .content .framework-group { grid-template-columns: 1fr; } }
+</style>
+
 # Frameworks
 
-*The frameworks behind our work, in the lab and with clients.*
+<p class="framework-intro">The methods behind Dielabs projects: qualify the need, design the system, measure what it can deliver and keep it dependable in production. Public guides sit alongside specialist materials available on request.</p>
 
-Frameworks and operational guides for designing, sizing, benchmarking and running LLM inference systems, from the first assessment to production.
+## Assess & Design
 
----
-
-## The Cycle
-
-### 01 · [One Capacity Is Not Enough](one-capacity-is-not-enough.md)
-The Dielabs benchmark framework. Why a single capacity number does not exist, and how CrossP (the regime boundary), Cr_closed (hardware-anchored, closed loop) and Cr_open (SLO-anchored, open loop) break it down into three measurable quantities, anchored to the three vLLM benchmarks. The output is a capacity card, not a number.
-
-### 02 · [Observability KPI](observability-kpi.md)
-A monitoring, diagnostics and incident response framework for LLM inference systems built on vLLM + Prometheus + Grafana + DCGM. Covers the golden metrics (TTFT, ITL, TPOT, E2E), the TPOT vs ITL distinction, Observed vs Compute throughput, percentile statistics, diagnostic tree from symptom to root cause, and operational PromQL queries.
-
----
-
-## Reference Model
-
-### [LLM Parameters — Model, Engine, Request](llm-parameter-topology.md)
-A structured framework for understanding where every LLM parameter lives: Model, Engine, or Request. Covers the full parameter flow from model weights to runtime enforcement, with conflict zones and troubleshooting tables.
-
-<div class="open-featured" markdown="1">
-
-### [From Idea to Production &mdash; the manual](from-idea-to-production-manual.md) <span class="new-flag">New</span>
-End-to-end presales architect playbook: from business pain statement to validated production deployment, with discovery templates, sizing worksheets, runtime decision matrices, hardware constraint tables, benchmark protocols, and scaling decision trees. Each of the 11 steps is expanded into actionable artifacts usable in real customer engagements.
-
+<div class="framework-group">
+  <article class="framework-card">
+    <h3>From Idea to Production</h3>
+    <p>Turn a business need, traffic profile and service targets into a sized inference architecture, then validate it through benchmarks before deciding how to scale.</p>
+    <a class="framework-action" href="from-idea-to-production-manual.html" aria-label="Read From Idea to Production">Read &rarr;</a>
+  </article>
+  <article class="framework-card">
+    <h3>AI Technical Presales Framework</h3>
+    <p>Qualify the opportunity and use case, turn requirements and risks into a proposal with explicit acceptance criteria, and prepare the handover to delivery.</p>
+    <a class="framework-action" href="mailto:info@dielabs.eu?subject=AI%20Technical%20Presales%20Framework%20%E2%80%94%20request" aria-label="Request access to AI Technical Presales Framework">Request access &rarr;</a>
+  </article>
 </div>
 
-<div class="private-card">
-  <div class="private-title-row">
-    <span class="private-title">AI Technical Presales Framework</span>
-    <a class="private-pill" href="mailto:info@dielabs.eu?subject=AI%20Technical%20Presales%20Framework%20%E2%80%94%20request" title="Request access via email">Available on request</a>
-  </div>
-  <p class="private-desc">The full presales path, from first contact to delivery in one document: commercial qualification with stakeholder map and red flags, use-case discovery, a Conceptual Model with requirements, constraints, assumptions and risks, physical design and BOM, the offer with the benchmark as platform acceptance, handover to delivery, production and drift.</p>
-  <p class="private-note">Not published. Reserved for direct conversations &mdash; reach out if relevant to your context.</p>
+## Benchmark & Operate
+
+<div class="framework-group">
+  <article class="framework-card">
+    <h3>One Capacity Is Not Enough</h3>
+    <p>Separate hardware saturation from capacity at acceptable latency, and produce a capacity card tied to the workload and its service targets.</p>
+    <a class="framework-action" href="one-capacity-is-not-enough.html" aria-label="Read One Capacity Is Not Enough">Read &rarr;</a>
+  </article>
+  <article class="framework-card">
+    <h3>Observability KPI</h3>
+    <p>Connect user-facing latency and serving metrics to hardware signals, with diagnostic paths and monitoring queries for investigating performance incidents.</p>
+    <a class="framework-action" href="observability-kpi.html" aria-label="Read Observability KPI">Read &rarr;</a>
+  </article>
 </div>
 
-<div class="private-card">
-  <div class="private-title-row">
-    <span class="private-title">Delivery Frameworks</span>
-    <a class="private-pill" href="mailto:info@dielabs.eu?subject=Delivery%20Frameworks%20%E2%80%94%20request" title="Request access via email">Available on request</a>
-  </div>
-  <p class="private-desc">The four working frameworks used after the presales phase, when a use case becomes a system. <em>Agent Design</em>: six attributes of a qualified agent, four capability families, least privilege and graduated human-in-the-loop. <em>RAG Discovery</em>: corpus nature, retrieval intelligence, faithfulness and citation, permissions and system boundaries. <em>Data Preparation for Knowledge Bases</em>: how to prepare data for the three ways of giving an LLM a knowledge base (MCP navigation, RAG ingestion, preloaded context), from MCP to RAG in seven steps. <em>Governance for Agentic Workflows</em>: interpretation by the LLM, decisions in deterministic code, validation by a human, with approval rate as a data-driven path to more autonomy.</p>
-  <p class="private-note">Not published. Reserved for direct conversations &mdash; reach out if relevant to your context.</p>
+## Agents & Delivery
+
+<div class="framework-group">
+  <article class="framework-card">
+    <h3>Designing AI Agents from Scratch</h3>
+    <p>Decide whether an agent is needed, define its contract and control loop, and specify permissions, verification and recovery before implementation.</p>
+    <a class="framework-action" href="mailto:info@dielabs.eu?subject=Designing%20AI%20Agents%20%E2%80%94%20request" aria-label="Request access to Designing AI Agents from Scratch">Request access &rarr;</a>
+  </article>
+  <article class="framework-card">
+    <h3>Delivery Frameworks</h3>
+    <p>Four practical methods for defining agents, qualifying retrieval needs, preparing knowledge bases and governing workflows with explicit human oversight.</p>
+    <a class="framework-action" href="mailto:info@dielabs.eu?subject=Delivery%20Frameworks%20%E2%80%94%20request" aria-label="Request access to Delivery Frameworks">Request access &rarr;</a>
+  </article>
 </div>
 
-<div class="private-card">
-  <div class="private-title-row">
-    <span class="private-title">Designing AI Agents from Scratch</span>
-    <a class="private-pill" href="mailto:info@dielabs.eu?subject=Designing%20AI%20Agents%20%E2%80%94%20request" title="Request access via email">Available on request</a>
-  </div>
-  <p class="private-desc">A design handbook: the agent contract (objective, input/output, boundaries, budget, risk), the components (system prompt, context, skills, RAG, tools, deterministic code, state, memory, policy, validator, observability), the control loop, planning, security by design, human-in-the-loop, evaluation, and a production readiness checklist.</p>
-  <p class="private-note">Not published. Reserved for direct conversations &mdash; reach out if relevant to your context.</p>
+## Technical Reference
+
+<div class="framework-group single">
+  <article class="framework-card">
+    <h3>LLM Parameters — Model, Engine, Request</h3>
+    <p>Locate each parameter in the model, engine or request layer to understand when it takes effect, who controls it and where conflicting settings must be resolved.</p>
+    <a class="framework-action" href="llm-parameter-topology.html" aria-label="Read LLM Parameters — Model, Engine, Request">Read &rarr;</a>
+  </article>
 </div>
 
 ---
