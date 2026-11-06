@@ -21,14 +21,43 @@ redirect_from:
 ---
 
 
+<style>
+  .content .tldr { border: 1.5px solid rgba(0,87,255,0.18); border-left: 4px solid var(--blue); background: linear-gradient(120deg, #F3F7FF 0%, #FFFFFF 70%); border-radius: 12px; padding: 1.4rem 1.6rem 0.6rem; margin: 2rem 0; }
+  .content .tldr h2 { margin-top: 0; border-bottom: none; }
+  .content .tldr li { margin-bottom: 0.8rem; }
+</style>
+
 # Testing Is the Product
 
 ## A manifesto for on-premise inference due diligence
 
-The Dielabs manifesto: fifteen principles for deciding what to deploy, proving that it works for the intended task, and keeping it dependable in production. They bring together lessons from our lab, field reports and published research, with the evidence behind each made explicit. The case below is the starting point; the principles are the working method.
-
+This manifesto collects the principles that guide my work at Dielabs: how to choose an inference system, test it against the intended task, and keep it dependable in production. I review and update it monthly, adding lessons from hands-on experiments, field experience and research when they offer a significant, well-supported insight. It is a growing record of what changes how I design, evaluate and operate private AI, with the evidence behind each lesson made explicit.
 
 **Lab:** Dielabs **Focus:** on-premise inference, sovereign AI, presales due diligence **Date:** July 2026, updated November 2026
+
+<div class="tldr" markdown="1">
+
+## In short
+
+The fifteen principles, at a glance:
+
+1. **Accept the workload, not the setup.** A healthy cluster and a fast network are prerequisites; acceptance depends on the performance and quality of the work users actually need.
+2. **Separate prefill from decode.** Reading the prompt and generating the answer have different resource demands. Report both before drawing conclusions about speed.
+3. **Estimate the ceiling before buying.** Use memory bandwidth, active model size and the parallelism scheme to check whether the proposed hardware can plausibly meet the target.
+4. **Find the constraint that matters.** Identify the dominant bottleneck before optimizing a more visible but less consequential part of the system.
+5. **Choose ownership around the workload.** Buy-versus-rent decisions start with traffic, latency, predictability and data constraints; the payment model alone cannot decide them.
+6. **Measure cost per completed task.** Connect tokens, time, energy and operating effort to useful work delivered, so the business case reflects the user's outcome.
+7. **Design governance alongside residency.** Keeping data local does not establish who may access it, what is logged or which outbound connections are allowed.
+8. **Make day two part of the product.** Reproducible deployments, upgrades, recovery and routine maintenance belong in the design and acceptance criteria from the start.
+9. **Choose the smallest model that passes.** Size the model against a representative task acceptance test, rather than maximizing the parameter count that fits in memory.
+10. **Ask the questions a purchasing committee will ask.** Examine quality after compression, lifecycle, failure domains and weight provenance before they become late objections.
+11. **Lead with the buyer's constraints.** Build the proposal around confidentiality, compliance, continuity and proof; use total cost to support the decision in that context.
+12. **Measure concurrency under real traffic.** Declared context limits and planning capacity do not establish how many users the system serves at acceptable latency.
+13. **Design admission and routing for the load.** Chat, search, agents and batch need different policies; refusing excess load and preserving cache locality are architectural decisions.
+14. **State how every performance number was measured.** Report the tool, arrival pattern, concurrency and response-length rules, and use the customer's traffic profile for acceptance.
+15. **Certify the service and repeat after changes.** The same model can deliver different quality and latency across deployments. Test complete tasks and revalidate after changes to versions, quantization or the serving engine.
+
+</div>
 
 > **Thesis.** The industry has learned to assemble sovereign inference. It hasn't learned to certify it. The gap between *"it works"* and *"I can put my signature on it"* is where the value gets created — and it's empty.
 
