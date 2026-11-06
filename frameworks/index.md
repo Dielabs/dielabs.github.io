@@ -33,7 +33,7 @@ layout: default
   <article class="framework-card">
     <h3>From Idea to Production</h3>
     <p>Turn a business need, traffic profile and service targets into a sized inference architecture, then validate it through benchmarks before deciding how to scale.</p>
-    <a class="framework-action" href="from-idea-to-production-manual.html" aria-label="Read From Idea to Production">Read &rarr;</a>
+    <a class="framework-action" href="mailto:info@dielabs.eu?subject=From%20Idea%20to%20Production%20%E2%80%94%20request" aria-label="Request access to From Idea to Production">Request access &rarr;</a>
   </article>
   <article class="framework-card">
     <h3>AI Technical Presales Framework</h3>
@@ -58,7 +58,7 @@ layout: default
   <article class="framework-card">
     <h3>Observability KPI</h3>
     <p>Connect user-facing latency and serving metrics to hardware signals, with diagnostic paths and monitoring queries for investigating performance incidents.</p>
-    <a class="framework-action" href="observability-kpi.html" aria-label="Read Observability KPI">Read &rarr;</a>
+    <a class="framework-action" href="mailto:info@dielabs.eu?subject=Observability%20KPI%20%E2%80%94%20request" aria-label="Request access to Observability KPI">Request access &rarr;</a>
   </article>
 </div>
 

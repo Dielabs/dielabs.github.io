@@ -33,7 +33,7 @@ The starting point is Fabio Carta's talk for Agile Lab at MLOpsDay 2026, Bologna
 - Platform acceptance against the performance promised in a proposal. That belongs to the agreed acceptance criteria and benchmark protocol.
 - Hardware sizing. The measured throughput becomes an input to sizing; it is not the sizing calculation itself.
 
-**Where it fits:** after discovery identifies failure modes and the workload, before hardware sizing. The selected model changes the sizing inputs, so the capability decision comes first. [From Idea to Production](from-idea-to-production-manual.html) describes the broader technical path. The AI Technical Presales Framework is [available on request](mailto:info@dielabs.eu?subject=AI%20Technical%20Presales%20Framework%20%E2%80%94%20request).
+**Where it fits:** after discovery identifies failure modes and the workload, before hardware sizing. The selected model changes the sizing inputs, so the capability decision comes first. [From Idea to Production](from-idea-to-production-manual.html), available on request, describes the broader technical path. The AI Technical Presales Framework is [available on request](mailto:info@dielabs.eu?subject=AI%20Technical%20Presales%20Framework%20%E2%80%94%20request).
 
 ## 2. Why leaderboards are not enough
 
