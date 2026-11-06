@@ -46,6 +46,6 @@ The list above is the same one you would apply to a new person joining a team: c
 
 ---
 
-**Related:** [From the Stateless Model to the Agentic Harness](agentic-systems.md) for the mechanics of the loop, context engineering and agentic observability; [MCP — The Integration Protocol for Agentic Platforms](mcp-integration-protocol.md) for identity, gateways and permission scoping on the tool side.
+**Related:** [Context Engineering vs KV Cache Engineering](context-vs-kv-cache-engineering.md) connects harness design to cache reuse and serving capacity.
 
 *All content is original Dielabs work by Diego Bardella.*

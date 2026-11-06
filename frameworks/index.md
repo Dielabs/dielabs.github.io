@@ -61,6 +61,15 @@ The full operational manual behind the <em>Inference Sizing in 11 Steps</em> fra
   <p class="private-note">Not published. Reserved for direct conversations &mdash; reach out if relevant to your context.</p>
 </div>
 
+<div class="private-card">
+  <div class="private-title-row">
+    <span class="private-title">Designing AI Agents from Scratch</span>
+    <a class="private-pill" href="mailto:info@dielabs.eu?subject=Designing%20AI%20Agents%20%E2%80%94%20request" title="Request access via email">Available on request</a>
+  </div>
+  <p class="private-desc">A design handbook: the agent contract (objective, input/output, boundaries, budget, risk), the components (system prompt, context, skills, RAG, tools, deterministic code, state, memory, policy, validator, observability), the control loop, planning, security by design, human-in-the-loop, evaluation, and a production readiness checklist.</p>
+  <p class="private-note">Not published. Reserved for direct conversations &mdash; reach out if relevant to your context.</p>
+</div>
+
 ---
 
 *All frameworks are original Dielabs work by Diego Bardella.*

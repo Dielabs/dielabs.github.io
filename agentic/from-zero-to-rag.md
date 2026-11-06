@@ -5,7 +5,7 @@ title: "From Zero to RAG"
 
 # From Zero to RAG
 
-The quantitative companion to [RAG for Dummies](rag-for-dummies.md). Part I explains the problem and how a basic RAG works; Part II presents a four-level framework, a requirement → pattern → cost selection table, and what each level does to inference sizing. Read it to choose how deep a retrieval system needs to go for a given use case.
+A guide to choosing how deep a retrieval system needs to go. Part I explains the problem and how a basic RAG works; Part II presents a four-level framework, a requirement → pattern → cost selection table, and what each level does to inference sizing.
 
 ---
 

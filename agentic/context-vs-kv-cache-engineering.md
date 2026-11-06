@@ -106,6 +106,6 @@ For those who design agents: every context management choice is also an infrastr
 
 ---
 
-**Related:** context management strategies (skills, sub-agents, summarization, external memory) are covered in [Agentic Systems for Inference Infrastructure People](agentic-systems.md), Chapter 5, and the layers of the prefix with their expected hit rate in Chapter 8; the quality/cost axes in [Effectiveness vs Efficiency](effectiveness-vs-efficiency.md); how Cr_open uses the hit rate in [One Capacity Is Not Enough](/frameworks/one-capacity-is-not-enough).
+**Related:** [Minimum Requirements of an Agentic Harness](agentic-harness-requirements.md) covers memory, control and verification; [One Capacity Is Not Enough](/frameworks/one-capacity-is-not-enough.html) defines SLO-anchored capacity and how cache reuse affects it.
 
 *Original Dielabs work by Diego Bardella.*
