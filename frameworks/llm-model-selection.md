@@ -6,8 +6,6 @@ description: "A repeatable framework for selecting an open-weight LLM for a spec
 
 <style>
   .content h1 { white-space: normal; }
-  .content .tldr { border: 1.5px solid rgba(0,87,255,0.18); border-left: 4px solid var(--blue); background: linear-gradient(120deg, #F3F7FF 0%, #FFFFFF 70%); border-radius: 12px; padding: 1.4rem 1.6rem 0.6rem; margin: 2rem 0; }
-  .content .tldr h2 { margin-top: 0; border-bottom: none; }
   .content .table-scroll { overflow-x: auto; margin: 1.5rem 0; }
   .content .table-scroll table { margin: 0; min-width: 1050px; font-size: 0.78rem; }
   .content .table-scroll th, .content .table-scroll td { padding: 8px; }
@@ -24,20 +22,6 @@ description: "A repeatable framework for selecting an open-weight LLM for a spec
 How do you choose an open-weight model to run on your own GPUs, and make the decision repeatable whenever a new candidate arrives? This framework starts with the workload's failure modes and ends with a justified shortlist on the actual hardware and serving stack.
 
 The starting point is Fabio Carta's talk for Agile Lab at MLOpsDay 2026, Bologna, 29 October 2026. Its running example is CWYD, *Chat With Your Data*: an agent that answers business questions by querying SQL databases. Product names remain as concrete examples. The pipeline, timings and model scores attributed to the talk are **Agile Lab's reported work, not measurements made by Dielabs**. Dielabs adds the agent acceptance track, the connection to capacity planning and customer golden sets, and the discussion of sampling uncertainty and limitations.
-
-<div class="tldr" markdown="1">
-
-## In short
-
-- **Select a model for a deployment.** The question is which model works best on this hardware, behind this serving stack, for this task.
-- **Start from failure modes.** Every benchmark must cover a way the system could fail in production.
-- **Separate model selection from agent acceptance.** Capability and task/serving tests shortlist the model; a customer-specific golden set validates the agent built around it.
-- **Prefer a pipeline you can rerun.** Pin the tools, datasets, serving settings and load profile so every new model can face the same evaluation.
-- **Investigate surprising failures before rejecting a model.** Templates, parsers, token limits and harness bugs can invalidate a score.
-- **Report uncertainty and speed alongside quality.** Small score gaps may not support a ranking; candidates can also differ substantially in serving throughput on the same GPU.
-- **Keep the method and refresh the results.** Scores age quickly. The reusable product is the evaluation pipeline.
-
-</div>
 
 ## 1. What this framework does—and what it does not
 
