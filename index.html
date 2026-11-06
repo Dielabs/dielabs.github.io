@@ -41,7 +41,7 @@ layout: null
     .nav-links a:hover { color: var(--blue); }
     .nav-cv { opacity: 0.55; transition: opacity 0.2s, color 0.2s; }
     .nav-cv:hover { opacity: 1; }
-    .hero { display: flex; flex-direction: column; justify-content: center; padding: 9rem 3rem 4.5rem; position: relative; overflow: hidden; }
+    .hero { display: flex; flex-direction: column; justify-content: center; padding: 9rem 3rem 1.5rem; position: relative; overflow: hidden; }
     .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.15; pointer-events: none; animation: float 9s ease-in-out infinite; }
     .orb-1 { width: 480px; height: 480px; background: var(--blue); top: -80px; right: -80px; }
     .orb-2 { width: 320px; height: 320px; background: var(--violet); top: 40%; right: 18%; animation-delay: -3s; }
@@ -102,6 +102,8 @@ layout: null
 .cloud-logo:hover { border-color: rgba(0,87,255,0.4); transform: translateY(-1px); }
 .cloud-logo img { height: 13px; width: auto; display: block; }
 .cloud-logo.cloud-dark { background: #0B1220; border-color: #0B1220; }
+    .shortcuts-label { margin-top: 3.6rem; margin-bottom: 1rem; }
+    .shortcuts-label + .release-banner { margin-top: 0; }
     .release-banner { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 2rem; text-decoration: none; color: inherit; border: 1.5px solid var(--border); background: linear-gradient(120deg, #F3F7FF 0%, #FFFFFF 60%); border-radius: 14px; padding: 1.2rem 1.6rem 1.2rem 1.8rem; margin: 1.5rem 0 0; overflow: hidden; transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s; }
     .release-banner::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, var(--blue), var(--cyan)); }
     .release-banner:hover { border-color: rgba(0,87,255,0.35); box-shadow: 0 10px 28px rgba(0,87,255,0.10); transform: translateY(-2px); }
@@ -226,6 +228,7 @@ layout: null
     <div class="focus-card"><div class="focus-accent a-grad"></div><h3>AI applications</h3><p>RAG over company data, voice assistants and AI gateways, built on the serving stack &mdash; from proof of concept to a usable product.</p></div>
     <div class="focus-card"><div class="focus-accent a-yellow"></div><h3>Datacenter architecture &amp; presales</h3><p>Storage and virtualization (VMware, Nutanix, NetApp). RFI/RFQ, solution design and architecture validation.</p></div>
   </div>
+  <p class="section-label shortcuts-label">Shortcuts</p>
   <a class="release-banner" href="/case-studies/">
   <div>
     <span class="release-tag">Systems built at Dielabs</span>
