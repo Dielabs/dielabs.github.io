@@ -18,6 +18,7 @@ layout: default
   .content .framework-card p { margin: 0 0 1rem; font-size: 0.88rem; line-height: 1.7; }
   .content .framework-action { align-self: flex-start; margin-top: auto; padding: 0.2rem 0; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; }
   .content .framework-action:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
+  .content .framework-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .content .framework-group.single { grid-template-columns: 1fr; }
   @media (max-width: 700px) { .content .framework-group { grid-template-columns: 1fr; } }
 </style>
@@ -38,6 +39,11 @@ layout: default
     <h3>AI Technical Presales Framework</h3>
     <p>Qualify the opportunity and use case, turn requirements and risks into a proposal with explicit acceptance criteria, and prepare the handover to delivery.</p>
     <a class="framework-action" href="mailto:info@dielabs.eu?subject=AI%20Technical%20Presales%20Framework%20%E2%80%94%20request" aria-label="Request access to AI Technical Presales Framework">Request access &rarr;</a>
+  </article>
+  <article class="framework-card">
+    <h3>LLM Model Selection</h3>
+    <p>Choose an open-weight model for the actual workload and serving stack, using failure-driven benchmarks, measured speed and explicit uncertainty before validating the finished agent.</p>
+    <a class="framework-action" href="llm-model-selection.html" aria-label="Read LLM Model Selection">Read &rarr;</a>
   </article>
 </div>
 
