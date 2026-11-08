@@ -1,6 +1,9 @@
 ---
 layout: default
-title: "Context Engineering vs KV Cache Engineering"
+title: Context Engineering vs KV Cache Engineering
+redirect_from:
+- /agentic/context-vs-kv-cache-engineering
+- /agentic/context-vs-kv-cache-engineering.html
 ---
 
 # Context Engineering vs KV Cache Engineering

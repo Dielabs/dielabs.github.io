@@ -1,5 +1,7 @@
 ---
 redirect_from:
+  - /agentic/
+  - /agentic/index.html
   - /frameworks/inference-technology-model
   - /frameworks/inference-technology-model.html
   - /frameworks/inference-stack-model
@@ -62,9 +64,26 @@ layout: default
   </article>
 </div>
 
-## Agents & Delivery
+## Agents & Retrieval
+
+<p>Principles, requirements and practical methods for designing agents and retrieval systems.</p>
 
 <div class="framework-group">
+  <article class="framework-card">
+    <h3>Context Engineering vs KV Cache Engineering</h3>
+    <p>Connect context-management choices to cache reuse, latency and serving capacity, so the harness and the infrastructure are designed together.</p>
+    <a class="framework-action" href="context-vs-kv-cache-engineering.html" aria-label="Read Context Engineering vs KV Cache Engineering">Read &rarr;</a>
+  </article>
+  <article class="framework-card">
+    <h3>Minimum Requirements of an Agentic Harness</h3>
+    <p>Define the memory, boundaries, budgets and verification an agent needs to do dependable work that someone else can pick up and check.</p>
+    <a class="framework-action" href="agentic-harness-requirements.html" aria-label="Read Minimum Requirements of an Agentic Harness">Read &rarr;</a>
+  </article>
+  <article class="framework-card">
+    <h3>From Zero to RAG</h3>
+    <p>Choose how much retrieval a use case needs, from a basic chain to agent orchestration, with the cost and sizing implications of each choice.</p>
+    <a class="framework-action" href="mailto:info@dielabs.eu?subject=From%20Zero%20to%20RAG%20%E2%80%94%20request" aria-label="Request access to From Zero to RAG">Request access &rarr;</a>
+  </article>
   <article class="framework-card">
     <h3>Designing AI Agents from Scratch</h3>
     <p>Decide whether an agent is needed, define its contract and control loop, and specify permissions, verification and recovery before implementation.</p>

@@ -78,7 +78,7 @@ Sizing is the conclusion of the exercise, not an additional quantity: replicas =
 
 The framework was born for chat and batch workloads, where the cost per request is fairly predictable from the data profile. Agentic workloads break this assumption in two ways. The dynamic fan-out of agents makes the inference load per query no longer deterministic: Cr is still the right concept, but estimating it requires characterizing the agent loop. And the prefill cost — dominant in trajectories with long, growing prefixes — depends on the cache hit rate, which is a property of the application harness, not of the hardware: two harnesses with the same task success rate can produce Cr_open values that differ by multiples on the same hardware.
 
-As a consequence, for agentic workloads Cr_open becomes a property of the model + hardware + harness triple, and the assessment must include reading how the agent behaves. More on what agentic workloads do to serving in [Agentic](/agentic/).
+As a consequence, for agentic workloads Cr_open becomes a property of the model + hardware + harness triple, and the assessment must include reading how the agent behaves. See [Context Engineering vs KV Cache Engineering](context-vs-kv-cache-engineering.html) for how harness choices affect serving.
 
 ---
 

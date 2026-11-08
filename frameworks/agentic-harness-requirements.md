@@ -1,6 +1,9 @@
 ---
 layout: default
-title: "Minimum Requirements of an Agentic Harness"
+title: Minimum Requirements of an Agentic Harness
+redirect_from:
+- /agentic/agentic-harness-requirements
+- /agentic/agentic-harness-requirements.html
 ---
 
 # Minimum Requirements of an Agentic Harness

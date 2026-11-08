@@ -1,6 +1,9 @@
 ---
 layout: default
 title: From Zero to RAG
+redirect_from:
+- /agentic/from-zero-to-rag
+- /agentic/from-zero-to-rag.html
 ---
 
 # From Zero to RAG
