@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NewsRAG — Evidence-Grounded Newspaper Archive Search · POC</title>
+<meta name="description" content="A newspaper-archive RAG prototype: source-aware ingestion, hybrid retrieval, code-anchored citations and an explicit no-answer path. Architecture, decisions and exploratory results from the Dielabs lab.">
+<meta property="og:title" content="NewsRAG — Newspaper Archive RAG · Dielabs">
+<meta property="og:description" content="Real articles can still produce a false answer. A documented POC on preserving evidence, dates and provenance in newspaper archive search.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12151A;
+    --panel:#181C24;
+    --panel-2:#1E2430;
+    --edge:#4DB68A;
+    --edge-soft:#1D332B;
+    --edge-text:#96DEBD;
+    --cloud:#57C2D6;
+    --cloud-soft:#1E3238;
+    --cloud-text:#8FDCEA;
+    --text:#ECE9E2;
+    --text-dim:#98A1AF;
+    --text-faint:#6B7280;
+    --line:#2A303B;
+    --sans:'IBM Plex Sans', system-ui, sans-serif;
+    --display:'Space Grotesk', var(--sans);
+    --mono:'IBM Plex Mono', 'SF Mono', monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-font-smoothing:antialiased;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--text);
+    font-family:var(--sans);
+    font-size:15px;
+    line-height:1.55;
+  }
+  .page{
+    max-width:1080px;
+    margin:0 auto;
+    padding:56px 44px 40px;
+  }
+
+  a{color:var(--cloud-text);}
+
+  h1,h2,h3{font-family:var(--display); margin:0; letter-spacing:-0.01em;}
+
+  /* ---------- Hero ---------- */
+  .hero{padding-bottom:28px; border-bottom:1px solid var(--line);}
+  .eyebrow{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.14em; color:var(--text-faint);
+    text-transform:uppercase; margin-bottom:14px;
+  }
+  .hero h1{font-size:52px; font-weight:700; color:var(--text);}
+  .hero .subtitle{
+    font-size:18px; color:var(--text-dim); margin:8px 0 16px; font-weight:400;
+  }
+  .thesis{
+    font-size:15.5px; margin:0;
+    border-left:2px solid var(--edge); padding-left:16px; font-style:italic; color:#D8D4C9;
+  }
+  .capabilities{
+    font-size:14.5px; color:var(--text-dim); margin:0 0 16px;
+  }
+
+  /* ---------- Metrics strip ---------- */
+  .metrics{
+    display:flex; flex-wrap:wrap; gap:0;
+    margin:26px 0 0; border:1px solid var(--line); border-radius:8px; overflow:hidden;
+    background:var(--panel);
+  }
+  .metric{
+    flex:1 1 140px; padding:16px 18px; border-right:1px solid var(--line);
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .metric:last-child{border-right:none;}
+  .metric .v{font-family:var(--mono); font-size:20px; font-weight:600; color:var(--text);}
+  .metric .l{font-size:11px; color:var(--text-faint); letter-spacing:.02em;}
+
+  /* ---------- Sections ---------- */
+  section{margin-top:48px;}
+  .sec-head{display:flex; align-items:baseline; gap:12px; margin-bottom:14px;}
+  .sec-head .num{
+    font-family:var(--mono); font-size:12px; color:var(--text-faint); border:1px solid var(--line);
+    border-radius:4px; padding:2px 6px;
+  }
+  .sec-head h2{font-size:21px; font-weight:600;}
+  .lead{color:var(--text-dim); font-size:14.5px; margin:0 0 20px;}
+
+  /* ---------- Pipeline diagram ---------- */
+  .pipeline{
+    display:flex; align-items:stretch; flex-wrap:wrap; gap:8px 2px; margin-bottom:14px;
+  }
+  .stage{
+    font-family:var(--mono); font-size:12px; border-radius:6px; padding:10px 12px;
+    min-width:108px; text-align:center; border:1px solid var(--line); background:var(--panel);
+    display:flex; flex-direction:column; gap:4px; justify-content:center;
+  }
+  .stage .role{color:var(--text-faint); font-size:10px; letter-spacing:.06em; text-transform:uppercase;}
+  .stage .name{color:var(--text); font-size:12.5px; font-weight:500;}
+  .stage.client{border-style:dashed; color:var(--text-dim); background:transparent;}
+  .stage.edge{border-color:var(--edge); background:var(--edge-soft);}
+  .stage.edge .role{color:var(--edge-text);}
+  .stage.cloud{border-color:var(--cloud); background:var(--cloud-soft);}
+  .stage.cloud .role{color:var(--cloud-text);}
+  .stage.gate{border-color:var(--text-dim);}
+  .conn{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:10px; color:var(--text-faint); min-width:34px; gap:2px;
+  }
+  .conn .ar{font-size:14px; color:var(--text-faint);}
+  .conn.crossing .ar{color:var(--text);}
+  .conn .tag{letter-spacing:.03em;}
+  .conn.crossing .tag{color:var(--text-dim); font-weight:500;}
+
+  .legend{display:flex; gap:22px; flex-wrap:wrap; font-size:12.5px; color:var(--text-dim); margin-top:4px;}
+  .legend span{display:flex; align-items:center; gap:7px;}
+  .dot{width:8px; height:8px; border-radius:50%; display:inline-block;}
+  .dot.edge{background:var(--edge);}
+  .dot.cloud{background:var(--cloud);}
+
+  .boundary-note{
+    margin-top:16px; font-size:13px; color:var(--text-dim); background:var(--panel);
+    border:1px solid var(--line); border-radius:8px; padding:12px 16px;
+  }
+  .boundary-note b{color:var(--text);}
+
+  /* ---------- Stack ---------- */
+  .stack-grid{display:grid; grid-template-columns:1.1fr 1fr 0.8fr; gap:18px;}
+  .stack-col{
+    border:1px solid var(--line); border-radius:8px; padding:16px 18px; background:var(--panel);
+    border-top:2px solid var(--line);
+  }
+  .stack-col.edge-col{border-top-color:var(--edge);}
+  .stack-col.cloud-col{border-top-color:var(--cloud);}
+  .stack-col h3{
+    font-size:13px; font-family:var(--mono); font-weight:500; text-transform:uppercase; letter-spacing:.04em;
+    color:var(--text-dim); margin-bottom:4px;
+  }
+  .stack-col .sub{font-size:11.5px; color:var(--text-faint); margin-bottom:12px; display:block;}
+  .stack-col ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px;}
+  .stack-col li{font-size:13px; color:var(--text-dim); display:flex; gap:8px; align-items:baseline;}
+  .stack-col li .k{color:var(--text); font-weight:500; min-width:78px; flex-shrink:0; font-size:12.5px;}
+  .stack-col li .v{font-family:var(--mono); font-size:12px; color:var(--text-dim);}
+
+  /* ---------- Cards ---------- */
+  .cards{display:grid; gap:14px;}
+  .outcomes-grid{grid-template-columns:1fr 1fr 1fr;}
+  .policies-grid{grid-template-columns:repeat(4,1fr);}
+  .decisions-grid{grid-template-columns:1fr 1fr;}
+  .incidents-grid{grid-template-columns:1fr 1fr;}
+  .card{
+    border:1px solid var(--line); border-radius:8px; padding:16px 18px; background:var(--panel);
+  }
+  .card h4{font-family:var(--sans); font-size:14px; font-weight:600; color:var(--text); margin:0 0 10px; line-height:1.35;}
+  .card .row{margin-bottom:7px; font-size:12.5px; color:var(--text-dim);}
+  .card .row:last-child{margin-bottom:0;}
+  .card .tag{
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.08em; color:var(--text-faint);
+    display:inline; margin-right:6px; text-transform:uppercase;
+  }
+  .card.decision .tag.result{color:var(--edge-text);}
+  .card.incident .tag.fix{color:var(--cloud-text);}
+  .card .desc{font-size:12.5px; color:var(--text-dim); margin:0; line-height:1.5;}
+
+  .features-grid{grid-template-columns:1fr 1fr;}
+  .chip-row{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;}
+  .chip{
+    font-family:var(--mono); font-size:10.5px; color:var(--text-dim); background:var(--panel-2);
+    border:1px solid var(--line); border-radius:999px; padding:3px 9px; letter-spacing:.01em;
+  }
+
+  .lesson{
+    margin-top:14px; font-size:13px; color:#D8D4C9; font-style:italic;
+    border-left:2px solid var(--cloud); padding:10px 16px; background:var(--panel); border-radius:0 6px 6px 0;
+  }
+
+  /* ---------- Roadmap ---------- */
+  .roadmap-list{display:flex; flex-direction:column; gap:0;}
+  .roadmap-item{
+    display:grid; grid-template-columns:190px 1fr; gap:20px; padding:14px 0;
+    border-top:1px solid var(--line);
+  }
+  .roadmap-item:last-child{border-bottom:1px solid var(--line);}
+  .roadmap-item h4{font-family:var(--sans); font-size:13.5px; font-weight:600; color:var(--text); margin:0;}
+  .roadmap-item p{margin:4px 0 0; font-size:13px; color:var(--text-dim);}
+
+  footer{
+    margin-top:48px; padding-top:20px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+    font-size:12px; color:var(--text-faint); font-family:var(--mono);
+  }
+  footer a{color:var(--text-dim); text-decoration:none;}
+  footer a:hover{color:var(--cloud-text);}
+  footer .foot-links{display:flex; gap:16px;}
+
+  /* ---------- Site nav ---------- */
+  .site-nav{
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    padding:14px 44px; border-bottom:1px solid var(--line); background:var(--panel);
+    font-family:var(--sans);
+  }
+  .site-nav .back{
+    font-family:var(--mono); font-size:12.5px; color:var(--text-dim); text-decoration:none;
+  }
+  .site-nav .back:hover{color:var(--cloud-text);}
+  .site-nav .links{display:flex; gap:22px; flex-wrap:wrap;}
+  .site-nav .links a{
+    font-size:11.5px; font-weight:500; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--text-faint); text-decoration:none; transition:color .2s;
+  }
+  .site-nav .links a:hover{color:var(--cloud-text);}
+  .site-nav .links a.current{color:var(--edge-text);}
+  .site-nav .links a.cv{opacity:.7;}
+  @media (max-width:820px){
+    .site-nav{padding:12px 22px;}
+    .site-nav .links{display:none;}
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:820px){
+    .page{padding:40px 22px;}
+    .hero h1{font-size:40px;}
+    .stack-grid{grid-template-columns:1fr;}
+    .outcomes-grid{grid-template-columns:1fr;}
+    .policies-grid{grid-template-columns:1fr;}
+    .decisions-grid{grid-template-columns:1fr;}
+    .incidents-grid{grid-template-columns:1fr;}
+    .features-grid{grid-template-columns:1fr;}
+    .roadmap-item{grid-template-columns:1fr; gap:4px;}
+    .pipeline{flex-direction:column; align-items:stretch;}
+    .conn{flex-direction:row; min-width:0; padding:2px 0 2px 14px;}
+  }
+
+  /* ---------- Print ---------- */
+  @media print{
+    @page{margin:14mm;}
+    body{background:#fff; color:#1B1E24; font-size:12.5px;}
+    :root{
+      --panel:#F7F5F1; --line:#DAD5C9; --text:#1B1E24; --text-dim:#4A4F58; --text-faint:#7A7F87;
+      --edge-soft:#FBEBC9; --cloud-soft:#DDF3F6; --edge-text:#9A6A12; --cloud-text:#136B7A;
+    }
+    .page{padding:0; max-width:none;}
+    .hero h1{color:#1B1E24;}
+    section{margin-top:26px; page-break-inside:avoid;}
+    .metrics, .stack-col, .card, .stage, .roadmap-item{page-break-inside:avoid;}
+    .thesis{color:#3A3D42;}
+    .site-nav{display:none;}
+  }
+    .site-nav .links a.nav-pocs{ color:var(--edge-text); font-weight:700; border:1.5px solid var(--edge); border-radius:999px; padding:3px 11px; }
+    .site-nav .links a.nav-pocs:hover{ background:var(--edge); color:var(--ink); }
+    .site-nav .links{align-items:center;}
+    .site-nav .back{display:inline-flex; align-items:center; gap:8px;}
+    .site-nav .back img{width:22px; height:22px; display:block;}
+    .nav-new::after {
+      content: "New";
+      margin-left: 0.35rem;
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px;
+      background: var(--edge);
+      color: var(--ink);
+      font-size: 0.7em;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
+  .status-note { margin:20px 0 0; padding:12px 16px; border:1px solid var(--line); border-radius:8px; color:var(--text-dim); font-size:13px; background:var(--panel); }
+  .status-note strong { color:var(--edge-text); }
+  .scope-grid { grid-template-columns:1fr 1fr; }
+  .section-kicker { font-family:var(--mono); font-size:11px; color:var(--edge-text); text-transform:uppercase; letter-spacing:.06em; margin:22px 0 12px; }
+  .metric .v { font-variant-numeric:tabular-nums; }
+  .stage { flex:1 1 125px; min-width:0; }
+  .stage .name { overflow-wrap:anywhere; }
+  .stage .role { color:var(--text-dim); }
+  .scope-list { padding-left:18px; margin:0; font-size:13px; color:var(--text-dim); }
+  .scope-list li { margin:0 0 9px; }
+  .scope-list li:last-child { margin-bottom:0; }
+  .section-notes { font-size:12px; color:var(--text-dim); margin-top:14px; }
+  @media (max-width:820px) { .scope-grid { grid-template-columns:1fr; } .stage { flex:none; } .stack-col li { flex-wrap:wrap; gap:2px 8px; } .stack-col li .v { overflow-wrap:anywhere; min-width:0; } }
+</style>
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/logo/apple-touch-icon.png">
+</head>
+<body>
+<nav class="site-nav">
+  <a class="back" href="/"><span class="back-arrow">←</span><img src="/assets/logo/dielabs-mark-white.png" alt="Dielabs logo">dielabs</a>
+  <div class="links">
+    <a class="current nav-pocs" href="/case-studies/">Works</a>
+    <a href="/papers/">Papers</a>
+
+    <a href="/frameworks/">Frameworks</a>
+    <a href="/manifesto/">Manifesto</a>
+    <a class="cv" href="https://www.kickresume.com/cv/4b8kvR/" target="_blank">CV ↗</a>
+  </div>
+</nav>
+<main class="page">
+
+  <header class="hero">
+    <div class="eyebrow">Case study · newspaper archives · POC</div>
+    <h1>NewsRAG</h1>
+    <p class="subtitle">Ask a newspaper archive a question, then inspect the evidence behind the answer.</p>
+    <p class="capabilities">A retrieval and generation prototype developed for a digital publishing platform: article-aware ingestion, hybrid search, local embeddings and reranking, date filters and source-linked answers. The working pilot used five print editions; the broader design also accounts for a separate web archive.</p>
+    <p class="thesis">An authentic article, an authentic fact and an authentic citation can still make a false answer if the place, date or scope is wrong.</p>
+    <p class="status-note"><strong>Archived POC · development record: September 2026.</strong> The pipeline and demonstration interface were built and exercised on a small sample. A journalist-reviewed golden set and long-archive validation were not completed. This page documents the work, not a production service or a currently available demo.</p>
+  </header>
+
+  <section aria-labelledby="domain-title">
+    <div class="sec-head"><span class="num">01</span><h2 id="domain-title">Why newspaper archives need a different RAG</h2></div>
+    <p class="lead">The archive contains real reporting, but also captions, repeated local editions, announcements and stories that change over time. Finding a related passage is only the start.</p>
+    <div class="cards features-grid">
+      <div class="card"><h4>Print and web are separate sources</h4><p class="desc">They can describe the same event without being the same document. Separate ingestion paths were designed to converge on one document model; only the print path was implemented in the pilot.</p></div>
+      <div class="card"><h4>Captions contain otherwise invisible people</h4><p class="desc">A corpus analysis found 58 people whose names appeared only in captions across the five editions. Captions became searchable evidence, with their origin retained.</p></div>
+      <div class="card"><h4>Time belongs to the answer</h4><p class="desc">An old article can say a bridge “will reopen”. That wording needs the publication date and the source period beside it; it is not a statement about today.</p></div>
+      <div class="card"><h4>“No supporting source found” is a valid outcome</h4><p class="desc">A system that always answers can stitch unrelated but genuine articles into a convincing false account. The pilot has an explicit no-generation path when retrieval falls below its provisional threshold.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="data-title">
+    <div class="sec-head"><span class="num">02</span><h2 id="data-title">Inspect the delivered archive before building ingestion</h2></div>
+    <p class="lead">The five supplied editions, dated 3–17 March 2026, contained PRISM/PAM XML already split into articles, with article photos and captions. The sampled text came from the publishing workflow; it did not require OCR. That finding removed an entire reconstruction stage from the pilot.</p>
+    <div class="pipeline" aria-label="Ingestion flow">
+      <div class="stage client"><span class="role">Source</span><span class="name">Article XML + photos</span></div>
+      <div class="conn" aria-hidden="true"><span class="ar">→</span></div>
+      <div class="stage edge"><span class="role">Ingestion</span><span class="name">Identity · metadata · versions</span></div>
+      <div class="conn" aria-hidden="true"><span class="ar">→</span></div>
+      <div class="stage edge"><span class="role">Preparation</span><span class="name">Body blocks + caption fragments</span></div>
+      <div class="conn" aria-hidden="true"><span class="ar">→</span></div>
+      <div class="stage edge"><span class="role">Local index</span><span class="name">PostgreSQL + pgvector</span></div>
+    </div>
+    <div class="boundary-note"><b>The sample defines the boundary.</b> It contained neither full-page scans nor word coordinates. Page-image highlighting was therefore excluded. The recent XML did not establish the quality or format of older archive years.</div>
+  </section>
+
+  <section aria-labelledby="architecture-title">
+    <div class="sec-head"><span class="num">03</span><h2 id="architecture-title">Architecture — two searches, one evidence path</h2></div>
+    <p class="lead">Lexical search catches names, places and numbers; dense retrieval catches meaning. Both are filtered before fusion, reranked locally and deduplicated before the generation decision.</p>
+    <div class="pipeline" aria-label="Question answering flow">
+      <div class="stage client"><span class="role">Input</span><span class="name">Question + date range</span></div>
+      <div class="conn" aria-hidden="true"><span class="ar">→</span></div>
+      <div class="stage edge"><span class="role">Local</span><span class="name">Lexical + dense search</span></div>
+      <div class="conn" aria-hidden="true"><span class="ar">→</span></div>
+      <div class="stage edge"><span class="role">Local</span><span class="name">Rank fusion → rerank → dedup</span></div>
+      <div class="conn" aria-hidden="true"><span class="ar">→</span></div>
+      <div class="stage gate"><span class="role">Application gate</span><span class="name">Evidence band</span></div>
+    </div>
+    <div class="cards outcomes-grid">
+      <div class="card"><h4>Strong retrieval</h4><p class="desc">Generate from the selected fragments and resolve citation markers against those documents.</p></div>
+      <div class="card"><h4>Weak retrieval</h4><p class="desc">Generation is allowed, with source excerpts available for checking. This band still produced errors in exploratory tests.</p></div>
+      <div class="card"><h4>Below threshold</h4><p class="desc">Do not call the generator. Return an application-written no-answer response. This means insufficient retrieved support, not proof that the archive never covered the event.</p></div>
+    </div>
+    <div class="boundary-note"><b>Local retrieval, external generation in the pilot.</b> Documents and indexes stayed on the development node; the question and selected excerpts were sent to an external model through OpenRouter. This was a pilot placement choice, not an end-to-end local or sovereign deployment. Retrieval bands are heuristic scores, not calibrated probabilities of truth.</div>
+  </section>
+
+  <section aria-labelledby="stack-title">
+    <div class="sec-head"><span class="num">04</span><h2 id="stack-title">Technology stack</h2></div>
+    <div class="stack-grid">
+      <div class="stack-col edge-col"><h3>Local retrieval</h3><span class="sub">RTX 4070 Super · 12 GB GPU</span><ul>
+        <li><span class="k">Storage</span><span class="v">PostgreSQL + pgvector</span></li>
+        <li><span class="k">Search</span><span class="v">Italian full-text GIN + dense HNSW</span></li>
+        <li><span class="k">Embedding</span><span class="v">bge-m3 · 1024 dimensions</span></li>
+        <li><span class="k">Reranking</span><span class="v">bge-reranker-v2-m3</span></li>
+        <li><span class="k">Runtime</span><span class="v">PyTorch + FlagEmbedding</span></li>
+      </ul></div>
+      <div class="stack-col cloud-col"><h3>Answer generation</h3><span class="sub">External API · pilot configuration</span><ul>
+        <li><span class="k">Routing</span><span class="v">OpenRouter</span></li>
+        <li><span class="k">Model</span><span class="v">gemma-4-31b-it</span></li>
+        <li><span class="k">Citations</span><span class="v">Document mapping in application code</span></li>
+        <li><span class="k">Trace</span><span class="v">Model, provider, tokens, cost and latency</span></li>
+      </ul></div>
+      <div class="stack-col"><h3>Application</h3><span class="sub">Small, explicit pipeline</span><ul>
+        <li><span class="k">Backend</span><span class="v">Python + SQL</span></li>
+        <li><span class="k">Interface</span><span class="v">Python standard library, HTML + CSS</span></li>
+        <li><span class="k">Evaluation</span><span class="v">Review records in PostgreSQL</span></li>
+        <li><span class="k">Demo</span><span class="v">Password-protected tunnel used for review</span></li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="decisions-title">
+    <div class="sec-head"><span class="num">05</span><h2 id="decisions-title">Key architectural decisions</h2></div>
+    <div class="cards decisions-grid">
+      <div class="card decision"><h4>One database, rather than two systems to operate</h4><div class="row"><span class="tag">Problem</span>Text, vectors, dates and publication filters could have become separate services.</div><div class="row"><span class="tag">Choice</span>Keep relational data, lexical search and vectors in PostgreSQL; revisit storage only against measured scale.</div><div class="row"><span class="tag result">Outcome</span>One data store for retrieval, answer records and review judgments, without a second vector database.</div></div>
+      <div class="card decision"><h4>The source remains authoritative</h4><div class="row"><span class="tag">Problem</span>Hand-correcting text or appending captions to the article body creates an undocumented second original.</div><div class="row"><span class="tag">Choice</span>Preserve delivered content; derive rebuildable fragments with body/caption provenance, stable identity and version metadata.</div><div class="row"><span class="tag result">Outcome</span>Re-runnable ingestion and an index that can be rebuilt, with caption evidence distinguishable from article text.</div></div>
+      <div class="card decision"><h4>Fuse ranks, not incomparable scores</h4><div class="row"><span class="tag">Problem</span>Lexical relevance and vector similarity are different scales; weighting them before evaluation would add an arbitrary tuning choice.</div><div class="row"><span class="tag">Choice</span>Reciprocal Rank Fusion, followed by reranking and duplicate removal.</div><div class="row"><span class="tag result">Outcome</span>Both retrieval paths contribute through an explicit, inspectable sequence.</div></div>
+      <div class="card decision"><h4>Citation identity is controlled by code</h4><div class="row"><span class="tag">Problem</span>A model can produce a convincing citation to something it never received.</div><div class="row"><span class="tag">Choice</span>Number the supplied fragments and resolve markers in application code; remove and log out-of-range markers.</div><div class="row"><span class="tag result">Outcome</span>Displayed citations refer to supplied documents. This bounds source identity; it does not guarantee that each claim is supported.</div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="interface-title">
+    <div class="sec-head"><span class="num">06</span><h2 id="interface-title">An interface for reading—and for checking</h2></div>
+    <p class="lead">The prototype had a reading view, an article view and a review view. Its purpose was to make the next evaluation possible: a journalist needs to inspect evidence, not spend hours judging terminal output.</p>
+    <div class="cards features-grid">
+      <div class="card"><h4>Answer and all cited sources together</h4><p class="desc">Source cards below the answer show the delivered title, section, date, page and the excerpt actually used. The complete article can be opened for context.</p></div>
+      <div class="card"><h4>Photos stay in their source context</h4><p class="desc">A source card can carry an article thumbnail, and the article view shows its photos and captions. A photo is not placed beside a generated claim as if it illustrated that particular fact.</p></div>
+      <div class="card"><h4>Visible temporal scope</h4><p class="desc">Date fields constrain retrieval, and the application reports the period covered by the cited sources. This makes the evidence window visible without pretending to correct historical wording.</p></div>
+      <div class="card"><h4>Review without a confidence label leading the verdict</h4><p class="desc">In review mode, the retrieval band is hidden until the judgment is saved. The response layout remains consistent across bands; judgments are stored separately from answers.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="lessons-title">
+    <div class="sec-head"><span class="num">07</span><h2 id="lessons-title">Problems found, fixes and limits</h2></div>
+    <div class="cards incidents-grid">
+      <div class="card incident"><h4>A hybrid search with a silent lexical branch</h4><div class="row"><span class="tag">Symptom</span>Four of six realistic test questions returned no lexical candidates with AND matching.</div><div class="row"><span class="tag">Cause</span>All query terms were required together; accent handling also differed between indexed text and user queries.</div><div class="row"><span class="tag fix">Fix</span>OR candidate matching, consistent accent/stopword handling and a regression check covering accented and unaccented forms.</div></div>
+      <div class="card incident"><h4>Duplicate text was two different problems</h4><div class="row"><span class="tag">Symptom</span>Repeated passages occupied multiple result slots.</div><div class="row"><span class="tag">Cause</span>Local-edition article copies and recurring boilerplate had been counted together.</div><div class="row"><span class="tag fix">Response</span>Deduplicate identical text and diversify by document; classify boilerplate separately. Worst-case per-query crowding still needed a larger archive.</div></div>
+      <div class="card incident"><h4>Every fact was real; the answer was still false</h4><div class="row"><span class="tag">Observed</span>A question about one town received a precise election result from another town, based on a genuine caption.</div><div class="row"><span class="tag">Lesson</span>Grounding and valid citation identity do not establish relevance to the requested entity.</div><div class="row"><span class="tag fix">Response</span>Make place and source excerpts easy to inspect. The weak-band error remained an evaluation issue, not a solved hallucination problem.</div></div>
+      <div class="card incident"><h4>“Not found” changed with the wording</h4><div class="row"><span class="tag">Observed</span>Direct and retrospective phrasings of the same bridge question retrieved relevant material but landed in different evidence bands.</div><div class="row"><span class="tag">Cause</span>The reranker score changed enough to cross a provisional threshold.</div><div class="row"><span class="tag fix">Next test</span>Evaluate paraphrases before calibrating the gate or adding a conversational rewriter. One observed pair did not establish a general rate.</div></div>
+    </div>
+    <p class="lesson">A source-bound answer is inspectable, not automatically correct. Relevance, entity identity and time still need their own tests.</p>
+  </section>
+
+  <section aria-labelledby="observations-title">
+    <div class="sec-head"><span class="num">08</span><h2 id="observations-title">Recorded observations</h2></div>
+    <p class="lead">Corpus counts and exploratory measurements from the September 2026 development sessions. These are not production-capacity figures or a completed journalist-reviewed benchmark.</p>
+    <div class="metrics" aria-label="Sample corpus counts">
+      <div class="metric"><span class="v">5 editions</span><span class="l">one newspaper · two-week window</span></div>
+      <div class="metric"><span class="v">818</span><span class="l">source documents ingested</span></div>
+      <div class="metric"><span class="v">2,542</span><span class="l">fragments generated, including captions</span></div>
+      <div class="metric"><span class="v">2,522</span><span class="l">indexable fragments with vectors</span></div>
+      <div class="metric"><span class="v">326</span><span class="l">caption-origin fragments</span></div>
+    </div>
+    <div class="cards features-grid" style="margin-top:18px;">
+      <div class="card"><h4>Local retrieval timing</h4><p class="desc">On the idle development node, query encoding plus SQL search had a recorded median of 19 ms and p95 of 28 ms, before reranking. A later 16-question probe recorded a 226 ms median including reranking. These were different test stages; neither is an end-to-end answer SLA.</p></div>
+      <div class="card"><h4>Exploratory answers exposed the weak band</h4><p class="desc">In a ten-question development review, all four strong-band answers and both no-generation outcomes were judged correct. The four weak-band cases split two correct and two incorrect. This small, manually assembled check guided the interface; it was not a validated accuracy estimate.</p></div>
+    </div>
+    <p class="section-notes">Local latency measurements were taken with the shared GPU otherwise idle. External generation showed provider-dependent variation and is not included in those retrieval times. The formal review set had not been populated at the recorded project handoff.</p>
+  </section>
+
+  <section aria-labelledby="scope-title">
+    <div class="sec-head"><span class="num">09</span><h2 id="scope-title">What was built, and what remained unvalidated</h2></div>
+    <div class="cards scope-grid">
+      <div class="card"><h4>Implemented in the POC</h4><ul class="scope-list"><li>Print XML ingestion with stable identities, version fields and repeatable updates.</li><li>Local lexical/dense retrieval, rank fusion, reranking and deduplication.</li><li>Answer generation with document-bound citations and a no-generation branch.</li><li>Article/source views, date filtering, answer records and a review interface.</li></ul></div>
+      <div class="card"><h4>Outside the demonstrated scope</h4><ul class="scope-list"><li>A long historical archive and a journalist-reviewed golden set.</li><li>Web ingestion and verified print/web article linkage.</li><li>Full story reconstruction, exhaustive archive counts and multi-turn chat.</li><li>Production permissions, subscriber integration, hardening and service-level acceptance.</li></ul></div>
+    </div>
+    <div class="boundary-note"><b>The next acceptance step was evidence, not more features.</b> A longer archive and expert-written questions were needed to measure answer relevance, missed evidence, temporal coverage and threshold errors. Multi-turn rewriting was designed but deferred because it would change the wording feeding an already-sensitive retrieval gate.</div>
+  </section>
+
+  <footer>
+    <span>NewsRAG — newspaper archive RAG · Dielabs, Diego Bardella</span>
+    <span>Archived POC · private repository · September 2026 record</span>
+    <span class="foot-links"><a href="/case-studies/">← Works</a><a href="/">dielabs home</a></span>
+  </footer>
+
+</main>
+</body>
+</html>

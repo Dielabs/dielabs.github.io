@@ -25,6 +25,9 @@ layout: default
   .c-pmi{background:linear-gradient(160deg,#EAF0FB 0%,#F3F7FD 100%);}
   .c-pmi::before{background:linear-gradient(90deg,var(--navy),var(--sky));}
   .c-pmi .sub,.c-pmi .go{color:var(--navy);}
+  .c-news{background:linear-gradient(160deg,#EAF7F0 0%,#EFF9FA 100%);}
+  .c-news::before{background:linear-gradient(90deg,var(--green),var(--mint));}
+  .c-news .sub,.c-news .go{color:var(--green);}
   .lab{background:#FAFAFC; border:1px dashed rgba(0,0,0,.16);}
   .lab::before{display:none;}
   .lab h3{color:#2a2a44;}
@@ -41,7 +44,7 @@ layout: default
 <p class="poc-intro">Proofs of concept built in Dielabs — the first step from idea to production. Some are already presented to companies, others are still in the making. The published write-ups cover architecture, decisions, problems solved and measured results.</p>
 
 <div class="poc-label">Published</div>
-<div class="poc-grid">
+<div class="poc-grid three">
   <a class="poc-card c-platone" href="platone.html">
     <h3>Platone</h3>
     <span class="sub">Hybrid edge/cloud voice AI</span>
@@ -54,16 +57,16 @@ layout: default
     <p>A private AI workspace for Italian small businesses: one instance per company, open models hosted in Italy, chats kept only on the company's server. Excel in chat today, Word and PowerPoint next, plus shared company knowledge. No conversation logs, automatic deletion after 90 days.</p>
     <span class="go">Read the write-up →</span>
   </a>
+  <a class="poc-card c-news" href="newsrag.html">
+    <h3>NewsRAG</h3>
+    <span class="sub">Newspaper archives</span>
+    <p>A newspaper-archive RAG prototype with article-aware ingestion, hybrid search and source-linked answers. Built on five print editions, with searchable captions, date filters and an explicit no-answer path. The write-up separates working features from what still needed editorial validation.</p>
+    <span class="go">Read the write-up →</span>
+  </a>
 </div>
 
 <div class="poc-label">In the lab</div>
-<div class="poc-grid three">
-  <div class="poc-card lab">
-    <span class="pill p-beta">Beta · available</span>
-    <h3>NewsRAG</h3>
-    <span class="sub">Newspaper archives</span>
-    <p>A RAG for newspaper archives, built for a company that runs the digital platforms of several papers. Scanned print editions and web history are two separate sources, linked in one document model. Built for questions a documentation RAG never meets: how a story unfolded, what changed from web to print, and saying "the archive has no answer" — because every article it could stitch together is real.</p>
-  </div>
+<div class="poc-grid">
   <div class="poc-card lab">
     <span class="pill p-prog">In progress</span>
     <h3>Dielabs RAG</h3>
