@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NewsRAG — Evidence-Grounded Newspaper Archive Search · POC</title>
-<meta name="description" content="A newspaper-archive RAG prototype: source-aware ingestion, hybrid retrieval, code-anchored citations and an explicit no-answer path. Architecture, decisions and exploratory results from the Dielabs lab.">
+<title>NewsRAG — Evidence-Grounded Newspaper Archive Search · PoC</title>
+<meta name="description" content="A newspaper-archive RAG PoC: source-aware ingestion, hybrid retrieval, code-anchored citations and an explicit no-answer path. Architecture, decisions and exploratory results from the Dielabs lab.">
 <meta property="og:title" content="NewsRAG — Newspaper Archive RAG · Dielabs">
-<meta property="og:description" content="Real articles can still produce a false answer. A documented POC on preserving evidence, dates and provenance in newspaper archive search.">
+<meta property="og:description" content="Real articles can still produce a false answer. A documented PoC on preserving evidence, dates and provenance in newspaper archive search.">
 <meta property="og:type" content="article">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -301,28 +301,28 @@
 <main class="page">
 
   <header class="hero">
-    <div class="eyebrow">Case study · newspaper archives · POC</div>
+    <div class="eyebrow">Case study · newspaper archives · PoC</div>
     <h1>NewsRAG</h1>
     <p class="subtitle">Ask a newspaper archive a question, then inspect the evidence behind the answer.</p>
-    <p class="capabilities">A retrieval and generation prototype developed for a digital publishing platform: article-aware ingestion, hybrid search, local embeddings and reranking, date filters and source-linked answers. The working pilot used five print editions; the broader design also accounts for a separate web archive.</p>
+    <p class="capabilities">A retrieval and generation PoC developed for a digital publishing platform: article-aware ingestion, hybrid search, local embeddings and reranking, date filters and source-linked answers. The working PoC used five print editions; the broader design also accounts for a separate web archive.</p>
     <p class="thesis">An authentic article, an authentic fact and an authentic citation can still make a false answer if the place, date or scope is wrong.</p>
-    <p class="status-note"><strong>Archived POC · development record: September 2026.</strong> The pipeline and demonstration interface were built and exercised on a small sample. A journalist-reviewed golden set and long-archive validation were not completed. This page documents the work, not a production service or a currently available demo.</p>
+    <p class="status-note"><strong>Archived PoC · development record: September 2026.</strong> The pipeline and review interface were built and exercised on a small sample. A journalist-reviewed golden set and long-archive validation were not completed. This page documents the work, not a production service.</p>
   </header>
 
   <section aria-labelledby="domain-title">
     <div class="sec-head"><span class="num">01</span><h2 id="domain-title">Why newspaper archives need a different RAG</h2></div>
     <p class="lead">The archive contains real reporting, but also captions, repeated local editions, announcements and stories that change over time. Finding a related passage is only the start.</p>
     <div class="cards features-grid">
-      <div class="card"><h4>Print and web are separate sources</h4><p class="desc">They can describe the same event without being the same document. Separate ingestion paths were designed to converge on one document model; only the print path was implemented in the pilot.</p></div>
+      <div class="card"><h4>Print and web are separate sources</h4><p class="desc">They can describe the same event without being the same document. Separate ingestion paths were designed to converge on one document model; only the print path was implemented in the PoC.</p></div>
       <div class="card"><h4>Captions contain otherwise invisible people</h4><p class="desc">A corpus analysis found 58 people whose names appeared only in captions across the five editions. Captions became searchable evidence, with their origin retained.</p></div>
       <div class="card"><h4>Time belongs to the answer</h4><p class="desc">An old article can say a bridge “will reopen”. That wording needs the publication date and the source period beside it; it is not a statement about today.</p></div>
-      <div class="card"><h4>“No supporting source found” is a valid outcome</h4><p class="desc">A system that always answers can stitch unrelated but genuine articles into a convincing false account. The pilot has an explicit no-generation path when retrieval falls below its provisional threshold.</p></div>
+      <div class="card"><h4>“No supporting source found” is a valid outcome</h4><p class="desc">A system that always answers can stitch unrelated but genuine articles into a convincing false account. The PoC has an explicit no-generation path when retrieval falls below its provisional threshold.</p></div>
     </div>
   </section>
 
   <section aria-labelledby="data-title">
     <div class="sec-head"><span class="num">02</span><h2 id="data-title">Inspect the delivered archive before building ingestion</h2></div>
-    <p class="lead">The five supplied editions, dated 3–17 March 2026, contained PRISM/PAM XML already split into articles, with article photos and captions. The sampled text came from the publishing workflow; it did not require OCR. That finding removed an entire reconstruction stage from the pilot.</p>
+    <p class="lead">The five supplied editions, dated 3–17 March 2026, contained PRISM/PAM XML already split into articles, with article photos and captions. The sampled text came from the publishing workflow; it did not require OCR. That finding removed an entire reconstruction stage from the PoC.</p>
     <div class="pipeline" aria-label="Ingestion flow">
       <div class="stage client"><span class="role">Source</span><span class="name">Article XML + photos</span></div>
       <div class="conn" aria-hidden="true"><span class="ar">→</span></div>
@@ -352,7 +352,7 @@
       <div class="card"><h4>Weak retrieval</h4><p class="desc">Generation is allowed, with source excerpts available for checking. This band still produced errors in exploratory tests.</p></div>
       <div class="card"><h4>Below threshold</h4><p class="desc">Do not call the generator. Return an application-written no-answer response. This means insufficient retrieved support, not proof that the archive never covered the event.</p></div>
     </div>
-    <div class="boundary-note"><b>Local retrieval, external generation in the pilot.</b> Documents and indexes stayed on the development node; the question and selected excerpts were sent to an external model through OpenRouter. This was a pilot placement choice, not an end-to-end local or sovereign deployment. Retrieval bands are heuristic scores, not calibrated probabilities of truth.</div>
+    <div class="boundary-note"><b>Local retrieval, external generation in the PoC.</b> Documents and indexes stayed on the development node; the question and selected excerpts were sent to an external model through OpenRouter. This was a PoC placement choice, not an end-to-end local or sovereign deployment. Retrieval bands are heuristic scores, not calibrated probabilities of truth.</div>
   </section>
 
   <section aria-labelledby="stack-title">
@@ -365,7 +365,7 @@
         <li><span class="k">Reranking</span><span class="v">bge-reranker-v2-m3</span></li>
         <li><span class="k">Runtime</span><span class="v">PyTorch + FlagEmbedding</span></li>
       </ul></div>
-      <div class="stack-col cloud-col"><h3>Answer generation</h3><span class="sub">External API · pilot configuration</span><ul>
+      <div class="stack-col cloud-col"><h3>Answer generation</h3><span class="sub">External API · PoC configuration</span><ul>
         <li><span class="k">Routing</span><span class="v">OpenRouter</span></li>
         <li><span class="k">Model</span><span class="v">gemma-4-31b-it</span></li>
         <li><span class="k">Citations</span><span class="v">Document mapping in application code</span></li>
@@ -375,7 +375,7 @@
         <li><span class="k">Backend</span><span class="v">Python + SQL</span></li>
         <li><span class="k">Interface</span><span class="v">Python standard library, HTML + CSS</span></li>
         <li><span class="k">Evaluation</span><span class="v">Review records in PostgreSQL</span></li>
-        <li><span class="k">Demo</span><span class="v">Password-protected tunnel used for review</span></li>
+        <li><span class="k">Access</span><span class="v">Password-protected tunnel used for review</span></li>
       </ul></div>
     </div>
   </section>
@@ -392,7 +392,7 @@
 
   <section aria-labelledby="interface-title">
     <div class="sec-head"><span class="num">06</span><h2 id="interface-title">An interface for reading—and for checking</h2></div>
-    <p class="lead">The prototype had a reading view, an article view and a review view. Its purpose was to make the next evaluation possible: a journalist needs to inspect evidence, not spend hours judging terminal output.</p>
+    <p class="lead">The PoC had a reading view, an article view and a review view. Its purpose was to make the next evaluation possible: a journalist needs to inspect evidence, not spend hours judging terminal output.</p>
     <div class="cards features-grid">
       <div class="card"><h4>Answer and all cited sources together</h4><p class="desc">Source cards below the answer show the delivered title, section, date, page and the excerpt actually used. The complete article can be opened for context.</p></div>
       <div class="card"><h4>Photos stay in their source context</h4><p class="desc">A source card can carry an article thumbnail, and the article view shows its photos and captions. A photo is not placed beside a generated claim as if it illustrated that particular fact.</p></div>
@@ -432,7 +432,7 @@
   <section aria-labelledby="scope-title">
     <div class="sec-head"><span class="num">09</span><h2 id="scope-title">What was built, and what remained unvalidated</h2></div>
     <div class="cards scope-grid">
-      <div class="card"><h4>Implemented in the POC</h4><ul class="scope-list"><li>Print XML ingestion with stable identities, version fields and repeatable updates.</li><li>Local lexical/dense retrieval, rank fusion, reranking and deduplication.</li><li>Answer generation with document-bound citations and a no-generation branch.</li><li>Article/source views, date filtering, answer records and a review interface.</li></ul></div>
+      <div class="card"><h4>Implemented in the PoC</h4><ul class="scope-list"><li>Print XML ingestion with stable identities, version fields and repeatable updates.</li><li>Local lexical/dense retrieval, rank fusion, reranking and deduplication.</li><li>Answer generation with document-bound citations and a no-generation branch.</li><li>Article/source views, date filtering, answer records and a review interface.</li></ul></div>
       <div class="card"><h4>Outside the demonstrated scope</h4><ul class="scope-list"><li>A long historical archive and a journalist-reviewed golden set.</li><li>Web ingestion and verified print/web article linkage.</li><li>Full story reconstruction, exhaustive archive counts and multi-turn chat.</li><li>Production permissions, subscriber integration, hardening and service-level acceptance.</li></ul></div>
     </div>
     <div class="boundary-note"><b>The next acceptance step was evidence, not more features.</b> A longer archive and expert-written questions were needed to measure answer relevance, missed evidence, temporal coverage and threshold errors. Multi-turn rewriting was designed but deferred because it would change the wording feeding an already-sensitive retrieval gate.</div>
@@ -440,7 +440,7 @@
 
   <footer>
     <span>NewsRAG — newspaper archive RAG · Dielabs, Diego Bardella</span>
-    <span>Archived POC · private repository · September 2026 record</span>
+    <span>Archived PoC · private repository · September 2026 record</span>
     <span class="foot-links"><a href="/case-studies/">← Works</a><a href="/">dielabs home</a></span>
   </footer>
 

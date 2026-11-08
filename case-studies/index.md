@@ -60,7 +60,7 @@ layout: default
   <a class="poc-card c-news" href="newsrag.html">
     <h3>NewsRAG</h3>
     <span class="sub">Newspaper archives</span>
-    <p>A newspaper-archive RAG prototype with article-aware ingestion, hybrid search and source-linked answers. Built on five print editions, with searchable captions, date filters and an explicit no-answer path. The write-up separates working features from what still needed editorial validation.</p>
+    <p>A newspaper-archive RAG PoC with article-aware ingestion, hybrid search and source-linked answers. Built on five print editions, with searchable captions, date filters and an explicit no-answer path. The write-up separates working features from what still needed editorial validation.</p>
     <span class="go">Read the write-up →</span>
   </a>
 </div>
