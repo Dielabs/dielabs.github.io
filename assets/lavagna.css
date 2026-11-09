@@ -1,0 +1,135 @@
+/* Screen theme shared by the home, Markdown layout and standalone case studies. */
+:root {
+  color-scheme: dark;
+  --ink: #242a2a;
+  --panel: #2b3232;
+  --panel-2: #323a39;
+  --text: #eeeae0;
+  --muted: #c4c9c0;
+  --text-dim: var(--muted);
+  --text-faint: #aeb9b2;
+  --line: #58615d;
+  --border: #58615d;
+  --blue: #a9d6df;
+  --violet: #edc683;
+  --pink: #deada3;
+  --cyan: #b2d4bc;
+  --yellow: var(--violet);
+  --white: var(--panel);
+  --off: var(--panel-2);
+  --edge: var(--violet);
+  --edge-text: #f1d29d;
+  --edge-soft: #38362e;
+  --cloud: var(--blue);
+  --cloud-text: #bce1e5;
+  --cloud-soft: #2d3c3d;
+  --chalk-stroke: polygon(0 38%, 9% 18%, 31% 30%, 53% 0, 78% 18%, 99% 35%, 100% 60%, 88% 74%, 62% 85%, 42% 71%, 15% 100%, 1% 77%);
+}
+body {
+  background: var(--ink) url("ardesia.webp") repeat;
+  background-size: 1200px 800px;
+}
+::selection { background: #d7bd86; color: #212727; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--violet); outline-offset: 4px; }
+nav, .site-nav { background: #232928f5; border-color: var(--border); }
+.nav-logo, .footer-logo, .content h2, .stat-number, .hero h1 em {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--blue);
+}
+.nav-logo, .footer-logo { color: var(--text); }
+.nav-cv, .private-card { opacity: 1; }
+body > .hero .orb { display: none; }
+body > .hero > .hero-content {
+  padding: 1rem 0 1.7rem;
+  background: url("lab-sketch.webp") right center / 34% auto no-repeat;
+}
+body > .hero h1 {
+  max-width: 65%;
+  font-size: clamp(48px, 6vw, 84px);
+  white-space: normal;
+  margin-bottom: .3em;
+}
+body > .hero h1 em { display: block; }
+body > .hero .tagline { max-width: 61%; margin-bottom: .3rem; }
+body > .hero h1::after, .content h1::after {
+  content: "";
+  display: block;
+  width: 4.4rem;
+  height: 5px;
+  margin-top: .22em;
+  background: var(--violet);
+  clip-path: var(--chalk-stroke);
+}
+.content h1 { white-space: normal; }
+.content h1::after { margin-top: .4em; }
+body > .section { background: transparent !important; }
+.section-label, .whatido-label, .clouds-label, .eyebrow { color: var(--violet); }
+.fwset-accent, .focus-accent, .poc-card::before, .release-banner::before {
+  clip-path: var(--chalk-stroke);
+}
+.release-banner::before { top: 16%; bottom: 16%; }
+.release-banner, .release-banner.release-lab, .fwset-card--gold,
+body .content :is(.open-featured,.paper-featured,.tldr), .poc-wrap .poc-card {
+  background: var(--panel);
+  border-color: var(--border);
+  border-radius: 4px 7px 5px 3px;
+  box-shadow: none;
+}
+.focus-grid, .fwset-grid, .links { border-radius: 5px; }
+.release-banner:hover, .fwset-card--gold:hover { background: var(--off); border-color: var(--blue); }
+.fwset-card--gold .fwset-stage, .fwset-card--gold:hover :is(.fwset-step,.fwset-title,.fwset-link) { color: var(--violet); }
+.cloud-logo:not(.cloud-dark) { background: #e9e7df; }
+.nav-new::after, .new-flag, .content .open-featured .new-flag, .release-go i {
+  color: var(--ink); background: var(--violet);
+}
+.poc-wrap .poc-card h3, .poc-wrap .poc-intro { color: var(--text); }
+.poc-wrap .poc-card p, .poc-wrap :is(.poc-label,.poc-foot) { color: var(--muted); }
+.poc-wrap .poc-card :is(.sub,.go) { color: var(--blue); }
+.poc-wrap .pill { background: var(--off); color: var(--violet); }
+.poc-wrap .poc-label::after { background: var(--line); }
+.poc-wrap .poc-card::before { background: var(--blue); }
+body .content .pdf-link:hover { color: var(--ink); }
+.content figure img { background-color: #f7f6ef; }
+.page .stage { border-radius: 4px 7px 3px 6px; }
+.page .arrow { color: var(--violet); }
+.site-nav .links { background: none; border: 0; border-radius: 0; }
+@media (max-width: 720px) {
+  body > .hero > .hero-content { background: none; padding: 0; }
+  body > .hero h1, body > .hero .tagline { max-width: 100%; }
+  body > .hero { padding-top: 6rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero-content, .dot { animation: none; }
+}
+/* Keep the same lab drawing and section links available on smaller screens. */
+@media (min-width: 560px) and (max-width: 720px) {
+  body > .hero > .hero-content {
+    background: url("lab-sketch.webp") right top / 33% auto no-repeat;
+  }
+  body > .hero h1 { max-width: 66%; }
+}
+@media (max-width: 559px) {
+  body > .hero > .hero-content::after {
+    content: "";
+    display: block;
+    height: 96px;
+    margin-top: 1rem;
+    background: url("lab-sketch.webp") left center / auto 122px no-repeat;
+  }
+}
+@media (max-width: 768px) {
+  nav:not(.site-nav) {
+    position: sticky; height: auto; padding: .55rem 1.2rem;
+    flex-wrap: wrap; gap: .35rem 1rem;
+  }
+  nav .nav-links {
+    display: flex; flex-wrap: wrap; align-items: center; gap: .2rem .8rem;
+  }
+  nav .nav-links a { font-size: .68rem; }
+  body > .hero { padding-top: 2.6rem; }
+}
+@media (max-width: 820px) {
+  .site-nav .links { display: flex; gap: .4rem .9rem; }
+}
