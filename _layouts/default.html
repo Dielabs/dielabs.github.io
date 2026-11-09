@@ -333,7 +333,7 @@
   </style>
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/logo/apple-touch-icon.png">
-<link rel="stylesheet" media="screen" href="/assets/lavagna.css">
+<link rel="stylesheet" media="screen" href="/assets/lavagna.css?v=sketches">
 </head>
 <body>
 
@@ -360,7 +360,19 @@
     {% endif %}
   </div>
 
-  <div class="content">
+  {% assign section = page.dir | split: '/' | last %}
+  {% case section %}
+    {% when 'papers' %}{% assign drawing = 'papers' %}
+    {% when 'frameworks' %}{% assign drawing = 'frameworks' %}
+    {% when 'case-studies' %}{% assign drawing = 'works' %}
+    {% when 'manifesto' %}{% assign drawing = 'manifesto' %}
+  {% endcase %}
+  {% case page.name %}
+    {% when 'making-the-most-of-pcie-gpus.md', 'what-cpus-teach-about-gpu-inference.md', 'when-offloading-doesnt-offload.md' %}{% assign drawing = 'silicon' %}
+    {% when 'observability-kpi.md', 'the-shifting-bottleneck.md', 'the-small-slice-that-matters.md' %}{% assign drawing = 'instrument' %}
+    {% when 'from-zero-to-rag.md' %}{% assign drawing = 'archive' %}
+  {% endcase %}
+  <div class="content{% if drawing %} illustrated-title{% endif %}"{% if drawing %} style="--title-sketch: url('/assets/sketches/{{ drawing }}.svg')"{% endif %}>
     {{ content }}
   </div>
 </div>

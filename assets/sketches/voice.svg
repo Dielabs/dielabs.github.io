@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 156 90" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <filter id="grain" x="-4%" y="-5%" width="108%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="2" seed="17" result="dust"/>
+      <feDisplacementMap in="SourceGraphic" in2="dust" scale="1.3" result="line"/>
+      <feColorMatrix in="dust" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  4 0 0 0 -1.02" result="speckle"/>
+      <feComposite in="line" in2="speckle" operator="in"/>
+    </filter>
+  </defs>
+  <g filter="url(#grain)">
+    <path d="M15 31 Q13 19 25 18 l58 -3 Q93 15 94 25 l1 25 Q96 59 83 60 l-31 1 -15 13 1 -12 -11 1 Q16 64 16 53 Z" stroke="#e8e5d7" stroke-width="2.4" />
+    <path d="M25 42 l8 -1 4 -7 4 15 6 -23 6 27 5 -18 5 9 6 -5 12 -1" stroke="#a9d6df" stroke-width="2.6" />
+    <path d="M100 35 l23 -1 Q134 35 133 44 l1 15 Q134 66 126 66 l1 9 -14 -8 -12 0" stroke="#edc683" stroke-width="2.4" />
+  </g>
+</svg>
