@@ -5,7 +5,8 @@ wide: true
 ---
 
 <style>
-  .content .paper-featured { border: 1.5px solid rgba(0,87,255,0.18); border-left: 4px solid var(--blue); background: linear-gradient(120deg, #F3F7FF 0%, #FFFFFF 70%); border-radius: 12px; padding: 0.2rem 1.4rem 0.4rem; margin: 1.2rem 0; }
+  .content > h3 { margin-top: 3rem; }
+  .content .paper-featured { border: 1.5px solid rgba(0,87,255,0.18); border-left: 4px solid var(--blue); background: linear-gradient(120deg, #F3F7FF 0%, #FFFFFF 70%); border-radius: 12px; padding: 0.2rem 1.4rem 0.4rem; margin: 2.5rem 0; }
   .content .paper-featured h3 { margin-top: 1rem; }
   .content .paper-featured p { margin-bottom: 0.8rem; }
 </style>
