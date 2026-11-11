@@ -1,5 +1,6 @@
 ---
 layout: default
+wide: true
 title: "Testing Is the Product"
 description: "The Dielabs manifesto: fifteen principles for testing, sizing and operating private AI, grounded in lab lessons, field reports and research."
 redirect_from:

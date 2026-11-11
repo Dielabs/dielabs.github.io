@@ -10,6 +10,7 @@ redirect_from:
   - /frameworks/ai-use-case-discovery.html
 title: Frameworks
 layout: default
+wide: true
 ---
 
 <style>

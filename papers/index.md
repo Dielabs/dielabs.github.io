@@ -1,6 +1,7 @@
 ---
 title: Papers
 layout: default
+wide: true
 ---
 
 <style>
