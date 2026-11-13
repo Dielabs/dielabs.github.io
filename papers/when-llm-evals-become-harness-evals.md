@@ -11,6 +11,7 @@ description: "An end-to-end eval of PMI AI Excel with three frontier open-weight
   .content .table-scroll { overflow-x: auto; margin: 1.5rem 0; }
   .content .table-scroll table { margin: 0; min-width: 640px; }
   .content .paper-meta { font-size: 0.85rem; }
+  .content .lead-result { font-size: 1.12rem; line-height: 1.6; color: var(--text); margin: 1.4rem 0 1.2rem; }
   .content .paper-byline { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: -0.4rem 0 1.6rem; }
   .content .tldr { border: 1.5px solid rgba(0,87,255,0.18); border-left: 4px solid var(--blue); background: linear-gradient(120deg, #F3F7FF 0%, #FFFFFF 70%); border-radius: 12px; padding: 1.4rem 1.6rem 0.6rem; margin: 2rem 0; }
   .content .tldr h2 { margin-top: 0; border-bottom: none; }
@@ -24,6 +25,8 @@ description: "An end-to-end eval of PMI AI Excel with three frontier open-weight
 ## Evaluating an agentic assistant: the PMI AI Excel eval
 
 <p class="paper-meta"><strong>Lab:</strong> Dielabs &nbsp;<strong>System:</strong> PMI AI Excel, OpenWebUI 0.12.2 + Pyodide &nbsp;<strong>Models:</strong> GLM 5.3, Kimi K3.1 Pro, DeepSeek V4 Pro, via Nebius &nbsp;<strong>Test bed:</strong> 10 exercises on a real administrative workbook, every result checked in Excel &nbsp;<strong>Measured:</strong> November 2026 (prices as of 13 November 2026)</p>
+
+<p class="lead-result"><strong>From 5 successes out of 18 to 30 out of 36, without changing the model.</strong></p>
 
 <div class="tldr" markdown="1">
 
