@@ -34,9 +34,9 @@ description: "An end-to-end eval of PMI AI Excel with three frontier open-weight
 
 We evaluated end-to-end "PMI AI Excel", the Dielabs assistant that reads, analyses and edits Excel files inside OpenWebUI. The models tested are three frontier open-weight models served by Nebius: GLM 5.3, Kimi K3.1 Pro and DeepSeek V4 Pro. The initial goal was to choose the right model for this use case. The test bed is made of ten exercises on a real administrative workbook, and every result was opened and checked in Excel.
 
-The first round (v1) gave 5 successes out of 18 attempts, but most of the failures did not depend on the model: 8 out of 12 came from the harness and the client. After fixing the harness and the task wording, in the second round (v2) each model achieved **10 successes out of 12 trials**, with no calculation errors. The result is almost paradoxical: the eval served more to tune the harness than to compare the models. The remaining differences lie in time, cost and severity of errors. In production we chose GLM 5.3: it is the only one with no errors attributable to the model, at a cost close to that of the cheapest once a replica hit by an external fault is removed.
+The first round (v1) gave 5 successes out of 18 attempts, but most of the failures did not depend on the model: 8 out of 12 came from the harness and the client. After fixing the harness and the briefs, in the second round (v2) each model achieved **10 successes out of 12 trials**, with no calculation errors. The result is almost paradoxical: the eval served more to tune the harness than to compare the models. The remaining differences lie in time, cost and severity of errors. In production we chose GLM 5.3: it is the only one with no errors attributable to the model, at a cost close to that of the cheapest once a replica hit by an external fault is removed.
 
-- **Same models, very different results.** From 5 successes out of 18 to 30 out of 36 by changing the harness and the task wording, not the models.
+- **Same models, very different results.** From 5 successes out of 18 to 30 out of 36 by changing the harness and the briefs, not the models.
 - **The three models perform very similarly.** 10 successes out of 12 each, no calculation errors: the choice is made on time, cost and severity of errors.
 - **In an agent, cost follows the turns.** Every turn resends the whole conversation; a single websocket drop caused 28 empty calls and was worth about $1.71 of GLM's $3.89.
 - **The parser accepts, Excel refuses.** The models checked their own files with openpyxl, which said "all good": verification must be done with the program the user will use.
@@ -142,9 +142,9 @@ The "file needing repair" class was born after v1. An .xlsx file is a ZIP archiv
 | Harness | Token cap consumed by reasoning; file text in the prompt; openpyxl loading bug |
 | Client and environment | Browser incident before sending; websocket dropped |
 | Provider | Error 529 "worker overloaded" |
-| Task wording | Ambiguous exercise text |
+| Brief | Ambiguous exercise text |
 
-Without this step a network fault or an ambiguous task wording becomes "the model got it wrong", and the model is chosen for the wrong reasons.
+Without this step a network fault or an ambiguous brief becomes "the model got it wrong", and the model is chosen for the wrong reasons.
 
 ## 5. From v1 to v2: the eval that builds the harness
 
@@ -170,7 +170,7 @@ Kimi's four files also deserve a better reading: with the "file needing repair" 
 - File text removed from the prompt and tools limited to the interpreter only (§7.2).
 - Cap raised to 32,000 tokens, to leave room for reasoning.
 - Three technical rules in the system prompt: import openpyxl with a separate statement; do not put an Excel Table and the sheet's filter on the same range; do not add unrequested elements (tables, filters, comments, sheets, labels, formatting, document properties).
-- Wording of two exercises made more precise, references corrected (§7.7), new outcome class "file needing repair".
+- Briefs of two exercises made more precise, references corrected (§7.7), new outcome class "file needing repair".
 
 None of these fixes changes the model. All of them change what is around the model.
 
@@ -182,29 +182,29 @@ None of these fixes changes the model. All of them change what is around the mod
 | 7 | Nebius fault → success | success | success |
 | 8 | success | file needing repair → success | partial → success |
 | 9 | success | success | success |
-| 10, original wording | partial | partial | partial |
-| 10, rewritten wording | success | success | success |
+| 10, original brief | partial | partial | partial |
+| 10, rewritten brief | success | success | success |
 | **Total out of 12** | **10** | **10** | **10** |
 
 The two unsuccessful trials of each model:
 
 | Model | Trial | Cause | Responsibility |
 |---|---|---|---|
-| All | Exercise 10, original wording | Wording ambiguous about the quantity to report and the moment of calculation | Task wording |
+| All | Exercise 10, original brief | Brief ambiguous about the quantity to report and the moment of calculation | Brief |
 | GLM | Exercise 7, first trial | Nebius HTTP 529 error "worker overloaded" | Provider |
 | Kimi | Exercise 8, first trial | File that Excel does not open | Model, severe |
 | DeepSeek | Exercise 8, first trial | Label added outside the requested column | Model, minor |
 
 Errors attributable to the model: GLM 0, Kimi 1, DeepSeek 1. No calculation errors in any trial. On the first attempt, with the uniform criteria, the count is 8 out of 10 for each model; the two replicas of each model succeeded. The "10 out of 12" should be read this way: the replicas were targeted precisely at the unsuccessful cases.
 
-**Exercise 10 and ambiguous task wording.** On exercise 10 the three models all got it wrong in the same way: they reported the number of sessions instead of their value, and the receipts after applying the percentages instead of before. When three different models get it wrong in the same way, the problem is the task wording, not the models. Rewritten to state exactly the quantity ("total value of the sessions in euros") and the moment of calculation ("sum of the amounts with their sign, before deducting the percentages"), it succeeded for all of them. With the corrected wording and no external faults, all three models solve all ten exercises.
+**Exercise 10 and ambiguous briefs.** On exercise 10 the three models all got it wrong in the same way: they reported the number of sessions instead of their value, and the receipts after applying the percentages instead of before. When three different models get it wrong in the same way, the problem is the brief, not the models. Rewritten to state exactly the quantity ("total value of the sessions in euros") and the moment of calculation ("sum of the amounts with their sign, before deducting the percentages"), it succeeded for all of them. With the corrected brief and no external faults, all three models solve all ten exercises.
 
-In total we go from 5 successes out of 18 to 30 out of 36, changing harness and task wording but not the models.
+In total we go from 5 successes out of 18 to 30 out of 36, changing harness and briefs but not the models.
 
 **Criteria corrected after seeing the results.** Three corrections, applied to all models and declared here. The campaign archives keep the original outcomes.
 
 1. Exercise 9: all three also updated the threshold's text label together with the parameter. The evaluator had accepted it for two models and counted it as an error for the third. It is now accepted for all: it is a consistent consequence of the requested change.
-2. Exercise 10: a date to be corrected appears in both sheets and the wording does not say in which. Updating it in both keeps the workbook consistent and is a legitimate reading; the grid, which allowed only one, was narrower than the text.
+2. Exercise 10: a date to be corrected appears in both sheets and the brief does not say in which. Updating it in both keeps the workbook consistent and is a legitimate reading; the grid, which allowed only one, was narrower than the text.
 3. "####" in a column that is too narrow is a matter of presentation: if, when the column is widened, the data is correct, the trial is a success.
 
 Before the corrections the evaluator counted: GLM 8 out of 10 plus 2 out of 2 in the replicas, Kimi 8 out of 10 plus 1 out of 2, DeepSeek 7 out of 10 plus 0 out of 2. Case 1 shows why criteria must be made uniform: the same behaviour had been judged in two different ways on different models.
@@ -297,7 +297,7 @@ Decisions taken: the 40-iteration limit was not reduced, because it is a global 
 
 **Lessons.** Beyond the surprises in §7, the eval left some general lessons.
 
-- **Frontier open-weight models perform very similarly.** With a correct harness and clear task wording, 10 successes out of 12 for all three and no calculation errors. Choosing requires other criteria: time, cost, severity of errors.
+- **Frontier open-weight models perform very similarly.** With a correct harness and clear briefs, 10 successes out of 12 for all three and no calculation errors. Choosing requires other criteria: time, cost, severity of errors.
 - **The test file must be real.** The pre-test with a synthetic 6-cell file passed, and showed none of the real causes. The problems emerged only with the real workbook: size, formulas, layout designed for people.
 - **"Corrupted file" hides different cases.** An unreadable file, a file needing repair with correct data and a file with wrong data are not the same outcome. Separating them changed the reading of Kimi v1 from 5 failures to 1.
 - **Rules in the prompt are guidance, not controls.** The rule "do not add unrequested elements" explicitly names labels, and yet DeepSeek added one. Rules reduce problems but do not eliminate them: verification is always needed.
@@ -306,13 +306,13 @@ Decisions taken: the 40-iteration limit was not reduced, because it is a global 
 
 **Best practices for the next evals.**
 
-1. **Evaluate the harness, not just the model.** Measure end-to-end, but classify every outcome by cause (model, harness, client, provider, task wording) before counting.
+1. **Evaluate the harness, not just the model.** Measure end-to-end, but classify every outcome by cause (model, harness, client, provider, brief) before counting.
 2. **Pre-test on the real material**, with at least one file-writing case for each model and with the final configuration.
 3. **Check what enters the context:** attachment text, tools offered, descriptions repeated at every turn.
 4. **A single channel for the data** when the task demands precision: here, the interpreter only.
 5. **Golden set verified** against the original and the criteria before the campaign.
 6. **Criteria written as intent** ("data correct and visible when the column is widened"), not as a cell, and defined for all models together.
-7. **Unambiguous task wording:** name the sheet, the quantity and the sign when there is more than one.
+7. **Unambiguous briefs:** name the sheet, the quantity and the sign when there is more than one.
 8. **Verification in the user's application**, on copies, with input-change tests for formulas and charts.
 9. **Targeted replicas** on the cases that distinguish the models and on those hit by external incidents, instead of uniform replicas.
 10. **Per-trial telemetry:** times, calls, retries, tokens, incidents, and the exact version of prompt and configuration.
