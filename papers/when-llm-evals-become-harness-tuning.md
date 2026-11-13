@@ -1,6 +1,9 @@
 ---
 layout: default
-title: "When LLM Evals Become Harness Evals"
+title: "When LLM Evals Become Harness Tuning"
+redirect_from:
+- /papers/when-llm-evals-become-harness-evals
+- /papers/when-llm-evals-become-harness-evals.html
 description: "An end-to-end eval of PMI AI Excel with three frontier open-weight models: from 5 successes out of 18 to 30 out of 36, without changing the model."
 ---
 
@@ -18,7 +21,7 @@ description: "An end-to-end eval of PMI AI Excel with three frontier open-weight
   @media (max-width: 700px) { .content > table { display: block; overflow-x: auto; } }
 </style>
 
-# When LLM Evals Become Harness Evals
+# When LLM Evals Become Harness Tuning
 
 <p class="paper-byline">Diego Bardella · Dielabs · November 2026</p>
 
@@ -63,7 +66,7 @@ The starting question was practical: which model to use for SMEs' Excel files. A
 - **Models:** GLM 5.3, Kimi K3.1 Pro and DeepSeek V4 Pro 0813, all through Nebius APIs. They are open-weight models (the weights are public, so multiple providers can serve them) and all three reason before answering.
 
 <figure>
-  <img src="/assets/papers/when-llm-evals-become-harness-evals/system-flow.svg" alt="Flow diagram: user in the browser, OpenWebUI, model on Nebius, Pyodide interpreter in the browser">
+  <img src="/assets/papers/when-llm-evals-become-harness-tuning/system-flow.svg" alt="Flow diagram: user in the browser, OpenWebUI, model on Nebius, Pyodide interpreter in the browser">
   <figcaption>Figure 1. The path of a request: the model writes the code, the Pyodide interpreter in the user's browser runs it and produces the Excel file.</figcaption>
 </figure>
 
