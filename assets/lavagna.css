@@ -121,7 +121,24 @@ body .content .pdf-link:hover { color: var(--ink); }
   min-height: clamp(3.4rem, 9vw, 5.5rem);
   background: var(--title-sketch) right center / clamp(4.5rem, 13vw, 8.5rem) auto no-repeat;
 }
-.compact-title > h1:first-of-type { width: fit-content; max-width: 100%; }
+.compact-title > h1:first-of-type {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  background: none;
+}
+.compact-title > h1:first-of-type::before {
+  content: "";
+  position: absolute;
+  top: .55em;
+  right: 0;
+  width: clamp(4.5rem, 13vw, 8.5rem);
+  aspect-ratio: 156 / 90;
+  background: var(--title-sketch) center / contain no-repeat;
+  /* Offset the transparent right margin of each SVG. */
+  transform: translate(var(--sketch-right-margin, 8.3%), -50%);
+}
+.compact-title[style*="works.svg"] { --sketch-right-margin: 11.4%; }
 /* Home headings share a text-and-sketch rhythm; the founder's two lines form one title. */
 .section :is(.section-label, .whatido-label, .clouds-label),
 .founder-heading {
