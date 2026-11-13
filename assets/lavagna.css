@@ -84,8 +84,7 @@ body > .hero h1::after, .content h1::after {
 .content h1 { white-space: normal; }
 .content h1::after { margin-top: .4em; }
 body > .section { background: transparent !important; }
-.section-label, .whatido-label, .eyebrow { color: var(--violet); }
-.clouds-label { color: #fff; }
+.section-label, .whatido-label, .clouds-label, .eyebrow { color: var(--violet); }
 .fwset-accent, .focus-accent, .poc-card::before, .release-banner::before {
   clip-path: var(--chalk-stroke);
 }
