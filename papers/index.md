@@ -50,6 +50,13 @@ Measured best practices for an eight-GPU, air-cooled PCIe cloud server: discover
 
 </div>
 
+<div class="paper-featured" markdown="1">
+
+### [When LLM Evals Become Harness Evals](when-llm-evals-become-harness-evals.md) <span class="new-flag">New</span>
+End-to-end eval of PMI AI Excel, the Dielabs assistant that reads, analyses and edits Excel files inside OpenWebUI, with GLM 5.3, Kimi K3.1 Pro and DeepSeek V4 Pro on a real administrative workbook. From 5 successes out of 18 to 30 out of 36 without changing the model: the eval ended up testing the harness more than the models. Why an agent's cost follows its turns, why the parser accepts what Excel refuses, and how the model was chosen last.
+
+</div>
+
 ---
 
 *All content is original Dielabs work by Diego Bardella.*
