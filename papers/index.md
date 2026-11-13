@@ -47,11 +47,11 @@ What limits inference speed, capacity, or output quality?
   </article>
   <article>
     <h3><a href="the-small-slice-that-matters.html">The Small Slice That Matters</a></h3>
-    <p>For a 35B mixture-of-experts model on a 12 GB GPU, the first 3.5 GB of VRAM allocated to experts delivered a larger gain than the next 7 GB.</p>
+    <p><strong>All experts in system RAM can be enough.</strong> We tested three offload configurations in llama.cpp for a 35B MoE model. With just 3.5 GB of VRAM in use, the model generated 50 tokens/s. Moving some experts onto the GPU raised that to 65 tokens/s but used 10.6 GB of VRAM.</p>
   </article>
   <article>
     <h3><a href="when-good-gpus-produce-bad-tokens.html">When Good GPUs Produce Bad Tokens</a></h3>
-    <p>A comparison of Qwen and Mistral in vLLM traces repetitive output to a collapse in sampling entropy and shows how the threshold for coherent output varies by model.</p>
+    <p>A sampling stress test in vLLM showed how long two 7B models could sustain a numbered narrative in Italian. With the same decoding settings, Qwen stayed coherent for about 5,000 tokens. Mistral broke down after 200–300, yet produced a coherent technical explanation in Italian. Test each model on the task, language and output length you expect to serve.</p>
   </article>
 </div>
 
