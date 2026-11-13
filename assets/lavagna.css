@@ -121,6 +121,7 @@ body .content .pdf-link:hover { color: var(--ink); }
   min-height: clamp(3.4rem, 9vw, 5.5rem);
   background: var(--title-sketch) right center / clamp(4.5rem, 13vw, 8.5rem) auto no-repeat;
 }
+.compact-title > h1:first-of-type { width: fit-content; max-width: 100%; }
 /* Home headings share a text-and-sketch rhythm; the founder's two lines form one title. */
 .section :is(.section-label, .whatido-label, .clouds-label),
 .founder-heading {

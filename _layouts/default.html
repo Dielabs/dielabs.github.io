@@ -378,7 +378,7 @@
     {% when 'observability-kpi.md', 'the-shifting-bottleneck.md', 'the-small-slice-that-matters.md' %}{% assign drawing = 'instrument' %}
     {% when 'from-zero-to-rag.md' %}{% assign drawing = 'archive' %}
   {% endcase %}
-  <div class="content{% if drawing %} illustrated-title{% endif %}"{% if drawing %} style="--title-sketch: url('/assets/sketches/{{ drawing }}.svg')"{% endif %}>
+  <div class="content{% if drawing %} illustrated-title{% endif %}{% if page.name == 'index.md' %}{% if section == 'papers' or section == 'case-studies' %} compact-title{% endif %}{% endif %}"{% if drawing %} style="--title-sketch: url('/assets/sketches/{{ drawing }}.svg')"{% endif %}>
     {{ content }}
   </div>
 </div>
