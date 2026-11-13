@@ -9,11 +9,13 @@
   </defs>
   <g filter="url(#grain)">
     <path d="M25 16 L107 11 111 70 28 76 Z M113 20 l6 0 4 56 -83 6 -1 -5" stroke="#e8e5d7" stroke-width="2.4" />
-    <path d="M39 27 l32 -2 M39 35 l20 -1" stroke="#edc683" stroke-width="2.4" />
-    <path d="M48 61 l-1 -18 M48 61 l49 -3" stroke="#e8e5d7" stroke-width="1.6" />
-    <path d="M52 55 l11 -7 9 3 10 -12 12 -4" stroke="#a9d6df" stroke-width="2.4" />
-    <circle cx="63" cy="48" r="2" stroke="#a9d6df" stroke-width="2.3"/>
-    <circle cx="82" cy="39" r="2" stroke="#a9d6df" stroke-width="2.3"/>
-    <circle cx="94" cy="35" r="2" stroke="#a9d6df" stroke-width="2.3"/>
+    <g transform="rotate(-4 66 44)">
+      <rect x="39" y="31" width="22" height="22" rx="2" stroke="#edc683" stroke-width="2.4"/>
+      <rect x="45" y="37" width="10" height="10" stroke="#edc683" stroke-width="1.6"/>
+      <path d="M44 26 v5 m6 -5 v5 m6 -5 v5 M44 53 v5 m6 -5 v5 m6 -5 v5 M34 36 h5 m-5 6 h5 m-5 6 h5" stroke="#edc683" stroke-width="2"/>
+      <path d="M61 36 h14 l-3 -3 m3 3 -3 3 M76 49 H63 l3 -3 m-3 3 3 3" stroke="#a9d6df" stroke-width="2"/>
+      <path d="M80 29 h21 v11 H80 z M80 45 h21 v11 H80 z M86 32 v5 m7 -5 v5 M86 48 v5 m7 -5 v5" stroke="#e8e5d7" stroke-width="1.9"/>
+      <text x="39" y="67" fill="#e8e5d7" font-family="monospace" font-size="8">Fig. 1</text>
+    </g>
   </g>
 </svg>

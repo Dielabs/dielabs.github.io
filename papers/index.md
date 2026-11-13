@@ -5,56 +5,69 @@ wide: true
 ---
 
 <style>
-  .content > h3 { margin-top: 3rem; }
-  .content .paper-featured { border: 1.5px solid rgba(0,87,255,0.18); border-left: 4px solid var(--blue); background: linear-gradient(120deg, #F3F7FF 0%, #FFFFFF 70%); border-radius: 12px; padding: 0.2rem 1.4rem 0.4rem; margin: 2.5rem 0; }
-  .content .paper-featured h3 { margin-top: 1rem; }
-  .content .paper-featured p { margin-bottom: 0.8rem; }
+  .paper-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1.3rem 0 2.4rem; }
+  .paper-grid article { padding: 1.3rem 1.4rem; border: 1px solid var(--border); border-radius: 10px; background: var(--white); }
+  .content .paper-grid h3 { margin: 0 0 0.8rem; font-size: 0.94rem; line-height: 1.45; letter-spacing: 0.01em; text-transform: none; }
+  .content .paper-grid p { margin: 0; font-size: 0.88rem; line-height: 1.7; }
+  .paper-grid a:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
+  @media (max-width: 700px) { .paper-grid { grid-template-columns: 1fr; } }
 </style>
 
 # Papers
 
-Technical papers produced from real lab work at Dielabs. Each paper documents original findings from hands-on experimentation with LLM inference systems.
+Original technical papers by Dielabs on hardware topology, LLM inference, and model and agent evaluation. Each paper draws on hands-on lab work and benchmarks to explain the findings and what they mean for engineering decisions.
 
----
+## Hardware & Interconnects
 
-### [When Good GPUs Produce Bad Tokens](when-good-gpus-produce-bad-tokens.md)
-Degenerative decoding loops in vLLM: diagnosis, three-plane framework, and cross-model comparison (Qwen2.5-7B vs Mistral-7B). Identifies sampling entropy collapse and model-specific coherence thresholds.
+How does hardware topology affect inference performance?
 
-### [When Offloading Doesn't Offload](when-offloading-doesnt-offload.md)
-Experimental investigation of KV cache offloading mechanisms in vLLM 0.15.1 on consumer hardware. Reveals three distinct mechanisms commonly confused under one term. On this setup, tuning the base scheduler parameters gave a much larger gain than any offloading mechanism.
-
-### [What CPUs Teach About GPU Inference](what-cpus-teach-about-gpu-inference.md)
-Benchmark of SN / TP-2 / DP-2 architectures on Dell PowerEdge R730 with vLLM. Shows the same single-node, TP and DP patterns seen on GPUs, suggesting they are general principles rather than GPU artifacts. Identifies TP as anti-pattern on slow interconnects.
-
-### [The Shifting Bottleneck](the-shifting-bottleneck.md)
-Three benchmarks on a single RTX 4070 Super with Qwen3-8B-AWQ via vLLM. Shows how the binding constraint moves from KV capacity (FP16, prompt-heavy) to a higher KV ceiling (FP8) to memory bandwidth (FP8, chat-like). A methodology for inference sizing that starts from workload and SLO.
-
-<div class="paper-featured" markdown="1">
-
-### [The Small Slice That Matters](the-small-slice-that-matters.md)
-Local AI on a consumer GPU: a 35B MoE model (Qwen3.6-35B-A3B) served by llama.cpp on a 12 GB RTX 4070 Super, with experts offloaded to RAM. Shows that the first 3.5 GB of VRAM are worth more than the next 7, that prefill is bound by PCIe and decode by GPU-CPU handovers, and how to spend VRAM on the metric you care about.
-
+<div class="paper-grid">
+  <article>
+    <h3><a href="making-the-most-of-pcie-gpus.html">Making the Most of PCIe GPUs</a></h3>
+    <p>On an eight-GPU PCIe server, bandwidth tests reveal which GPUs share fast links and where simultaneous transfers compete for bandwidth.</p>
+  </article>
+  <article>
+    <h3><a href="what-cpus-teach-about-gpu-inference.html">What CPUs Teach About GPU Inference</a></h3>
+    <p>On a Dell PowerEdge R730, the cost of synchronizing across a slow link explains why splitting a model across two workers can hurt inference performance.</p>
+  </article>
 </div>
 
-<div class="paper-featured" markdown="1">
+## Inference Performance & Diagnostics
 
-### [What It Costs to Be Right](what-it-costs-to-be-right.md) <span class="new-flag">New</span>
-Coding Benchmark @Dielabs: 17 LLM configurations on 50 Aider Polyglot exercises, local (llama.cpp on a 12 GB GPU) and remote (pinned providers via OpenRouter). Quality, cost and time per solved exercise; what model size, reasoning, sampling and quantization really change, and how to choose a model for code.
+What limits inference speed, capacity, or output quality?
 
+<div class="paper-grid">
+  <article>
+    <h3><a href="the-shifting-bottleneck.html">The Shifting Bottleneck</a></h3>
+    <p>On a 12 GB RTX 4070 Super, changing the KV cache format and workload shifts the limiting factor from cache capacity to memory bandwidth.</p>
+  </article>
+  <article>
+    <h3><a href="when-offloading-doesnt-offload.html">When Offloading Doesn't Offload</a></h3>
+    <p>Tests of three vLLM offloading mechanisms on consumer hardware found that tuning the scheduler delivered the largest gain.</p>
+  </article>
+  <article>
+    <h3><a href="the-small-slice-that-matters.html">The Small Slice That Matters</a></h3>
+    <p>For a 35B mixture-of-experts model on a 12 GB GPU, the first 3.5 GB of VRAM allocated to experts delivered a larger gain than the next 7 GB.</p>
+  </article>
+  <article>
+    <h3><a href="when-good-gpus-produce-bad-tokens.html">When Good GPUs Produce Bad Tokens</a></h3>
+    <p>A comparison of Qwen and Mistral in vLLM traces repetitive output to a collapse in sampling entropy and shows how the threshold for coherent output varies by model.</p>
+  </article>
 </div>
 
-<div class="paper-featured" markdown="1">
+## Model & Agent Evaluation
 
-### [Making the Most of PCIe GPUs](making-the-most-of-pcie-gpus.md) <span class="new-flag">New</span>
-Measured best practices for an eight-GPU, air-cooled PCIe cloud server: discover the effective topology, test contention, place communicating workers within fast domains, and qualify RAM paths and whole-node thermals before the LLM benchmark.
+How reliably can a model or agent complete a task, at what cost, and in how much time?
 
-</div>
-
-<div class="paper-featured" markdown="1">
-
-### [When LLM Evals Become Harness Tuning](when-llm-evals-become-harness-tuning.md) <span class="new-flag">New</span>
-End-to-end eval of PMI AI Excel, the Dielabs assistant that reads, analyses and edits Excel files inside OpenWebUI, with GLM 5.3, Kimi K3.1 Pro and DeepSeek V4 Pro on a real administrative workbook. From 5 successes out of 18 to 30 out of 36 without changing the model: the eval ended up testing the harness more than the models. Why an agent's cost follows its turns, why the parser accepts what Excel refuses, and how the model was chosen last.
-
+<div class="paper-grid">
+  <article>
+    <h3><a href="what-it-costs-to-be-right.html">What It Costs to Be Right</a></h3>
+    <p>Across 50 coding exercises, enabling reasoning on local Qwen3.6 raised its score from 22 to 35 solves while average time per exercise rose from 72 to 261 seconds.</p>
+  </article>
+  <article>
+    <h3><a href="when-llm-evals-become-harness-tuning.html">When LLM Evals Become Harness Tuning</a></h3>
+    <p>Success on an Excel workflow rose from 5 of 18 runs to 30 of 36 after changes to the agent harness, with the same models under test.</p>
+  </article>
 </div>
 
 ---
