@@ -14,7 +14,6 @@ wide: true
 ---
 
 <style>
-  .content .framework-intro { margin-bottom: 2rem; }
   .content .framework-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1.3rem 0 1rem; }
   .content .framework-card { display: flex; flex-direction: column; padding: 1.3rem 1.4rem; border: 1px solid var(--border); border-radius: 10px; background: var(--white); min-width: 0; scroll-margin-top: 5rem; }
   .content .framework-card h3 { margin: 0 0 0.8rem; font-size: 0.94rem; line-height: 1.45; letter-spacing: 0.01em; text-transform: none; color: var(--text); }
@@ -25,7 +24,7 @@ wide: true
   .content .framework-group.single { grid-template-columns: 1fr; }
   .content .framework-card.framework-path { border: 2px solid var(--blue); }
   .content .framework-label { margin: 0 0 0.5rem; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); }
-  .content .framework-question { margin: 0.3rem 0 0; font-size: 0.9rem; }
+  .content .framework-question { margin: 0 0 1rem; }
   .content .framework-also { margin: 0 0 2.4rem; font-size: 0.8rem; line-height: 1.6; }
   .content .framework-group + h2, .content .framework-group + hr { margin-top: 2.4rem; }
   @media (max-width: 700px) { .content .framework-group { grid-template-columns: 1fr; } }
@@ -33,7 +32,7 @@ wide: true
 
 # Frameworks
 
-<p class="framework-intro">The methods behind Dielabs projects, in the order a project needs them: qualify the use case, design the solution, size and validate it, build and hand it over, then keep it dependable in production. Public guides sit alongside specialist materials available on request.</p>
+<p>The methods behind Dielabs projects, in the order a project needs them: qualify the use case, design the solution, size and validate it, build and hand it over, then keep it dependable in production. Public guides sit alongside specialist materials available on request.</p>
 
 <div class="framework-group single">
   <article class="framework-card framework-path" id="ai-technical-presales">

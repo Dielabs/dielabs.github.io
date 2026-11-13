@@ -139,6 +139,7 @@ body .content .pdf-link:hover { color: var(--ink); }
   transform: translate(var(--sketch-right-margin, 8.3%), -50%);
 }
 .compact-title[style*="works.svg"] { --sketch-right-margin: 11.4%; }
+.compact-title[style*="frameworks.svg"] { --sketch-right-margin: 12%; }
 /* Home headings share a text-and-sketch rhythm; the founder's two lines form one title. */
 .section :is(.section-label, .whatido-label, .clouds-label),
 .founder-heading {
