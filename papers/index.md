@@ -24,11 +24,11 @@ How does hardware topology affect inference performance?
 <div class="paper-grid">
   <article>
     <h3><a href="making-the-most-of-pcie-gpus.html">Making the Most of PCIe GPUs</a></h3>
-    <p>On an eight-GPU PCIe server, bandwidth tests reveal which GPUs share fast links and where simultaneous transfers compete for bandwidth.</p>
+    <p>How much does GPU placement affect PCIe transfer bandwidth? On an eight-GPU server, the VM exposed a single NUMA node, yet measurements revealed two distinct GPU groups. With four pairs transferring at once, each pair sustained about 53 GB/s within a group and 21–25 GB/s across groups. <strong>With PCIe, choose your GPU pairs carefully. Placement can more than double your transfer bandwidth.</strong></p>
   </article>
   <article>
     <h3><a href="what-cpus-teach-about-gpu-inference.html">What CPUs Teach About GPU Inference</a></h3>
-    <p>On a Dell PowerEdge R730, the cost of synchronizing across a slow link explains why splitting a model across two workers can hurt inference performance.</p>
+    <p><strong>When can model sharding slow down inference?</strong> Even with a single request, tensor parallelism across two CPU sockets increased median time between tokens from 255 ms to 403 ms. With four concurrent requests, the gap widened to 292 ms on one socket versus 467 ms on two. Choose a sharding technique that fits both the workload and the interconnect.</p>
   </article>
 </div>
 
@@ -39,11 +39,11 @@ What limits inference speed, capacity, or output quality?
 <div class="paper-grid">
   <article>
     <h3><a href="the-shifting-bottleneck.html">The Shifting Bottleneck</a></h3>
-    <p>On a 12 GB RTX 4070 Super, changing the KV cache format and workload shifts the limiting factor from cache capacity to memory bandwidth.</p>
+    <p>Load tests on a 12 GB GPU showed how the bottleneck shifted from KV cache capacity to memory bandwidth. Switching to an FP8 KV cache and moving from long prompts to a chat workload brought total output throughput from about 255 to nearly 1,300 tokens per second on the same GPU.</p>
   </article>
   <article>
     <h3><a href="when-offloading-doesnt-offload.html">When Offloading Doesn't Offload</a></h3>
-    <p>Tests of three vLLM offloading mechanisms on consumer hardware found that tuning the scheduler delivered the largest gain.</p>
+    <p>In one of my first vLLM studies, I tested what happens when part of the KV cache moves from GPU memory to system RAM. Offloading improved tail latency but added no completed requests. Tuning vLLM’s basic settings alone raised the count from 63 to 103.</p>
   </article>
   <article>
     <h3><a href="the-small-slice-that-matters.html">The Small Slice That Matters</a></h3>
@@ -62,11 +62,11 @@ How reliably can a model or agent complete a task, at what cost, and in how much
 <div class="paper-grid">
   <article>
     <h3><a href="what-it-costs-to-be-right.html">What It Costs to Be Right</a></h3>
-    <p>Across 50 coding exercises, enabling reasoning on local Qwen3.6 raised its score from 22 to 35 solves while average time per exercise rose from 72 to 261 seconds.</p>
+    <p>Does thinking mode help with code? On the same 50 coding exercises, enabling it took Qwen3.6-35B from 22 solves to 35. That made this general-purpose model my pick for a local setup with 12 GB of VRAM and experts offloaded to RAM. It solved more exercises than either dedicated coding model I tested locally.</p>
   </article>
   <article>
     <h3><a href="when-llm-evals-become-harness-tuning.html">When LLM Evals Become Harness Tuning</a></h3>
-    <p>Success on an Excel workflow rose from 5 of 18 runs to 30 of 36 after changes to the agent harness, with the same models under test.</p>
+    <p>I set out to compare three frontier open-weight models on a real Excel workbook and ended up refining the agent harness around them. After those fixes, each model succeeded in 10 of 12 runs. I chose GLM 5.3 for reliability because none of its failures in these tests were attributable to the model itself.</p>
   </article>
 </div>
 
