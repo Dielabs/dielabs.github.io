@@ -37,7 +37,7 @@ description: "An end-to-end eval of PMI AI Excel with three frontier open-weight
 
 We evaluated end-to-end "PMI AI Excel", the Dielabs assistant that reads, analyses and edits Excel files inside OpenWebUI. The models tested are three frontier open-weight models served by Nebius: GLM 5.3, Kimi K3.1 Pro and DeepSeek V4 Pro. The initial goal was to choose the right model for this use case. The test bed is made of ten exercises on a real administrative workbook, and every result was opened and checked in Excel.
 
-The first round (v1) gave 5 successes out of 18 attempts, but most of the failures did not depend on the model: 8 out of 12 came from the harness and the client. After fixing the harness and the briefs, in the second round (v2) each model achieved **10 successes out of 12 trials**, with no calculation errors. The result is almost paradoxical: the eval served more to tune the harness than to compare the models. The remaining differences lie in time, cost and severity of errors. In production we chose GLM 5.3: it is the only one with no errors attributable to the model, at a cost close to that of the cheapest once a replica hit by an external fault is removed.
+The first round (v1) gave 5 successes out of 18 attempts, but most of the failures did not depend on the model: 8 out of 12 came from the harness and the client. After fixing the harness and the briefs, in the second round (v2) each model achieved **10 successes out of 12 trials**, with no calculation errors. The result is almost paradoxical: the eval served more to tune the harness than to compare the models. The remaining differences lie in time, cost and severity of errors. GLM 5.3 is the only one with no errors attributable to the model, at a cost close to that of the cheapest once a replica hit by an external fault is removed. In production the assistant stays on the GLM family in Italy: GLM 5.2 on Regolo with the v2 configuration, because the serving region of GLM 5.3 on Nebius could not be confirmed as EU.
 
 - **Same models, very different results.** From 5 successes out of 18 to 30 out of 36 by changing the harness and the briefs, not the models.
 - **The three models perform very similarly.** 10 successes out of 12 each, no calculation errors: the choice is made on time, cost and severity of errors.
@@ -45,7 +45,7 @@ The first round (v1) gave 5 successes out of 18 attempts, but most of the failur
 - **The parser accepts, Excel refuses.** The models checked their own files with openpyxl, which said "all good": verification must be done with the program the user will use.
 - **"Done and verified" is not proof.** With the interpreter disconnected, a model declared it had created and checked files without running anything.
 - **A "standard" parameter is not standard.** On GLM and Kimi, `reasoning_effort` "high" produced less reasoning than the default: it has to be measured, not assumed.
-- **The choice: GLM 5.3 on Nebius,** the only model with no errors attributable to it. A product choice, not a statistical superiority.
+- **The choice: GLM, served in Italy.** GLM 5.3 was the only model with no errors attributable to it; in production the assistant runs GLM 5.2 on Regolo with the v2 harness, because the Nebius serving region could not be confirmed as EU. A product choice, not a statistical superiority.
 
 </div>
 
@@ -257,7 +257,7 @@ The estimates **do not apply the cache discount**: many providers charge much le
 - **DeepSeek** is the cheapest and uses the fewest input tokens; it has a minor error.
 - **GLM** has no errors attributable to the model; it is the slowest on long tasks.
 
-**The choice.** GLM costs about $3.89 against DeepSeek's $1.93, but with the replica hit by the websocket removed, which does not depend on the model, it drops to about $2.18: the two are close. At similar cost, reliability decides: we chose the only model with no attributable errors, **GLM 5.3 on Nebius**. In production "PMI AI Excel" moves from GLM 5.2 on Regolo to GLM 5.3 on Nebius, with the v2 configuration plus a rule on disconnection (§7.5). With one or two trials per case, this is a product choice and not a statistical superiority: zero errors against one, over 12 trials, is not a measured difference.
+**The choice.** GLM costs about $3.89 against DeepSeek's $1.93, but with the replica hit by the websocket removed, which does not depend on the model, it drops to about $2.18: the two are close. At similar cost, reliability decides the model: **GLM 5.3** is the only one with no attributable errors. Data location decides the provider: the serving region of GLM 5.3 on Nebius could not be confirmed as EU, and a product sold on chats staying in Italy cannot send prompts elsewhere. In production "PMI AI Excel" therefore stays on **GLM 5.2 on Regolo**, in Italy, with the v2 configuration plus a rule on disconnection (§7.5). The harness fixes do not depend on the model and carry over; GLM 5.2 itself was not re-run on the v2 suite. With one or two trials per case, this is a product choice and not a statistical superiority: zero errors against one, over 12 trials, is not a measured difference.
 
 ## 7. Things we did not expect
 
@@ -340,10 +340,11 @@ Decisions taken: the 40-iteration limit was not reduced, because it is a global 
 
 - The disconnection rule is considered a solution by decision, without dedicated trials.
 - The production configuration was verified by reading it back from the database and with a test call, not with a trial in chat.
+- GLM 5.2, the model in production, was not re-run on the v2 suite: the harness fixes are model-independent, but its v2 result is not measured.
 
 ## 10. Conclusions and open items
 
-On this task the three frontier open-weight models perform very similarly: 10 successes out of 12 each and no calculation errors. The real work of the eval was something else: finding, round after round, the defects in the harness that prevented the models from expressing themselves. From 5 successes out of 18 to 30 out of 36, without changing the model. The model was chosen at the end, on errors and cost: GLM 5.3.
+On this task the three frontier open-weight models perform very similarly: 10 successes out of 12 each and no calculation errors. The real work of the eval was something else: finding, round after round, the defects in the harness that prevented the models from expressing themselves. From 5 successes out of 18 to 30 out of 36, without changing the model. The model family was chosen at the end, on errors and cost: GLM. In production it runs as GLM 5.2 on Regolo, so that data stays in Italy.
 
 Still open:
 
