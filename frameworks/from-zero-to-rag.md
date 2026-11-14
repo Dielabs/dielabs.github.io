@@ -8,7 +8,7 @@ redirect_from:
 
 # From Zero to RAG
 
-A framework for choosing how much retrieval a use case needs, from a basic chain to agent orchestration, with the cost and sizing implications of each choice.
+Once the requirements are clear, use it to choose how to build the RAG, from a basic RAG to agent orchestration: a table from requirement to pattern and cost, and how each step up changes inference sizing. It starts from why a basic RAG fails in production.
 
 The full document is available on request. Get in touch to discuss access and how it applies to your project.
 

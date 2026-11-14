@@ -7,7 +7,7 @@ title: From Idea to Production
 
 # From Idea to Production
 
-Turn a business need, traffic profile and service targets into a sized inference architecture, then validate it through benchmarks before deciding how to scale.
+Use it to plan an inference deployment from use case to production in eleven steps: workload and traffic, service targets, model, sizing, runtime, hardware, serving stack, benchmarks and scaling. It explains what to decide, in which order, and why.
 
 The full document is available on request. Get in touch to discuss access and how it applies to your project.
 
