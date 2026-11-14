@@ -459,7 +459,7 @@
         <h4>Model routing by workload</h4>
         <div class="row"><span class="tag">Problem</span>Ingest, expert answers and rewriting have opposite needs.</div>
         <div class="row"><span class="tag">Choice</span>Configurable per-role routing instead of one model for everything.</div>
-        <div class="row"><span class="tag result">Result</span>Expert response time fell from 5–11s to 0.15s p50.</div>
+        <div class="row"><span class="tag result">Result</span>Expert response time fell from 5–11s to 0.1–0.15s p50.</div>
       </div>
 
       <div class="card decision">
@@ -480,7 +480,7 @@
         <h4>Abstention as a shipped feature</h4>
         <div class="row"><span class="tag">Problem</span>Always answering — even wrong — isn't trustworthy for support.</div>
         <div class="row"><span class="tag">Choice</span>Score-gated coverage check + judge cascade; escalation needs consent.</div>
-        <div class="row"><span class="tag result">Result</span>105/105 correct judge calls in testing.</div>
+        <div class="row"><span class="tag result">Result</span>105/105 correct judge calls in testing: 35 faithful answers, 35 mismatched contexts, 35 answers with altered facts.</div>
       </div>
 
     </div>
@@ -546,7 +546,7 @@
     <div class="sec-head"><span class="num">09</span><h2>Some measured results</h2></div>
     <p class="lead">Measured on the corpus indexed at the time of testing, not on a benchmark suite.</p>
     <div class="metrics" aria-label="Measured results">
-      <div class="metric"><span class="v">~0.1s</span><span class="l">expert TTFT, p50</span></div>
+      <div class="metric"><span class="v">0.1–0.15s</span><span class="l">expert TTFT, p50</span></div>
       <div class="metric"><span class="v">~125ms</span><span class="l">retrieval + rerank, end‑to‑end</span></div>
       <div class="metric"><span class="v">32/35</span><span class="l">real voice queries, end‑to‑end</span></div>
       <div class="metric"><span class="v">35/35</span><span class="l">altered facts caught by judge</span></div>
