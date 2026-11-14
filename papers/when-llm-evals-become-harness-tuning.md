@@ -37,7 +37,7 @@ description: "An end-to-end eval of PMI AI Excel with three frontier open-weight
 
 We evaluated end-to-end "PMI AI Excel", the Dielabs assistant that reads, analyses and edits Excel files inside OpenWebUI. The models tested are three frontier open-weight models served by Nebius: GLM 5.3, Kimi K3.1 Pro and DeepSeek V4 Pro. The initial goal was to choose the right model for this use case. The test bed is made of ten exercises on a real administrative workbook, and every result was opened and checked in Excel.
 
-The first round (v1) gave 5 successes out of 18 attempts, but most of the failures did not depend on the model: 8 out of 12 came from the harness and the client. After fixing the harness and the briefs, in the second round (v2) each model achieved **10 successes out of 12 trials**, with no calculation errors. The result is almost paradoxical: the eval served more to tune the harness than to compare the models. The remaining differences lie in time, cost and severity of errors. In production we chose GLM 5.3: it is the only one with no errors attributable to the model, at a cost close to that of the cheapest once a replica hit by an external fault is removed.
+The first round (v1) gave 5 successes out of 18 attempts, but most of the failures did not depend on the model: 8 out of 12 came from the harness and the client. After fixing the harness and the briefs, in the second round (v2) each model achieved **10 successes out of 12 trials**, with no calculation errors. The result is almost paradoxical: the eval served more to tune the harness than to compare the models. The remaining differences lie in time, cost and severity of errors. We chose GLM 5.3: it is the only one with no errors attributable to the model, at a cost close to that of the cheapest once a replica hit by an external fault is removed.
 
 - **Same models, very different results.** From 5 successes out of 18 to 30 out of 36 by changing the harness and the briefs, not the models.
 - **The three models perform very similarly.** 10 successes out of 12 each, no calculation errors: the choice is made on time, cost and severity of errors.
@@ -45,7 +45,7 @@ The first round (v1) gave 5 successes out of 18 attempts, but most of the failur
 - **The parser accepts, Excel refuses.** The models checked their own files with openpyxl, which said "all good": verification must be done with the program the user will use.
 - **"Done and verified" is not proof.** With the interpreter disconnected, a model declared it had created and checked files without running anything.
 - **A "standard" parameter is not standard.** On GLM and Kimi, `reasoning_effort` "high" produced less reasoning than the default: it has to be measured, not assumed.
-- **The choice: GLM 5.3 on Nebius,** the only model with no errors attributable to it. A product choice, not a statistical superiority.
+- **The choice: GLM 5.3 on Nebius,** the only model with no errors attributable to it. A product choice, not a statistical superiority. Keeping data in the EU in production needs a dedicated EU endpoint with zero data retention; path B is GLM 5.2 on Regolo, in Italy.
 
 </div>
 
@@ -257,7 +257,7 @@ The estimates **do not apply the cache discount**: many providers charge much le
 - **DeepSeek** is the cheapest and uses the fewest input tokens; it has a minor error.
 - **GLM** has no errors attributable to the model; it is the slowest on long tasks.
 
-**The choice.** GLM costs about $3.89 against DeepSeek's $1.93, but with the replica hit by the websocket removed, which does not depend on the model, it drops to about $2.18: the two are close. At similar cost, reliability decides: we chose the only model with no attributable errors, **GLM 5.3 on Nebius**. In production "PMI AI Excel" moves from GLM 5.2 on Regolo to GLM 5.3 on Nebius, with the v2 configuration plus a rule on disconnection (§7.5). With one or two trials per case, this is a product choice and not a statistical superiority: zero errors against one, over 12 trials, is not a measured difference.
+**The choice.** GLM costs about $3.89 against DeepSeek's $1.93, but with the replica hit by the websocket removed, which does not depend on the model, it drops to about $2.18: the two are close. At similar cost, reliability decides: we chose the only model with no attributable errors, **GLM 5.3 on Nebius**. In production "PMI AI Excel" moves from GLM 5.2 on Regolo to GLM 5.3 on Nebius, with the v2 configuration plus a rule on disconnection (§7.5). This is still a test setup. Nebius's shared per-token endpoints have no fixed region and keep inputs and outputs by default, so a production rollout that promises data in the EU needs a dedicated endpoint in an EU region with zero data retention enabled. Path B is GLM 5.2 on Regolo, in Italy: the model PMI AI Excel used before this eval, not re-run on the v2 suite. With one or two trials per case, this is a product choice and not a statistical superiority: zero errors against one, over 12 trials, is not a measured difference.
 
 ## 7. Things we did not expect
 
@@ -340,6 +340,7 @@ Decisions taken: the 40-iteration limit was not reduced, because it is a global 
 
 - The disconnection rule is considered a solution by decision, without dedicated trials.
 - The production configuration was verified by reading it back from the database and with a test call, not with a trial in chat.
+- The production path for EU data (dedicated EU endpoint on Nebius, or path B on Regolo) is not yet decided or tested.
 
 ## 10. Conclusions and open items
 
