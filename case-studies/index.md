@@ -49,19 +49,19 @@ wide: true
   <a class="poc-card c-platone" href="platone.html">
     <h3>Platone</h3>
     <span class="sub">Hybrid edge/cloud voice AI</span>
-    <p>A voice assistant you can talk to about your company's knowledge bases. Before answering it checks whether the documents really cover the question — and when they don't, it says so, offering a web search or an opinion only with your consent. Audio never leaves the local GPU.</p>
+    <p>A voice assistant for your company's knowledge, down to the manuals of complex machinery. Load the PDFs, and operators on the production floor can ask questions with their headphones on. Before answering, it checks that the documents really cover the question; when they don't, it says so, and turns to the web or offers an opinion only if you agree.</p>
     <span class="go">Read the write-up →</span>
   </a>
   <a class="poc-card c-pmi" href="pmi-ai-gateway.html">
     <h3>PMI AI Gateway</h3>
     <span class="sub">Private AI for small businesses</span>
-    <p>A private AI workspace for Italian small businesses: one instance per company, open models hosted in Italy, chats kept only on the company's server. Excel in chat today, Word and PowerPoint next, plus shared company knowledge. No conversation logs, automatic deletion after 90 days.</p>
+    <p>Open WebUI turned into a private AI product for small businesses: one isolated instance per company, Microsoft SSO, open models served in the EU, and Excel analysed and returned in chat. Two dozen defaults changed and measured, and the whole setup tuned through end-to-end evals. A 30k-token prompt now answers in 9 s instead of failing.</p>
     <span class="go">Read the write-up →</span>
   </a>
   <a class="poc-card c-news" href="newsrag.html">
     <h3>NewsRAG</h3>
     <span class="sub">Newspaper archives</span>
-    <p>A working newspaper-archive RAG PoV: ask questions in natural language, search articles and captions, filter by date, and verify answers against the original sources. Combines hybrid search, local reranking, article views and an explicit no-answer path when supporting evidence is missing.</p>
+    <p>Natural-language search over newspaper archives, with answers you can verify: each citation opens the original article, date and excerpt. Captions are searchable, names and places are matched exactly, results can be filtered by period, and too little evidence means “no source found” rather than a guess.</p>
     <span class="go">Read the write-up →</span>
   </a>
 </div>
@@ -72,15 +72,16 @@ wide: true
     <span class="pill p-prog">In progress</span>
     <h3>Dielabs RAG</h3>
     <span class="sub">Versioned docs RAG</span>
-    <p>A RAG on the official documentation of fast-moving software — today vLLM and GuideLLM. Every version lives in its own knowledge base, so answers never mix releases, and each one cites software, version and page. It can also report exactly what changed between two versions.</p>
+    <p>Answers only from the official docs of fast-moving AI software (vLLM, GuideLLM, lm-eval and LiteLLM), with one knowledge base per version, so releases never mix. Every answer links to the exact guide section for that version. What changed between two versions is computed by code, not guessed by the model.</p>
+    <a class="go" href="https://github.com/Dielabs/dielabs-rag" target="_blank" rel="noopener">View the repository →</a>
   </div>
   <div class="poc-card lab">
     <span class="pill p-prog">In progress</span>
     <h3>Managed personal agent</h3>
     <span class="sub">Agentic harness</span>
-    <p>A personal agent used every day, built one permission at a time. Five rules: its own identity, minimal permissions, every action logged, a human OK for anything that can't be undone, a repeatable test for every step. The lab behind a future agent starter kit.</p>
+    <p>A personal agent in daily use, reachable on Telegram and email, built one permission at a time. It runs scheduled jobs and manages its own calendar and mailbox, always signing as the agent, never as me. It lives in its own VM with a spending cap, its logs are copied outside that VM, and anything beyond the sandbox needs a human OK. The lab behind a future agent starter kit.</p>
   </div>
 </div>
 
-<p class="poc-foot">All content is original Dielabs work by Diego Bardella. Project repositories are private; the published write-ups document the architecture and decisions in full.</p>
+<p class="poc-foot">All content is original Dielabs work by Diego Bardella. Most project repositories are private; Dielabs RAG is public on GitHub. The published write-ups document the architecture and decisions in full.</p>
 </div>
