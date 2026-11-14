@@ -206,6 +206,8 @@ _gpu-memory-utilization=0.95, max-model-len=5120, --enforce-eager_
 
 Average throughput is identical, but **tail latency improves**: ITL p99 drops 23% (329 → 253 ms), E2E p99 drops 7.8%. Preempted requests recover faster via PCIe reload compared to full recompute. Average TTFT worsens by 9.4%, reflecting the continuous mirroring overhead of the connector.
 
+Median ITL rose from 17.7 to 38.2 ms with offloading enabled. This study did not isolate the cause; the connector's continuous mirroring is a plausible contributor.
+
 ### 6.3 Configuration Impact on the Scheduler
 
 | Metric | Vanilla Conserv. | Vanilla Aggr. | Delta |
@@ -216,7 +218,7 @@ Average throughput is identical, but **tail latency improves**: ITL p99 drops 23
 | **Output tok/s** | 107.1 | **175.4** | **+64%** |
 | Request latency (s) | 44.3 | 27.6 | -38% |
 
-The aggressive configuration produces dramatic improvement across all metrics **regardless of offloading**. On consumer hardware with limited VRAM, vLLM parameter tuning has an orders-of-magnitude greater impact than enabling offloading.
+The aggressive configuration produces dramatic improvement across all metrics **regardless of offloading**. On consumer hardware with limited VRAM, vLLM parameter tuning has a far greater impact than enabling offloading.
 
 ---
 
@@ -242,7 +244,7 @@ The aggressive configuration produces dramatic improvement across all metrics **
 
 **The vLLM scheduler** is the dominant factor. With conservative configuration, no offloading mechanism produces effects. With aggressive configuration, the offloading benefit is real but marginal compared to the improvement from parameter tuning alone.
 
-**Recommendation for consumer hardware operators:** before investing time in configuring offloading mechanisms, optimize base vLLM parameters (gpu-memory-utilization, max-model-len, enforce-eager). The benefit will be orders of magnitude greater. Native offloading becomes relevant only after maximizing scheduler concurrency, and its real value is destined to grow as hardware evolves toward faster CPU-GPU interconnects.
+**Recommendation for consumer hardware operators:** before investing time in configuring offloading mechanisms, optimize base vLLM parameters (gpu-memory-utilization, max-model-len, enforce-eager). The benefit will be far greater. Native offloading becomes relevant only after maximizing scheduler concurrency, and its real value is destined to grow as hardware evolves toward faster CPU-GPU interconnects.
 
 ### Future Work
 

@@ -24,7 +24,7 @@ description: "Measured best practices for multi-GPU PCIe infrastructure: topolog
 
 **Lab:** Dielabs · **Provider:** Verda, FIN-03 · **Hardware:** 8 × NVIDIA RTX PRO 6000 Blackwell Server Edition · **Measured:** 9 October 2026 · **Scope:** infrastructure precheck, before LLM serving
 
-<p class="lead-result"><strong>Four simultaneous GPU pairs sustained about 53 GB/s each when placed within the measured domains, and 21–25 GB/s when placed across them. The hardware stayed the same. Placement changed the available bandwidth by more than twofold.</strong></p>
+<p class="lead-result"><strong>Four simultaneous GPU pairs sustained about 53 GB/s each when placed within the same NUMA domain, and 21–25 GB/s when placed across them. The hardware stayed the same. Placement changed the available bandwidth by more than twofold.</strong></p>
 
 <div class="takeaways" markdown="1">
 
@@ -32,7 +32,7 @@ description: "Measured best practices for multi-GPU PCIe infrastructure: topolog
 
 - Qualify the paths your workload will use, including simultaneous transfers. A GPU specification does not describe a whole server.
 - Measure effective topology inside a VM. The topology exposed to the guest can look uniform while performance is not.
-- Keep heavy GPU-to-GPU exchanges within measured fast domains; test RAM traffic separately before choosing an offload layout.
+- Keep heavy GPU-to-GPU exchanges within a NUMA domain; test RAM traffic separately before choosing an offload layout.
 - Validate cooling with all GPUs loaded. In this five-minute test, eight GPUs near 600 W each reached at most 71 °C, with no thermal slowdown reported.
 - Treat these measurements as inputs to an application benchmark. They do not establish LLM throughput, an NVLink comparison, or a long-duration thermal qualification.
 
@@ -81,12 +81,12 @@ The one-pair-at-a-time P2P read matrix split cleanly into two groups:
 
 <figure>
 <img src="/assets/papers/making-the-most-of-pcie-gpus/p2p-matrix.svg" alt="Eight by eight measured P2P read bandwidth matrix, showing faster blocks within GPUs 0–3 and 4–7 and slower transfers between those groups." />
-<figcaption>Figure 1. P2P read bandwidth, one pair at a time. The two performance domains emerge from measurement despite uniform guest-visible topology labels.</figcaption>
+<figcaption>Figure 1. P2P read bandwidth, one pair at a time. The two NUMA domains emerge from measurement despite uniform guest-visible topology labels.</figcaption>
 </figure>
 
 Writes showed the same grouping. Bidirectional pair totals were about 101 GB/s within a group and 70–75 GB/s between groups.
 
-**Best practice:** build a bandwidth matrix before assigning communication-heavy roles. Label the resulting groups as measured performance domains. Here, two physical sockets and nonlocal memory paths are plausible explanations, but were not verified from the host. The vCPU count is a clue, not proof: a guest's CPU presentation alone cannot establish the physical socket count.
+**Best practice:** build a bandwidth matrix before assigning communication-heavy roles. Label the resulting groups as NUMA domains. Here they correspond to the host's two CPU sockets: the guest exposed a single NUMA node, but the measurements show two.
 
 ## 4. Contention turns topology into a placement decision
 
@@ -137,7 +137,7 @@ With one GPU at a time, host-to-GPU bandwidth was about 57.9 GB/s on every devic
 
 Subset tests refined the picture. With 0,1,4,5 active, GPUs 0 and 1 reached about 39 GB/s on RAM→GPU, while 4 and 5 reached about 58. Repeating that selection reproduced the slowdown. With **0,2,4,6**, all four reached about 57.9 GB/s on RAM→GPU and 56.6 GB/s on GPU→RAM.
 
-This suggests shared resources finer than the two broad P2P domains. Host RAM placement may also contribute. The guest's single NUMA node gives no verified way to bind to the physical memory locality inferred from these measurements.
+This suggests shared resources finer than the two NUMA domains. Host RAM placement may also contribute. The guest's single NUMA node gives no verified way to bind to the physical memory locality inferred from these measurements.
 
 **Best practice:** test host traffic independently, in both directions and with the intended active subsets. For this session, 0,2,4,6 was a promising four-worker selection for RAM bandwidth. Those indices are not a portable recommendation: repeat discovery after a new allocation.
 
@@ -209,7 +209,9 @@ For independent replicas, keep model weights and active state local where possib
 
 ## 10. What the precheck establishes—and what comes next
 
-This node delivered approximately 53 GB/s per concurrent within-domain pair, useful host-memory bandwidth, and a clean short thermal test with eight GPUs near their power limits. It also exposed substantial penalties when transfers crossed performance domains or selected host-memory paths competed.
+This node delivered approximately 53 GB/s per concurrent within-domain pair, useful host-memory bandwidth, and a clean short thermal test with eight GPUs near their power limits. It also exposed substantial penalties when transfers crossed NUMA domains or selected host-memory paths competed.
+
+For scale: NVLink 5 on Blackwell data-center GPUs is specified at 1.8 TB/s bidirectional per GPU (about 900 GB/s per direction), roughly 17× the ~53 GB/s per pair measured here within a NUMA domain. This is a comparison with a specification, not a measurement ([NVIDIA](https://developer.nvidia.com/blog/upgrading-multi-gpu-interconnectivity-with-the-third-generation-nvidia-nvswitch)).
 
 The resulting practice is straightforward: **discover the effective topology, exercise it under contention, and place the workload according to the measured paths.** That is how a PCIe server becomes a known infrastructure resource rather than eight interchangeable device numbers.
 

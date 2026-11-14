@@ -268,6 +268,8 @@ Once the base is covered, the best use of the remaining VRAM depends on what you
 - **More quality:** a higher-precision quantization, keeping the same VRAM and putting more weights in RAM.
 - **Faster decode:** not more VRAM, but less CPU work on the critical path or cheaper handovers (thread placement, llama.cpp tuning), or a GPU that holds the whole model.
 
+In this lab, keeping all experts in RAM was the best trade per gigabyte: about 77% of the split configuration's decode speed with a third of its VRAM, leaving ~8 GB free for context or users. That use of the freed VRAM was not tested here.
+
 ---
 
 ## 9. What this lab didn't test

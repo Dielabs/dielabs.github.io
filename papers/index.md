@@ -24,11 +24,11 @@ How does hardware topology affect inference performance?
 <div class="paper-grid">
   <article>
     <h3><a href="making-the-most-of-pcie-gpus.html">Making the Most of PCIe GPUs</a></h3>
-    <p>How much does GPU placement affect PCIe transfer bandwidth? On an eight-GPU server, the VM exposed a single NUMA node, yet measurements revealed two distinct GPU groups. With four pairs transferring at once, each pair sustained about 53 GB/s within a group and 21–25 GB/s across groups. <strong>With PCIe, choose your GPU pairs carefully. Placement can more than double your transfer bandwidth.</strong></p>
+    <p>What does it cost to move data across NUMA domains on a PCIe server? With no NVLink, pairs within a domain held ~53 GB/s even with four transferring at once, about 1/17 of NVLink 5 on paper. Across domains, they fell to 21–25 GB/s. Host RAM showed the same pattern. Keep KV handoffs within a domain, and spread offload workers across domains.</p>
   </article>
   <article>
     <h3><a href="what-cpus-teach-about-gpu-inference.html">What CPUs Teach About GPU Inference</a></h3>
-    <p><strong>When can model sharding slow down inference?</strong> Even with a single request, tensor parallelism across two CPU sockets increased median time between tokens from 255 ms to 403 ms. With four concurrent requests, the gap widened to 292 ms on one socket versus 467 ms on two. Choose a sharding technique that fits both the workload and the interconnect.</p>
+    <p>Splitting a 4B model across two CPU sockets made every token slower (255 → 403 ms) and cut throughput by up to 79%. The socket link is about as fast as local RAM, so each per-layer sync is pure overhead. One copy per socket worked instead: +68% throughput under heavy load. Every workload needs its own runtime architecture, matched to the hardware it runs on.</p>
   </article>
 </div>
 
@@ -39,19 +39,19 @@ What limits inference speed, capacity, or output quality?
 <div class="paper-grid">
   <article>
     <h3><a href="the-shifting-bottleneck.html">The Shifting Bottleneck</a></h3>
-    <p>Load tests on a 12 GB GPU showed how the bottleneck shifted from KV cache capacity to memory bandwidth. Switching to an FP8 KV cache and moving from long prompts to a chat workload brought total output throughput from about 255 to nearly 1,300 tokens per second on the same GPU.</p>
+    <p>Same 12 GB GPU, same model, two workloads. With long prompts (RAG-style), the KV cache filled up at ~10 streams and output stalled at ~255 tok/s. With chat traffic and an FP8 KV cache, output reached ~1,300 tok/s, and memory bandwidth became the limit. Prompt-heavy workloads need VRAM capacity; chat workloads need memory bandwidth. Choose the hardware for the workload.</p>
   </article>
   <article>
     <h3><a href="when-offloading-doesnt-offload.html">When Offloading Doesn't Offload</a></h3>
-    <p>In one of my first vLLM studies, I tested what happens when part of the KV cache moves from GPU memory to system RAM. Offloading improved tail latency but added no completed requests. Tuning vLLM’s basic settings alone raised the count from 63 to 103.</p>
+    <p>KV offloading in vLLM doesn't add capacity: the scheduler still admits only what fits in VRAM. It works as insurance, reloading preempted requests from RAM instead of recomputing them, which cut p99 time between tokens by 23%. Completed requests didn't change. Tuning three basic settings did: from 63 to 103.</p>
   </article>
   <article>
     <h3><a href="the-small-slice-that-matters.html">The Small Slice That Matters</a></h3>
-    <p><strong>All experts in system RAM can be enough.</strong> We tested three offload configurations in llama.cpp for a 35B MoE model. With just 3.5 GB of VRAM in use, the model generated 50 tokens/s. Moving some experts onto the GPU raised that to 65 tokens/s but used 10.6 GB of VRAM.</p>
+    <p>Running a 35B MoE on 12 GB, the first 3.5 GB of VRAM did most of the work: decode went from 18 to 50 tok/s. Adding 7 GB of experts gave only 30% more, because the layers left on the CPU still set the pace. Keeping all experts in RAM was the best trade: most of the speed, with ~8 GB of VRAM left free for KV cache, longer context or more users.</p>
   </article>
   <article>
     <h3><a href="when-good-gpus-produce-bad-tokens.html">When Good GPUs Produce Bad Tokens</a></h3>
-    <p>A sampling stress test in vLLM showed how long two 7B models could sustain a numbered narrative in Italian. With the same decoding settings, Qwen stayed coherent for about 5,000 tokens. Mistral broke down after 200–300, yet produced a coherent technical explanation in Italian. Test each model on the task, language and output length you expect to serve.</p>
+    <p>Grafana can't see bad tokens. With a calm GPU and KV cache at 20%, Qwen 7B looped in Italian until the repetition penalty was raised. Then it held for ~5,000 tokens, well below its 32K context. Mistral 7B broke after 200–300 tokens with the same settings. Fixing one problem can expose the next one.</p>
   </article>
 </div>
 
@@ -62,11 +62,11 @@ How reliably can a model or agent complete a task, at what cost, and in how much
 <div class="paper-grid">
   <article>
     <h3><a href="what-it-costs-to-be-right.html">What It Costs to Be Right</a></h3>
-    <p>Does thinking mode help with code? On the same 50 coding exercises, enabling it took Qwen3.6-35B from 22 solves to 35. That made this general-purpose model my pick for a local setup with 12 GB of VRAM and experts offloaded to RAM. It solved more exercises than either dedicated coding model I tested locally.</p>
+    <p>Across 17 configurations on 50 coding exercises, six cheap models landed at 62–70%, with cost per solved exercise varying more than tenfold. Only Opus 5.5 stood apart, with 49 of 50. On a 12 GB local GPU, thinking took Qwen3.6 from 22 to 35 solved, at 3.6× the time per exercise. Being right costs money or time: compare models by cost per solved task, not price per token.</p>
   </article>
   <article>
     <h3><a href="when-llm-evals-become-harness-tuning.html">When LLM Evals Become Harness Tuning</a></h3>
-    <p>I set out to compare three frontier open-weight models on a real Excel workbook and ended up refining the agent harness around them. After those fixes, each model succeeded in 10 of 12 runs. I chose GLM 5.3 for reliability because none of its failures in these tests were attributable to the model itself.</p>
+    <p>Same three models, two rounds: 5 successes out of 18, then 30 out of 36. The models didn't change: 8 of the first 12 failures came from the harness and the client. Once those were fixed, all three succeeded in 10 of 12 runs with no calculation errors, and the choice came down to cost and error severity. In an agent, evaluate the harness before the model.</p>
   </article>
 </div>
 
