@@ -35,10 +35,6 @@ description: "An end-to-end eval of PMI AI Excel with three frontier open-weight
 
 ## What this test teaches
 
-We evaluated end-to-end "PMI AI Excel", the Dielabs assistant that reads, analyses and edits Excel files inside OpenWebUI. The models tested are three frontier open-weight models served by Nebius: GLM 5.3, Kimi K3.1 Pro and DeepSeek V4 Pro. The initial goal was to choose the right model for this use case. The test bed is made of ten exercises on a real administrative workbook, and every result was opened and checked in Excel.
-
-The first round (v1) gave 5 successes out of 18 attempts, but most of the failures did not depend on the model: 8 out of 12 came from the harness and the client. After fixing the harness and the briefs, in the second round (v2) each model achieved **10 successes out of 12 trials**, with no calculation errors. The result is almost paradoxical: the eval served more to tune the harness than to compare the models. The remaining differences lie in time, cost and severity of errors. We chose GLM 5.3: it is the only one with no errors attributable to the model, at a cost close to that of the cheapest once a replica hit by an external fault is removed.
-
 - **Same models, very different results.** From 5 successes out of 18 to 30 out of 36 by changing the harness and the briefs, not the models.
 - **The three models perform very similarly.** 10 successes out of 12 each, no calculation errors: the choice is made on time, cost and severity of errors.
 - **In an agent, cost follows the turns.** Every turn resends the whole conversation; a single websocket drop caused 28 empty calls and was worth about $1.71 of GLM's $3.89.
