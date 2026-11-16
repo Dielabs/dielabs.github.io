@@ -33,7 +33,7 @@ description: "An end-to-end eval of PMI AI Excel with three frontier open-weight
 
 <div class="tldr" markdown="1">
 
-## In short
+## What this test teaches
 
 We evaluated end-to-end "PMI AI Excel", the Dielabs assistant that reads, analyses and edits Excel files inside OpenWebUI. The models tested are three frontier open-weight models served by Nebius: GLM 5.3, Kimi K3.1 Pro and DeepSeek V4 Pro. The initial goal was to choose the right model for this use case. The test bed is made of ten exercises on a real administrative workbook, and every result was opened and checked in Excel.
 

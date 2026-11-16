@@ -11,6 +11,16 @@ title: "The Shifting Bottleneck"
 
 ---
 
+## What this test teaches
+
+- Ask for the workload and the SLO before answering "how many users?". With the same GPU, model and settings, long prompts stopped at ~18 concurrent streams; chat traffic reached 32 and was still scaling.
+- Expect bottlenecks to move, not disappear. An FP8 KV cache raised the capacity ceiling from ~10 to ~18 streams; changing the workload moved the limit from VRAM capacity to memory bandwidth.
+- Read ITL to find which limit you hit. A flat ITL with a growing queue and a full KV cache means capacity; an ITL that keeps rising with concurrency means memory bandwidth.
+- Size with two numbers. Staggered arrivals let chat traffic fit more streams than the peak-KV calculation suggests; synchronized bursts remove that advantage.
+- Treat these as capacity numbers. They come from synthetic, uniform prompts on one GPU and one model, and do not measure robustness under mixed or bursty traffic.
+
+---
+
 ## 1. The wrong question
 
 When a customer asks "_how many concurrent users can this system handle?_", the honest answer is: **the question is ill-posed until you specify the workload and the SLO**. The same hardware, with the same model and the same inference serving platform, behaves like three different machines depending on what you throw at it.

@@ -24,11 +24,11 @@ How does hardware topology affect inference performance?
 <div class="paper-grid">
   <article>
     <h3><a href="making-the-most-of-pcie-gpus.html">Making the Most of PCIe GPUs</a></h3>
-    <p>What does it cost to move data across NUMA domains on a PCIe server? With no NVLink, pairs within a domain held ~53 GB/s even with four transferring at once, about 1/17 of NVLink 5 on paper. Across domains, they fell to 21–25 GB/s. Host RAM showed the same pattern. Keep KV handoffs within a domain, and spread offload workers across domains.</p>
+    <p>On a PCIe server without NVLink, GPU-to-GPU transfers held full speed inside a NUMA domain, even with four pairs at once, and lost more than half of it across domains. Keep KV handoffs within a domain, and spread offload workers across domains.</p>
   </article>
   <article>
     <h3><a href="what-cpus-teach-about-gpu-inference.html">What CPUs Teach About GPU Inference</a></h3>
-    <p>Splitting a 4B model across two CPU sockets made every token slower (255 → 403 ms) and cut throughput by up to 79%. The socket link is about as fast as local RAM, so each per-layer sync is pure overhead. One copy per socket worked instead: +68% throughput under heavy load. Every workload needs its own runtime architecture, matched to the hardware it runs on.</p>
+    <p>Splitting a model across two CPU sockets made every token slower, even though the socket link is as fast as local RAM: each per-layer sync is pure overhead. One copy per socket raised throughput instead. Shard or replicate? The same choice comes up with multiple GPUs: choose the right architecture.</p>
   </article>
 </div>
 
@@ -39,19 +39,19 @@ What limits inference speed, capacity, or output quality?
 <div class="paper-grid">
   <article>
     <h3><a href="the-shifting-bottleneck.html">The Shifting Bottleneck</a></h3>
-    <p>Same 12 GB GPU, same model, two workloads. With long prompts (RAG-style), the KV cache filled up at ~10 streams and output stalled at ~255 tok/s. With chat traffic and an FP8 KV cache, output reached ~1,300 tok/s, and memory bandwidth became the limit. Prompt-heavy workloads need VRAM capacity; chat workloads need memory bandwidth. Choose the hardware for the workload.</p>
+    <p>"How many users can this GPU serve?" has no answer until you name the workload. Same GPU, same model, same settings: with long prompts it stopped at ~18 concurrent streams; with chat traffic it served 32 and was still scaling. Even the limit changed: first VRAM capacity, then memory bandwidth.</p>
   </article>
   <article>
     <h3><a href="when-offloading-doesnt-offload.html">When Offloading Doesn't Offload</a></h3>
-    <p>KV offloading in vLLM doesn't add capacity: the scheduler still admits only what fits in VRAM. It works as insurance, reloading preempted requests from RAM instead of recomputing them, which cut p99 time between tokens by 23%. Completed requests didn't change. Tuning three basic settings did: from 63 to 103.</p>
+    <p>In vLLM, KV offloading is not extra memory: the scheduler still admits only what fits in VRAM. It works as insurance: preempted requests reload from RAM instead of being recomputed. Measured effect: 23% lower p99 time between tokens, same completed requests.</p>
   </article>
   <article>
     <h3><a href="the-small-slice-that-matters.html">The Small Slice That Matters</a></h3>
-    <p>Running a 35B MoE on 12 GB, the first 3.5 GB of VRAM did most of the work: decode went from 18 to 50 tok/s. Adding 7 GB of experts gave only 30% more, because the layers left on the CPU still set the pace. Keeping all experts in RAM was the best trade: most of the speed, with ~8 GB of VRAM left free for KV cache, longer context or more users.</p>
+    <p>A 22 GB MoE model runs well on a 12 GB GPU. Most of the speed comes from a small slice: 3.5 GB of VRAM for attention and shared weights nearly tripled decode speed, while 7 GB more of experts added only 30%. Once the base is covered, you'd better spend VRAM on context and concurrency.</p>
   </article>
   <article>
     <h3><a href="when-good-gpus-produce-bad-tokens.html">When Good GPUs Produce Bad Tokens</a></h3>
-    <p>Grafana can't see bad tokens. With a calm GPU and KV cache at 20%, Qwen 7B looped in Italian until the repetition penalty was raised. Then it held for ~5,000 tokens, well below its 32K context. Mistral 7B broke after 200–300 tokens with the same settings. Fixing one problem can expose the next one.</p>
+    <p>Grafana can't see bad tokens: with the GPU calm and KV cache at 20%, the model looped. Fixing the loop exposed a deeper limit: text degraded after ~5,000 generated tokens, far below the 32K context window. The context window doesn't tell you how long the output stays coherent.</p>
   </article>
 </div>
 
@@ -62,11 +62,11 @@ How reliably can a model or agent complete a task, at what cost, and in how much
 <div class="paper-grid">
   <article>
     <h3><a href="what-it-costs-to-be-right.html">What It Costs to Be Right</a></h3>
-    <p>Across 17 configurations on 50 coding exercises, six cheap models landed at 62–70%, with cost per solved exercise varying more than tenfold. Only Opus 5.5 stood apart, with 49 of 50. On a 12 GB local GPU, thinking took Qwen3.6 from 22 to 35 solved, at 3.6× the time per exercise. Being right costs money or time: compare models by cost per solved task, not price per token.</p>
+    <p>Being right costs money or time. Six cloud models solved about the same share of 50 coding exercises, at a cost per solved exercise that varied more than tenfold. A local model on a 12 GB GPU landed in the same range with thinking on, paying in time: over four minutes per exercise.</p>
   </article>
   <article>
     <h3><a href="when-llm-evals-become-harness-tuning.html">When LLM Evals Become Harness Tuning</a></h3>
-    <p>Same three models, two rounds: 5 successes out of 18, then 30 out of 36. The models didn't change: 8 of the first 12 failures came from the harness and the client. Once those were fixed, all three succeeded in 10 of 12 runs with no calculation errors, and the choice came down to cost and error severity. In an agent, evaluate the harness before the model.</p>
+    <p>We set out to choose a model and ended up fixing the harness. Same three models, two rounds: from 5 successes out of 18 to 30 out of 36. Eight of the first 12 failures came from the harness and the client, not the model. In an agent, evaluate the harness before the model.</p>
   </article>
 </div>
 

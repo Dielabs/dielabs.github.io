@@ -45,7 +45,7 @@ description: "Coding Benchmark @Dielabs: 17 LLM configurations on 50 coding exer
 
 <div class="tldr" markdown="1">
 
-## In short
+## What this test teaches
 
 We measured 17 configurations of 10 models (16 planned plus one control run) on the same 50 programming exercises in six languages, with automated tests deciding the outcome: 13 configurations completed all 50 exercises, 4 were stopped early. Besides the score we recorded first-try passes, malformed responses, tokens, time and cost. The main findings:
 

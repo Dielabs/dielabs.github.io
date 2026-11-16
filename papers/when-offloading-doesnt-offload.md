@@ -11,13 +11,13 @@ _Analysis, benchmarks and real limits — An experimental investigation into KV 
 
 ---
 
-## Abstract
+## What this test teaches
 
-This paper documents an experimental investigation into KV cache offloading mechanisms in vLLM 0.15.1, conducted on a consumer GPU node (NVIDIA RTX 4070 Super, 12 GB VRAM, PCIe 4.0 x16).
-
-The investigation revealed three main results: **(1)** LMCache operates as an external prefix cache, not as a swap mechanism; **(2)** the Native OffloadingConnector (introduced in v0.11.0) implements a true preemption recovery offloading, but requires specific conditions to activate; **(3)** on consumer hardware with PCIe 4.0, the measurable benefit manifests on tail latency (ITL p99 reduced by 23%) but not on average throughput.
-
-The paper describes the methodological path and the unexpected results that led to these conclusions. Formulas are included to support key concepts, but the text remains readable without them. Basic familiarity with inference engineering fundamentals is assumed.
+- Check which "offloading" you are enabling. The name covers three different mechanisms: a prefix cache (LMCache), preemption recovery (the vLLM native connector) and full KV swap (research frameworks).
+- Do not expect extra capacity. The scheduler still admits only what fits in VRAM; the native connector reloads preempted requests from RAM instead of recomputing them.
+- Do not starve VRAM to trigger offloading. With less VRAM the scheduler admitted fewer requests, no preemption happened and offloading never activated. Giving the KV cache more room, to over-subscribe it, took completed requests from 63 to 103.
+- Look for the benefit in tail latency. ITL p99 fell by 23% while completed requests stayed the same; the price is about 8 GB of host RAM, a 9% higher TTFT and a higher median ITL (17.7 to 38.2 ms, cause not isolated).
+- Treat these as results for one setup: a 12 GB consumer GPU on PCIe 4.0, vLLM 0.15.1, synthetic prompts with no shared prefixes.
 
 ---
 

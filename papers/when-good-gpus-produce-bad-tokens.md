@@ -10,6 +10,16 @@ _Qwen2.5-7B-Instruct-AWQ · Mistral-7B-Instruct-v0.3-FP8 · RTX 4070 Super 12GB 
 
 ---
 
+## What this test teaches
+
+- Monitor output quality separately from infrastructure. The model looped with a calm GPU and the KV cache at 20%: no hardware metric showed it.
+- After a fix, test again for the next problem. Raising the repetition penalty removed the loop and exposed a second limit: text degraded after ~5,000 generated tokens, far below the 32K context window.
+- Do not treat the repetition penalty as a neutral setting. On a multilingual model it pushed long Italian text toward English.
+- Measure the coherence threshold for each model, task and language, then set max_tokens below it. With the same settings, Qwen 7B held for ~5,000 tokens and Mistral 7B for 200–300.
+- Treat the explanations as hypotheses. These single-user tests on long narrative tasks show the behaviour, not its cause.
+
+---
+
 # Part 1 — Qwen2.5-7B: Phenomenon, Diagnosis and Framework
 
 ## 1. Infrastructure Context
