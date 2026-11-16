@@ -2,7 +2,7 @@
 layout: default
 wide: true
 title: "Testing Is the Product"
-description: "Seven principles for building useful, measurable and dependable private AI."
+description: "Nine principles for building useful, measurable and dependable private AI."
 redirect_from:
   - /technologies/
   - /technologies/index.html
@@ -43,29 +43,41 @@ Build a golden test set from real production tasks, with expected outcomes check
 
 A capacity benchmark with synthetic prompts tells you how much the system can carry; only an eval on real tasks tells you whether the answers are good. You need both.
 
-*Measured in [When LLM Evals Become Harness Tuning](/papers/when-llm-evals-become-harness-tuning.html): an end-to-end eval on a real workbook showed that 8 of the first 12 failures came from the harness and the client, not the model.*
+*Measured in [When LLM Evals Become Harness Tuning](/papers/when-llm-evals-become-harness-tuning.html): on a real workbook, files that the models' own check had accepted were refused by Excel.*
 
-## 4. Choose the smallest model that passes.
+## 4. Evaluate the system, not the model.
+
+The model is one part. The prompt, the tools, the client and the limits around it decide the result as much as the model does. Test the whole path, from the request to the output the user receives, before comparing models.
+
+*Measured in [When LLM Evals Become Harness Tuning](/papers/when-llm-evals-become-harness-tuning.html): the same three models went from 5 successes out of 18 to 30 out of 36 when only the harness and the briefs changed.*
+
+## 5. Choose the smallest model that passes.
 
 Define what good enough means and test for it. A smaller model that reliably completes the task leaves more room for speed, capacity and a simpler system. Increase the size when the evidence calls for it.
 
 *Measured in [What It Costs to Be Right](/papers/what-it-costs-to-be-right.html): models very different in size and price landed in the same range, and size alone did not predict the result.*
 
-## 5. Find the constraint that matters.
+## 6. Find the constraint that matters.
 
 The most impressive component may have little influence on the result. Measure where time, capacity or quality is actually lost, then fix the part that changes the outcome.
 
 *Measured in [When Offloading Doesn't Offload](/papers/when-offloading-doesnt-offload.html): tuning three basic settings raised completed requests by 63%; the offloading feature did not raise them at all.*
 
-## 6. Make control concrete.
+## 7. Watch the output, not only the machine.
+
+A healthy dashboard does not mean a healthy answer. GPU, memory and latency metrics say whether the system is running, not whether what it writes is good. Monitor output quality with its own checks.
+
+*Measured in [When Good GPUs Produce Bad Tokens](/papers/when-good-gpus-produce-bad-tokens.html): the model looped with a calm GPU and the KV cache at 20%, and no hardware metric showed it.*
+
+## 8. Make control concrete.
 
 Running locally is a choice about where computation happens. Control also requires clear answers about who can access the data, what is retained and what can leave the system. Make those choices explicit and verify them.
 
-## 7. Build for the day after the demo.
+## 9. Build for the day after the demo.
 
 A system has to survive updates, failures and the absence of the person who built it. Make it reproducible, recoverable and maintainable. When the model, prompts or software change, repeat the tests that earned your trust.
 
-*Measured in [When Good GPUs Produce Bad Tokens](/papers/when-good-gpus-produce-bad-tokens.html): every hardware metric looked healthy while the output looped, and fixing the loop exposed a second problem.*
+*Measured in [When Good GPUs Produce Bad Tokens](/papers/when-good-gpus-produce-bad-tokens.html): fixing one problem exposed the next: once the loop was gone, the text degraded far below the context window.*
 
 ---
 
