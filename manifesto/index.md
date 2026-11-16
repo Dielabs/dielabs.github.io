@@ -23,27 +23,39 @@ redirect_from:
 
 # Testing Is the Product
 
-Private AI earns its place by solving a real problem. These are the principles that guide what we build, measure and deliver at Dielabs.
+Private AI earns its place by solving a real problem. Until a system has been tested on the real work, nobody knows whether it does: the evidence that it works is what we deliver, together with the system. These are the principles that guide what we build, measure and deliver at Dielabs.
 
 ## 1. Start with the problem.
 
 Before choosing a model or buying hardware, understand the work: who needs it, what a good result looks like, and which constraints matter. The architecture follows from those answers.
 
+*Measured in [The Shifting Bottleneck](/papers/the-shifting-bottleneck.html): the same GPU and model stopped at ~18 concurrent streams with long prompts and served 32 with chat traffic.*
+
 ## 2. Measure useful work.
 
 Cost per completed task. Time to a usable answer. Corrections a person still has to make. These connect a benchmark to the reason someone would pay for the system. Publish the conditions behind the numbers so others can judge them.
+
+*Measured in [What It Costs to Be Right](/papers/what-it-costs-to-be-right.html): six models solved about the same share of exercises, at a cost per solved exercise that varied more than tenfold.*
 
 ## 3. Run the right evals.
 
 Build a golden test set from real production tasks, with expected outcomes checked by domain experts. Use it to compare alternatives, catch regressions and guide improvements to the system.
 
+A capacity benchmark with synthetic prompts tells you how much the system can carry; only an eval on real tasks tells you whether the answers are good. You need both.
+
+*Measured in [When LLM Evals Become Harness Tuning](/papers/when-llm-evals-become-harness-tuning.html): an end-to-end eval on a real workbook showed that 8 of the first 12 failures came from the harness and the client, not the model.*
+
 ## 4. Choose the smallest model that passes.
 
 Define what good enough means and test for it. A smaller model that reliably completes the task leaves more room for speed, capacity and a simpler system. Increase the size when the evidence calls for it.
 
+*Measured in [What It Costs to Be Right](/papers/what-it-costs-to-be-right.html): models very different in size and price landed in the same range, and size alone did not predict the result.*
+
 ## 5. Find the constraint that matters.
 
 The most impressive component may have little influence on the result. Measure where time, capacity or quality is actually lost, then fix the part that changes the outcome.
+
+*Measured in [When Offloading Doesn't Offload](/papers/when-offloading-doesnt-offload.html): tuning three basic settings raised completed requests by 63%; the offloading feature did not raise them at all.*
 
 ## 6. Make control concrete.
 
@@ -52,6 +64,8 @@ Running locally is a choice about where computation happens. Control also requir
 ## 7. Build for the day after the demo.
 
 A system has to survive updates, failures and the absence of the person who built it. Make it reproducible, recoverable and maintainable. When the model, prompts or software change, repeat the tests that earned your trust.
+
+*Measured in [When Good GPUs Produce Bad Tokens](/papers/when-good-gpus-produce-bad-tokens.html): every hardware metric looked healthy while the output looped, and fixing the loop exposed a second problem.*
 
 ---
 
