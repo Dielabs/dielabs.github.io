@@ -55,7 +55,7 @@ wide: true
   <a class="poc-card c-pmi" href="pmi-ai-gateway.html">
     <h3>PMI AI Gateway</h3>
     <span class="sub">Private AI for small businesses</span>
-    <p>Open WebUI turned into a private AI product for small businesses: one isolated instance per company, Microsoft SSO, open models served in the EU, and Excel analysed and returned in chat. Two dozen defaults changed and measured, and the whole setup tuned through end-to-end evals. A 30k-token prompt now answers in 9 s instead of failing.</p>
+    <p>A private Open WebUI workspace for small businesses, with one instance per company. An employee can upload a scanned quote, look up a price or compare the full terms of two offers. OCR runs on the company VM. Open models in the EU handle embeddings and answers, and a dedicated Excel assistant can return an edited workbook.</p>
     <span class="go">Read the write-up →</span>
   </a>
   <a class="poc-card c-news" href="newsrag.html">

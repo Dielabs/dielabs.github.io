@@ -303,8 +303,8 @@
   <header class="hero illustrated-title" style="--title-sketch: url('/assets/sketches/gateway.svg')">
     <div class="eyebrow">POC — Private AI for small businesses</div>
     <h1>PMI AI Gateway</h1>
-    <p class="subtitle">A private AI workspace for Italian small businesses: one instance per company, open models hosted in Italy, conversations that stay on the company's own server.</p>
-    <p class="capabilities">Employees chat with top open-weight models, ask questions about their documents, upload an Excel file and get it back analysed or modified (Word and PowerPoint are next, with the same flow), and search the web when the model decides it's needed. Knowledge bases and saved prompts can be shared with colleagues. Italian by default, from the interface to the chat titles. Privacy is not an add-on: no conversation logs, admin chat reading switched off in the interface (one API exception, documented below), automatic deletion after 90 days.</p>
+    <p class="subtitle">A private AI workspace for Italian small businesses: one instance per company, open models hosted in Italy, chat history stored on the company's own server.</p>
+    <p class="capabilities">Employees can read scanned quotes, ask questions about contracts and compare suppliers’ terms. They can also use a dedicated Excel assistant to edit a workbook or let the chat model look up a source on the web. Knowledge bases and saved prompts can be shared with colleagues. Italian by default, from the interface to the chat titles. Privacy is not an add-on: no conversation logs, admin chat reading switched off in the interface (one API exception, documented below), automatic deletion after 90 days.</p>
     <p class="thesis">Built on Open WebUI. The value is not the software — it's the two dozen defaults changed, each one measured, justified and written down.</p>
   </header>
 
@@ -324,7 +324,7 @@
     </div>
     <div class="pipeline">
       <div class="stage edge"><span class="role">Customer VM</span><span class="name">Open WebUI</span></div>
-      <div class="conn crossing"><span class="ar">→</span><span class="tag">query only</span></div>
+      <div class="conn crossing"><span class="ar">→</span><span class="tag">query / URL</span></div>
       <div class="stage ext"><span class="role">External · USA</span><span class="name">Web search · Tavily</span></div>
       <div class="conn"><span class="ar">·</span></div>
       <div class="stage client"><span class="role">Employee</span><span class="name">Browser · Python (Pyodide) for Excel</span></div>
@@ -337,56 +337,56 @@
     </div>
 
     <div class="boundary-note">
-      <b>What crosses which border, said plainly.</b> Conversations and files live only in the customer's VM. Prompts reach Regolo in Italy and are not stored there. The one exception is web search: the search query — written by the model from the chat — goes to a US provider. That is why the in-app notice says where models run and where chats are kept, and never promises "everything stays in the EU".
+      <b>Where the data goes.</b> The VM stores chat history, original uploads and the search index. For a document question, Regolo receives the prompt and the text selected for the answer. When the model uses Tavily, the search terms or URLs in that tool call go to the external web service.
     </div>
   </section>
 
   <!-- MODELS -->
   <section class="models">
     <div class="sec-head"><span class="num">02</span><h2>What the user sees</h2></div>
-    <p class="lead">Hundreds of models in the picker become three, named after the company. Each one was measured before being exposed: real context window, reasoning or not, behaviour without an output limit.</p>
+    <p class="lead">These are the three profiles designed for employees. The lab also exposes additional models for evaluation.</p>
 
     <div class="cards models-grid">
       <div class="card">
         <h4>PMI AI</h4>
         <span class="model-id">glm5.2 · default</span>
-        <p class="desc">The quality model, with reasoning. Web search on by default; the model decides when to use it.</p>
+        <p class="desc">The default model reads text, including text extracted from scans. In the chat API test it rejected a PNG sent directly. Web search is available by default.</p>
       </div>
       <div class="card">
         <h4>PMI AI Small</h4>
         <span class="model-id">qwen3.8-27b</span>
-        <p class="desc">The economical model for everyday tasks. Also summarises long chats when the context fills up.</p>
+        <p class="desc">Handles everyday tasks and summarises long chats. In two chat API tests it correctly identified the colour, shape and order of objects in a PNG.</p>
       </div>
       <div class="card">
         <h4>PMI AI Excel</h4>
-        <span class="model-id">glm5.2 + code interpreter</span>
+        <span class="model-id">Dedicated workbook profile · Pyodide</span>
         <p class="desc">Opens with the code interpreter on and web search off. Reads, computes, modifies and returns the file.</p>
       </div>
     </div>
 
-    <p style="margin-top:16px; font-size:13px; color:var(--text-dim); font-style:italic;"><b>Hidden, still working.</b> Titles, tags and follow-ups run on a separate non-reasoning model (gemma4-31b), hidden from the menu — a reasoning model there would spend tokens thinking about a three-word title.</p>
+    <p style="margin-top:16px; font-size:13px; color:var(--text-dim); font-style:italic;"><b>Background tasks.</b> A separate model (gemma4-31b) generates titles, tags and follow-ups.</p>
   </section>
 
   <!-- KNOWLEDGE -->
   <section class="knowledge">
     <div class="sec-head"><span class="num">03</span><h2>Company knowledge</h2></div>
-    <p class="lead">Open WebUI's built-in RAG, wired to Regolo. Users build their own knowledge bases — contracts, price lists, procedures — share them with colleagues, and recall them in any chat. Answers come from the company's documents, not from the model's memory.</p>
+    <p class="lead">A quote arrives as a scanned PDF. When an employee attaches it, Docling reads the page on the company VM. The employee can then look up one price or ask the model to read every line.</p>
 
     <div class="pipeline">
-      <div class="stage client"><span class="role">Upload</span><span class="name">PDF · Word · text</span></div>
+      <div class="stage client"><span class="role">Upload</span><span class="name">PDF · DOCX · XLSX</span></div>
       <div class="conn"><span class="ar">→</span></div>
-      <div class="stage edge"><span class="role">Customer VM</span><span class="name">Split · ~1000-char chunks</span></div>
+      <div class="stage edge"><span class="role">Customer VM</span><span class="name">Docling OCR · Open WebUI chunks</span></div>
       <div class="conn crossing"><span class="ar">→</span><span class="tag">text</span></div>
       <div class="stage cloud"><span class="role">Regolo · Italy</span><span class="name">Embed · Qwen3‑Embedding‑8B</span></div>
       <div class="conn crossing"><span class="ar">→</span><span class="tag">vectors</span></div>
-      <div class="stage edge"><span class="role">Customer VM</span><span class="name">Store · vector database</span></div>
+      <div class="stage edge"><span class="role">Customer VM</span><span class="name">Store · Chroma</span></div>
     </div>
     <div class="pipeline">
-      <div class="stage client"><span class="role">Chat</span><span class="name">Question</span></div>
+      <div class="stage client"><span class="role">Focused retrieval</span><span class="name">Question</span></div>
       <div class="conn crossing"><span class="ar">→</span></div>
       <div class="stage cloud"><span class="role">Regolo · Italy</span><span class="name">Embed the question</span></div>
       <div class="conn crossing"><span class="ar">→</span></div>
-      <div class="stage edge"><span class="role">Customer VM</span><span class="name">Find · 20 closest chunks</span></div>
+      <div class="stage edge"><span class="role">Customer VM</span><span class="name">Find relevant passages · top 20</span></div>
       <div class="conn crossing"><span class="ar">→</span><span class="tag">text</span></div>
       <div class="stage cloud"><span class="role">Regolo · Italy</span><span class="name">Answer · chat model</span></div>
     </div>
@@ -401,13 +401,13 @@
         <p class="desc">Knowledge base documents don't expire with the 90-day purge — chat attachments do. Both are stated in the privacy notice.</p>
       </div>
       <div class="card">
-        <h4>What it doesn't do (yet)</h4>
-        <p class="desc">No OCR: scanned PDFs and images aren't read. No reranker. Files up to 25 MB.</p>
+        <h4>A scanned quote, checked end to end</h4>
+        <p class="desc">In a test with an image-only PDF, the chat upload correctly recovered the item “Pompa”, quantity 24 and price 175 EUR. This checks the upload path on one synthetic quote. Accuracy on customers’ scans still needs testing.</p>
       </div>
     </div>
 
     <div class="boundary-note">
-      <b>Documents stay home; only the indexing travels.</b> Text goes to Regolo in Italy to become vectors — a numeric fingerprint of its meaning — and comes back. Vectors and documents live on the customer's server. Changing the embedding model means re-indexing every knowledge base, so it's chosen once, on purpose.
+      <b>What the model reads.</b> Focused retrieval is the default. For “What does the pump cost?”, Open WebUI sends relevant passages to the chat model. For “Compare all the exclusions in these two quotes”, select the entire document on each attachment. The model then receives both extracted texts, subject to its context limit. Asking for “all” does not change the attachment setting.
     </div>
   </section>
 
@@ -419,13 +419,14 @@
     <table class="diff">
       <tr><th>Area</th><th>Default</th><th>PMI AI Gateway</th></tr>
       <tr><td>Image</td><td>moving tag</td><td class="after">pinned by digest, upgrades tested on the template first</td></tr>
-      <tr><td>Models</td><td>hundreds, new ones hidden by per-model grants</td><td class="after">3 visible, everyone sees all of them</td></tr>
+      <tr><td>Models</td><td>hundreds, new ones hidden by per-model grants</td><td class="after">named employee profiles with explicit access grants</td></tr>
       <tr><td>Output length</td><td>none (provider injects 200k on one model)</td><td class="after">16,000 tokens on every model</td></tr>
       <tr><td>Context</td><td>no compaction</td><td class="after">compaction per model at ~75% of real input window</td></tr>
       <tr><td>Tool iterations</td><td>256 — no real brake</td><td class="after">40</td></tr>
       <tr><td>Web search</td><td>off, or a fixed pipeline</td><td class="after">one tool, on by default, model-driven</td></tr>
+      <tr><td>Document extraction</td><td>built-in loaders</td><td class="after">Docling on CPU for PDF, DOCX and XLSX; plain text uses the built-in reader</td></tr>
       <tr><td>Embeddings</td><td>local MiniLM, 384‑dim, English</td><td class="after">Qwen3‑Embedding‑8B, 4096‑dim, multilingual</td></tr>
-      <tr><td>Uploads</td><td>no size limit</td><td class="after">25 MB per file, enforced in app and proxy</td></tr>
+      <tr><td>Uploads</td><td>no size limit</td><td class="after">25 MB per file in Open WebUI, with a separate proxy request limit</td></tr>
       <tr><td>Sign-up</td><td>open, users pending</td><td class="after">closed; accounts created by us, or Microsoft SSO</td></tr>
       <tr><td>Session</td><td>4 weeks</td><td class="after">7 days</td></tr>
       <tr><td>Admin and chats</td><td>admin reads and exports all chats</td><td class="after">read and export off; usage statistics kept</td></tr>
@@ -443,9 +444,9 @@
 
     <div class="cards features-grid">
       <div class="card">
-        <h4>Office files in chat — Excel today, Word and PowerPoint next</h4>
-        <div class="chip-row"><span class="chip">Excel: live</span><span class="chip">Word · PowerPoint: planned</span><span class="chip">runs in the browser</span></div>
-        <p class="desc">The model never does arithmetic in its head: it writes Python, which runs in the user's browser (Pyodide), not on the server. A dedicated model knows the traps — totals rows, Excel Tables to extend, files with macros or charts to warn about. Word and PowerPoint will follow the same seamless flow: upload, ask, get the file back.</p>
+        <h4>Editing Office files in chat</h4>
+        <div class="chip-row"><span class="chip">Excel: live</span><span class="chip">Word · PowerPoint editing: planned</span><span class="chip">runs in the browser</span></div>
+        <p class="desc">With the code interpreter enabled, the assistant can run Python in the employee’s browser (Pyodide) to calculate from workbook cells. A dedicated model knows the traps — totals rows, Excel Tables to extend, files with macros or charts to warn about. Word and PowerPoint will follow the same seamless flow: upload, ask, get the file back.</p>
       </div>
       <div class="card">
         <h4>Privacy by design</h4>
@@ -484,6 +485,7 @@
         <span class="sub">EU cloud · one per company · no GPU</span>
         <ul>
           <li><span class="k">Interface</span><span class="v">Open WebUI 0.12.2, pinned digest</span></li>
+          <li><span class="k">Extraction</span><span class="v">Docling Serve · CPU OCR</span></li>
           <li><span class="k">HTTPS</span><span class="v">Caddy, Let's Encrypt, HSTS</span></li>
           <li><span class="k">Data</span><span class="v">SQLite + Chroma, in one volume</span></li>
           <li><span class="k">Operations</span><span class="v">backup, purge, audit cleanup, boot check — bash + cron</span></li>
@@ -521,7 +523,7 @@
         <h4>No gateway in front of the models</h4>
         <div class="row"><span class="tag">Problem</span>Gateway stacks add governance a 10-person company never uses — and more parts to patch.</div>
         <div class="row"><span class="tag">Choice</span>Governance inside the interface; one instance and one provider key per customer.</div>
-        <div class="row"><span class="tag result">Result</span>Two containers per customer. Spend and outages are isolated by design.</div>
+        <div class="row"><span class="tag result">Result</span>Open WebUI, Caddy and Docling run on the company VM. Each customer controls its own model-provider budget.</div>
       </div>
 
       <div class="card decision">
@@ -560,8 +562,8 @@
       </div>
       <div class="card decision">
         <h4>Vector search only, no reranker</h4>
-        <div class="row"><span class="tag">Problem</span>Regolo's reranker ranked Italian passages badly; a local one would need a GPU.</div>
-        <div class="row"><span class="tag">Choice</span>Semantic search only, 20 chunks passed to large-context models.</div>
+        <div class="row"><span class="tag">Problem</span>Regolo's reranker ranked Italian passages badly; running another model locally would add load to the VM.</div>
+        <div class="row"><span class="tag">Choice</span>Focused retrieval uses vector search with top-k set to 20. Employees can also select the full extracted text.</div>
         <div class="row"><span class="tag result">Result</span>No GPU, one provider. To be re-measured on the first customer's real documents.</div>
       </div>
 
@@ -635,7 +637,7 @@
         <p>Same workspace with a LiteLLM gateway in front of the models and full Microsoft 365 integration, for companies that outgrow the light version.</p>
       </div>
       <div class="roadmap-item">
-        <h4>Word and PowerPoint in chat <span style="color:var(--text-faint);font-weight:400;">(planned)</span></h4>
+        <h4>Word and PowerPoint editing <span style="color:var(--text-faint);font-weight:400;">(planned)</span></h4>
         <p>The same seamless integration Excel has today, extended to Word and PowerPoint: create documents and decks with the company letterhead, or upload one and get it back edited. Candidate tools reviewed; code to be audited and pinned before any install.</p>
       </div>
       <div class="roadmap-item">
@@ -650,7 +652,8 @@
     <div class="sec-head"><span class="num">10</span><h2>Some measured results</h2></div>
     <p class="lead">Measured on the template instance, not on a benchmark suite.</p>
     <div class="metrics" aria-label="Measured results">
-      <div class="metric"><span class="v">~1 GB</span><span class="l">app RAM at rest, 8 GB VM</span></div>
+      <div class="metric"><span class="v">~1 GB</span><span class="l">Open WebUI alone at rest</span></div>
+      <div class="metric"><span class="v">2.38 GiB</span><span class="l">Docling RAM after the upload tests</span></div>
       <div class="metric"><span class="v">0.4s</span><span class="l">chat title, task model</span></div>
       <div class="metric"><span class="v">9.1s</span><span class="l">30k‑token input, default model</span></div>
       <div class="metric"><span class="v">41.5k→13.9k</span><span class="l">tokens after compaction</span></div>
