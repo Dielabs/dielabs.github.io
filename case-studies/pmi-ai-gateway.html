@@ -303,15 +303,15 @@
   <header class="hero illustrated-title" style="--title-sketch: url('/assets/sketches/gateway.svg')">
     <div class="eyebrow">POC — Private AI for small businesses</div>
     <h1>PMI AI Gateway</h1>
-    <p class="subtitle">A private AI workspace for Italian small businesses: one instance per company, open models hosted in Italy, chat history stored on the company's own server.</p>
-    <p class="capabilities">Employees can read scanned quotes, ask questions about contracts and compare suppliers’ terms. They can also use a dedicated Excel assistant to edit a workbook or let the chat model look up a source on the web. Knowledge bases and saved prompts can be shared with colleagues. Italian by default, from the interface to the chat titles. Privacy is not an add-on: no conversation logs, admin chat reading switched off in the interface (one API exception, documented below), automatic deletion after 90 days.</p>
+    <p class="subtitle">Private AI for Italian small businesses.</p>
+    <p class="capabilities">Employees can read scanned quotes, ask questions about contracts and compare suppliers’ terms. They can edit Excel workbooks, check current information on the web or request Deep Research with source links and a downloadable report. Knowledge bases and saved prompts can be shared with colleagues. Italian by default, from the interface to the chat titles.</p>
     <p class="thesis">Built on Open WebUI. The value is not the software — it's the two dozen defaults changed, each one measured, justified and written down.</p>
   </header>
 
   <!-- HOW IT'S BUILT -->
   <section class="architecture">
     <div class="sec-head"><span class="num">01</span><h2>One instance per company</h2></div>
-    <p class="lead">No shared multi-tenant platform: every customer gets its own small VM on a European cloud, its own Regolo account and its own keys. A spent budget or a revoked key stops one customer, never the others.</p>
+    <p class="lead">No shared multi-tenant platform: every customer gets its own small VM on a European cloud, its own model-provider account and its own keys. A spent budget or a revoked key stops one customer, never the others.</p>
 
     <div class="pipeline">
       <div class="stage client"><span class="role">Employee</span><span class="name">Browser</span></div>
@@ -320,7 +320,7 @@
       <div class="conn"><span class="ar">→</span></div>
       <div class="stage edge"><span class="role">Customer VM</span><span class="name">Open WebUI · chats, files, vectors</span></div>
       <div class="conn crossing"><span class="ar">→</span><span class="tag">prompt</span></div>
-      <div class="stage cloud"><span class="role">Regolo · Italy</span><span class="name">Chat · task · compaction · embedding</span></div>
+      <div class="stage cloud"><span class="role">Nebius · API</span><span class="name">Chat · task · compaction · embedding</span></div>
     </div>
     <div class="pipeline">
       <div class="stage edge"><span class="role">Customer VM</span><span class="name">Open WebUI</span></div>
@@ -332,12 +332,12 @@
 
     <div class="legend">
       <span><i class="dot edge"></i> Customer VM — EU cloud, 4 vCPU / 8 GB, no GPU</span>
-      <span><i class="dot cloud"></i> Regolo.ai — Italian datacenters, zero data retention</span>
-      <span><i class="dot ext"></i> External — the only hop outside the EU</span>
+      <span><i class="dot cloud"></i> Nebius — model API</span>
+      <span><i class="dot ext"></i> Tavily — web search API</span>
     </div>
 
     <div class="boundary-note">
-      <b>Where the data goes.</b> The VM stores chat history, original uploads and the search index. For a document question, Regolo receives the prompt and the text selected for the answer. When the model uses Tavily, the search terms or URLs in that tool call go to the external web service.
+      <b>Where the data goes.</b> The VM stores chat history, original uploads and the search index. For a document question, the model provider receives the prompt and the text selected for the answer. When the model uses Tavily, the search terms or URLs in that tool call go to the external web service.
     </div>
   </section>
 
@@ -349,8 +349,8 @@
     <div class="cards models-grid">
       <div class="card">
         <h4>PMI AI</h4>
-        <span class="model-id">glm5.2 · default</span>
-        <p class="desc">The default model reads text, including text extracted from scans. In the chat API test it rejected a PNG sent directly. Web search is available by default.</p>
+        <span class="model-id">GLM-5.3 · default</span>
+        <p class="desc">The main profile handles document questions and everyday work. Standard web search and Deep Research are available in the chat.</p>
       </div>
       <div class="card">
         <h4>PMI AI Small</h4>
@@ -364,7 +364,7 @@
       </div>
     </div>
 
-    <p style="margin-top:16px; font-size:13px; color:var(--text-dim); font-style:italic;"><b>Background tasks.</b> A separate model (gemma4-31b) generates titles, tags and follow-ups.</p>
+    <p style="margin-top:16px; font-size:13px; color:var(--text-dim); font-style:italic;"><b>Background tasks.</b> A separate model (Gemma 3 27B) generates titles and tags.</p>
   </section>
 
   <!-- KNOWLEDGE -->
@@ -377,18 +377,18 @@
       <div class="conn"><span class="ar">→</span></div>
       <div class="stage edge"><span class="role">Customer VM</span><span class="name">Docling OCR · Open WebUI chunks</span></div>
       <div class="conn crossing"><span class="ar">→</span><span class="tag">text</span></div>
-      <div class="stage cloud"><span class="role">Regolo · Italy</span><span class="name">Embed · Qwen3‑Embedding‑8B</span></div>
+      <div class="stage cloud"><span class="role">Nebius · API</span><span class="name">Embed · Qwen3‑Embedding‑8B</span></div>
       <div class="conn crossing"><span class="ar">→</span><span class="tag">vectors</span></div>
       <div class="stage edge"><span class="role">Customer VM</span><span class="name">Store · Chroma</span></div>
     </div>
     <div class="pipeline">
       <div class="stage client"><span class="role">Focused retrieval</span><span class="name">Question</span></div>
       <div class="conn crossing"><span class="ar">→</span></div>
-      <div class="stage cloud"><span class="role">Regolo · Italy</span><span class="name">Embed the question</span></div>
+      <div class="stage cloud"><span class="role">Nebius · API</span><span class="name">Embed the question</span></div>
       <div class="conn crossing"><span class="ar">→</span></div>
       <div class="stage edge"><span class="role">Customer VM</span><span class="name">Find relevant passages · top 20</span></div>
       <div class="conn crossing"><span class="ar">→</span><span class="tag">text</span></div>
-      <div class="stage cloud"><span class="role">Regolo · Italy</span><span class="name">Answer · chat model</span></div>
+      <div class="stage cloud"><span class="role">Nebius · API</span><span class="name">Answer · chat model</span></div>
     </div>
 
     <div class="cards outcomes-grid">
@@ -420,10 +420,10 @@
       <tr><th>Area</th><th>Default</th><th>PMI AI Gateway</th></tr>
       <tr><td>Image</td><td>moving tag</td><td class="after">pinned by digest, upgrades tested on the template first</td></tr>
       <tr><td>Models</td><td>hundreds, new ones hidden by per-model grants</td><td class="after">named employee profiles with explicit access grants</td></tr>
-      <tr><td>Output length</td><td>none (provider injects 200k on one model)</td><td class="after">16,000 tokens on every model</td></tr>
+      <tr><td>Output length</td><td>none (provider injects 200k on one model)</td><td class="after">16,000 tokens; 32,000 for Excel</td></tr>
       <tr><td>Context</td><td>no compaction</td><td class="after">compaction per model at ~75% of real input window</td></tr>
       <tr><td>Tool iterations</td><td>256 — no real brake</td><td class="after">40</td></tr>
-      <tr><td>Web search</td><td>off, or a fixed pipeline</td><td class="after">one tool, on by default, model-driven</td></tr>
+      <tr><td>Web search</td><td>off, or a fixed pipeline</td><td class="after">standard web search and Deep Research in the same chat, one mode per request</td></tr>
       <tr><td>Document extraction</td><td>built-in loaders</td><td class="after">Docling on CPU for PDF, DOCX and XLSX; plain text uses the built-in reader</td></tr>
       <tr><td>Embeddings</td><td>local MiniLM, 384‑dim, English</td><td class="after">Qwen3‑Embedding‑8B, 4096‑dim, multilingual</td></tr>
       <tr><td>Uploads</td><td>no size limit</td><td class="after">25 MB per file in Open WebUI, with a separate proxy request limit</td></tr>
@@ -454,8 +454,8 @@
         <p class="desc">No log of conversations. The admin can't browse employees' chats from the interface. Accesses and admin changes are audited — who, when, from where — never what was asked.</p>
       </div>
       <div class="card">
-        <h4>One web search tool</h4>
-        <p class="desc">Two overlapping ways to search the web became one tool, on by default. The model decides when to search; the user doesn't have to remember a switch. Crawl and deep-research tools with no upper bound are removed server-side.</p>
+        <h4>Web search and Deep Research</h4>
+        <p class="desc">The assistant can check current facts on the web or carry out a deeper investigation when requested. Deep Research checks quantitative claims against retrieved source passages and produces a cited summary with a complete Markdown report to read or download. Both research options can stay enabled, with one mode used per request.</p>
       </div>
       <div class="card">
         <h4>Shared knowledge and prompts</h4>
@@ -484,7 +484,7 @@
         <h3>Customer VM</h3>
         <span class="sub">EU cloud · one per company · no GPU</span>
         <ul>
-          <li><span class="k">Interface</span><span class="v">Open WebUI 0.12.2, pinned digest</span></li>
+          <li><span class="k">Interface</span><span class="v">Open WebUI 0.13.3, pinned base image</span></li>
           <li><span class="k">Extraction</span><span class="v">Docling Serve · CPU OCR</span></li>
           <li><span class="k">HTTPS</span><span class="v">Caddy, Let's Encrypt, HSTS</span></li>
           <li><span class="k">Data</span><span class="v">SQLite + Chroma, in one volume</span></li>
@@ -493,12 +493,12 @@
         </ul>
       </div>
       <div class="stack-col cloud-col">
-        <h3>Regolo.ai</h3>
-        <span class="sub">Italy · zero retention · OpenAI-compatible</span>
+        <h3>Nebius</h3>
+        <span class="sub">Model API · OpenAI-compatible</span>
         <ul>
-          <li><span class="k">Default</span><span class="v">glm5.2</span></li>
+          <li><span class="k">Default</span><span class="v">GLM-5.3</span></li>
           <li><span class="k">Small</span><span class="v">qwen3.8‑27b (also compaction)</span></li>
-          <li><span class="k">Task model</span><span class="v">gemma4‑31b, non-reasoning</span></li>
+          <li><span class="k">Task model</span><span class="v">Gemma 3 27B</span></li>
           <li><span class="k">Embeddings</span><span class="v">Qwen3‑Embedding‑8B, 4096‑dim</span></li>
         </ul>
       </div>
@@ -506,7 +506,7 @@
         <h3>External / client</h3>
         <span class="sub">declared, one hop each</span>
         <ul>
-          <li><span class="k">Web search</span><span class="v">Tavily via MCP</span></li>
+          <li><span class="k">Web search</span><span class="v">Tavily · search and extraction</span></li>
           <li><span class="k">Code</span><span class="v">Pyodide, in the browser</span></li>
           <li><span class="k">Login</span><span class="v">local accounts · Microsoft SSO ready</span></li>
         </ul>
@@ -642,7 +642,7 @@
       </div>
       <div class="roadmap-item">
         <h4>A European web search</h4>
-        <p>Replace the only US hop with a European engine when a customer asks for it — two candidates are already supported natively.</p>
+        <p>Offer a European search engine when a customer requires it.</p>
       </div>
     </div>
   </section>

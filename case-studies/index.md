@@ -55,7 +55,7 @@ wide: true
   <a class="poc-card c-pmi" href="pmi-ai-gateway.html">
     <h3>PMI AI Gateway</h3>
     <span class="sub">Private AI for small businesses</span>
-    <p>A private AI workspace for small businesses. Employees can upload an Excel workbook, calculate totals, update a worksheet and download the edited file. They can also look up a price in a scanned quote or compare the terms of two offers. OCR runs on the company VM, and open models in the EU handle embeddings and answers.</p>
+    <p>Private AI for small businesses. Employees can edit Excel workbooks, read scanned quotes and compare suppliers’ terms. They can check current information on the web or request Deep Research, with a summary linked to its sources and a complete report to download.</p>
     <span class="go">Read the write-up →</span>
   </a>
   <a class="poc-card c-news" href="newsrag.html">
