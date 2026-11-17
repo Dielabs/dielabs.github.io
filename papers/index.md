@@ -70,7 +70,3 @@ How reliably can a model or agent complete a task, at what cost, and in how much
     <p>We set out to choose a model and ended up fixing the harness. Same three models, two rounds: from 5 successes out of 18 to 30 out of 36. Eight of the first 12 failures came from the harness and the client, not the model. In an agent, evaluate the harness before the model.</p>
   </a>
 </div>
-
----
-
-*All content is original Dielabs work by Diego Bardella.*

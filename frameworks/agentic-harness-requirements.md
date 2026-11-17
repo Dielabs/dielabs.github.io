@@ -50,5 +50,3 @@ The list above is the same one you would apply to a new person joining a team: c
 ---
 
 **Related:** [Context Engineering vs KV Cache Engineering](context-vs-kv-cache-engineering.md) connects harness design to cache reuse and serving capacity.
-
-*All content is original Dielabs work by Diego Bardella.*
