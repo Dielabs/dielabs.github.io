@@ -40,14 +40,6 @@ wide: true
 
 <p>The methods behind Dielabs projects, in the order a project needs them: qualify the use case, design the solution, size and validate it, build and hand it over, then keep it dependable in production. Public guides sit alongside specialist materials available on request.</p>
 
-<div class="framework-group single">
-  <article class="framework-card framework-path" id="ai-technical-presales">
-    <p class="framework-label">The end-to-end path</p>
-    <h3>AI Technical Presales Framework</h3>
-    <p>Use it to take an AI deal from the first customer meeting to delivery: qualify the opportunity and the use case, turn requirements and risks into a proposal with clear acceptance criteria, and hand the project over. The sections below are the methods it uses at each step.</p>
-    <a class="framework-action" href="mailto:info@dielabs.eu?subject=AI%20Technical%20Presales%20Framework%20%E2%80%94%20request" aria-label="Request access to AI Technical Presales Framework">Request access &rarr;</a>
-  </article>
-</div>
 
 <div class="phase-list">
   <a class="phase-card" href="qualify-design.html">
@@ -65,6 +57,15 @@ wide: true
     <p>How do we get it running and keep it dependable? Prepare the documents the system will read, hand it over so someone else can run it, and monitor it in production to diagnose slowdowns before users notice.</p>
     <span class="phase-meta">3 frameworks &middot; Open &rarr;</span>
   </a>
+</div>
+
+<div class="framework-group single">
+  <article class="framework-card framework-path" id="ai-technical-presales">
+    <p class="framework-label">The end-to-end path</p>
+    <h3>AI Technical Presales Framework</h3>
+    <p>Use it to take an AI deal from the first customer meeting to delivery: qualify the opportunity and the use case, turn requirements and risks into a proposal with clear acceptance criteria, and hand the project over. The sections below are the methods it uses at each step.</p>
+    <a class="framework-action" href="mailto:info@dielabs.eu?subject=AI%20Technical%20Presales%20Framework%20%E2%80%94%20request" aria-label="Request access to AI Technical Presales Framework">Request access &rarr;</a>
+  </article>
 </div>
 
 <script>
