@@ -55,8 +55,6 @@ wide: true
   </article>
 </div>
 
-<p class="framework-also">Also used here: <a href="#workflow-governance">Agentic Workflow Governance</a></p>
-
 ## Design the solution
 
 <p class="framework-question">What must the system do, and how must it behave? Model, agents, retrieval and controls.</p>
@@ -99,8 +97,6 @@ wide: true
   </article>
 </div>
 
-<p class="framework-also">Also used here: <a href="#idea-to-production">From Idea to Production</a></p>
-
 ## Size &amp; validate
 
 <p class="framework-question">Which resources does it need, and what can we prove? Sizing calculations first, then measurements that confirm or correct them.</p>
@@ -117,8 +113,6 @@ wide: true
     <a class="framework-action" href="one-capacity-is-not-enough.html" aria-label="Read One Capacity Is Not Enough">Read &rarr;</a>
   </article>
 </div>
-
-<p class="framework-also">Also used here: <a href="#model-selection">LLM Model Selection</a> · <a href="#context-vs-kv-cache">Context Engineering vs KV Cache Engineering</a> · <a href="#observability-kpi">Observability KPI</a></p>
 
 ## Build &amp; hand over
 
@@ -143,8 +137,6 @@ wide: true
     <a class="framework-action" href="mailto:info@dielabs.eu?subject=Observability%20KPI%20%E2%80%94%20request" aria-label="Request access to Observability KPI">Request access &rarr;</a>
   </article>
 </div>
-
-<p class="framework-also">Also used here: <a href="#harness-requirements">Minimum Requirements of an Agentic Harness</a></p>
 
 ## Technical references
 
