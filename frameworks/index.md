@@ -22,7 +22,7 @@ wide: true
   .content .framework-action:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
   .content .framework-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .content .framework-group.single { grid-template-columns: 1fr; }
-  .content .framework-card.framework-path { border: 2px solid var(--blue); }
+  .content .framework-card.framework-path { border: 2px solid #E0A82E; }
   .content .framework-label { margin: 0 0 0.5rem; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); }
   .content .framework-question { margin: 0 0 1rem; }
   .content .framework-also { margin: 0 0 2.4rem; font-size: 0.8rem; line-height: 1.6; }
