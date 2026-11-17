@@ -155,6 +155,3 @@ wide: true
     <a class="framework-action" href="llm-parameter-topology.html" aria-label="Read LLM Parameters — Model, Engine, Request">Read &rarr;</a>
   </article>
 </div>
-
----
-
