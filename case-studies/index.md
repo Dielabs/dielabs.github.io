@@ -83,5 +83,4 @@ wide: true
   </div>
 </div>
 
-<p class="poc-foot">All content is original Dielabs work by Diego Bardella. Most project repositories are private; Dielabs RAG is public on GitHub. The published write-ups document the architecture and decisions in full.</p>
 </div>
