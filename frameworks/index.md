@@ -34,7 +34,8 @@ wide: true
   .content a.phase-card:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
   .content a.phase-card h2 { margin: 0 0 0.7rem; }
   .content a.phase-card p { margin: 0 0 1rem; font-size: 0.95rem; line-height: 1.7; color: var(--muted); }
-  .content .phase-meta { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; color: var(--blue); }</style>
+  .content .phase-meta { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; color: var(--blue); }  .content .framework-path-title { margin: 0 0 0.7rem; }
+</style>
 
 # Frameworks
 
@@ -61,7 +62,7 @@ wide: true
 
 <div class="framework-group single">
   <article class="framework-card framework-path" id="ai-technical-presales">
-    <p class="framework-label">The end-to-end path</p>
+    <h2 class="framework-path-title">The end-to-end path</h2>
     <h3>AI Technical Presales Framework</h3>
     <p>Use it to take an AI deal from the first customer meeting to delivery: qualify the opportunity and the use case, turn requirements and risks into a proposal with clear acceptance criteria, and hand the project over. The sections above are the methods it uses at each step.</p>
     <a class="framework-action" href="mailto:info@dielabs.eu?subject=AI%20Technical%20Presales%20Framework%20%E2%80%94%20request" aria-label="Request access to AI Technical Presales Framework">Request access &rarr;</a>
