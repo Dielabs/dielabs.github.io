@@ -25,7 +25,7 @@ wide: true
 
 # Build &amp; operate
 
-<p class="framework-question">How do we prepare the data, hand the system over and keep it dependable in production?</p>
+<p class="framework-question">How do we get it running and keep it dependable? Prepare the documents the system will read, hand it over so someone else can run it, and monitor it in production to diagnose slowdowns before users notice.</p>
 
 <div class="framework-group">
   <article class="framework-card" id="data-preparation">

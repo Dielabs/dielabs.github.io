@@ -52,17 +52,17 @@ wide: true
 <div class="phase-list">
   <a class="phase-card" href="qualify-design.html">
     <h2>Qualify &amp; design the solution</h2>
-    <p>Is it worth building, and what must the system do? Need, constraints, agents, retrieval and controls.</p>
+    <p>Is it worth building, and what must the system do? Start from the real need, the data and the constraints, then design the solution: which agents, how retrieval works, what the system may do on its own and where a person stays in control.</p>
     <span class="phase-meta">6 frameworks &middot; Open &rarr;</span>
   </a>
   <a class="phase-card" href="model-sizing.html">
     <h2>Choose the model &amp; size it</h2>
-    <p>Which model, which resources, and what can we prove? Selection and sizing first, then measurements that confirm or correct them.</p>
+    <p>Which model, how many resources, and what can we prove? Pick an open-weight model on your real workload, size GPUs and serving stack against service targets, then measure to confirm or correct the numbers before going to production.</p>
     <span class="phase-meta">4 frameworks &middot; Open &rarr;</span>
   </a>
   <a class="phase-card" href="build-operate.html">
     <h2>Build &amp; operate</h2>
-    <p>How do we prepare the data, hand the system over and keep it dependable in production?</p>
+    <p>How do we get it running and keep it dependable? Prepare the documents the system will read, hand it over so someone else can run it, and monitor it in production to diagnose slowdowns before users notice.</p>
     <span class="phase-meta">3 frameworks &middot; Open &rarr;</span>
   </a>
 </div>

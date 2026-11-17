@@ -25,7 +25,7 @@ wide: true
 
 # Qualify &amp; design the solution
 
-<p class="framework-question">Is it worth building, and what must the system do? Need, constraints, agents, retrieval and controls.</p>
+<p class="framework-question">Is it worth building, and what must the system do? Start from the real need, the data and the constraints, then design the solution: which agents, how retrieval works, what the system may do on its own and where a person stays in control.</p>
 
 <div class="framework-group">
   <article class="framework-card" id="rag-discovery">

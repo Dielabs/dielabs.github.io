@@ -25,7 +25,7 @@ wide: true
 
 # Choose the model &amp; size it
 
-<p class="framework-question">Which model, which resources, and what can we prove? Selection and sizing first, then measurements that confirm or correct them.</p>
+<p class="framework-question">Which model, how many resources, and what can we prove? Pick an open-weight model on your real workload, size GPUs and serving stack against service targets, then measure to confirm or correct the numbers before going to production.</p>
 
 <div class="framework-group">
   <article class="framework-card" id="model-selection">
