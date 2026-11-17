@@ -158,4 +158,3 @@ wide: true
 
 ---
 
-*Methods and guides by Diego Bardella, Dielabs, including original work and adaptations with sources credited in each document.*
