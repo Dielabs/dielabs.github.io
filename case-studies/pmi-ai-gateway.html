@@ -320,7 +320,7 @@
       <div class="conn"><span class="ar">→</span></div>
       <div class="stage edge"><span class="role">Customer VM</span><span class="name">Open WebUI · chats, files, vectors</span></div>
       <div class="conn crossing"><span class="ar">→</span><span class="tag">prompt</span></div>
-      <div class="stage cloud"><span class="role">Nebius · API</span><span class="name">Chat · task · compaction · embedding</span></div>
+      <div class="stage cloud"><span class="role">Nebius · chat in USA</span><span class="name">Chat · task · compaction · embedding</span></div>
     </div>
     <div class="pipeline">
       <div class="stage edge"><span class="role">Customer VM</span><span class="name">Open WebUI</span></div>
@@ -332,19 +332,19 @@
 
     <div class="legend">
       <span><i class="dot edge"></i> Customer VM — EU cloud, 4 vCPU / 8 GB, no GPU</span>
-      <span><i class="dot cloud"></i> Nebius — model API</span>
+      <span><i class="dot cloud"></i> Nebius — GLM-5.3 and Qwen3.8-27B in USA</span>
       <span><i class="dot ext"></i> Tavily — web search API</span>
     </div>
 
     <div class="boundary-note">
-      <b>Where the data goes.</b> The VM stores chat history, original uploads and the search index. For a document question, the model provider receives the prompt and the text selected for the answer. When the model uses Tavily, the search terms or URLs in that tool call go to the external web service.
+      <b>Where the data goes.</b> The VM stores chat history, original uploads and the search index. Nebius receives extracted text for embeddings, and the prompt and selected passages for answers. On the current template, Nebius lists US regions for GLM-5.3 and Qwen3.8-27B. Migration to an EU endpoint is pending. Tavily receives the search terms or URLs used for web research. <a href="https://tokenfactory.nebius.com/api/public/models_info">Nebius model regions, checked 17 November 2026</a>.
     </div>
   </section>
 
   <!-- MODELS -->
   <section class="models">
     <div class="sec-head"><span class="num">02</span><h2>What the user sees</h2></div>
-    <p class="lead">These are the three profiles designed for employees. The lab also exposes additional models for evaluation.</p>
+    <p class="lead">The model picker offers these three profiles to employees.</p>
 
     <div class="cards models-grid">
       <div class="card">
@@ -419,8 +419,8 @@
     <table class="diff">
       <tr><th>Area</th><th>Default</th><th>PMI AI Gateway</th></tr>
       <tr><td>Image</td><td>moving tag</td><td class="after">pinned by digest, upgrades tested on the template first</td></tr>
-      <tr><td>Models</td><td>hundreds, new ones hidden by per-model grants</td><td class="after">named employee profiles with explicit access grants</td></tr>
-      <tr><td>Output length</td><td>none (provider injects 200k on one model)</td><td class="after">16,000 tokens; 32,000 for Excel</td></tr>
+      <tr><td>Models</td><td>hundreds, new ones hidden by per-model grants</td><td class="after">all users can access every exposed model; visibility is set by the connection whitelist</td></tr>
+      <tr><td>Output length</td><td>unset; Regolo injected 200k on GLM-5.2 in the October 2026 test</td><td class="after">16,000 tokens; 32,000 for Excel</td></tr>
       <tr><td>Context</td><td>no compaction</td><td class="after">compaction per model at ~75% of real input window</td></tr>
       <tr><td>Tool iterations</td><td>256 — no real brake</td><td class="after">40</td></tr>
       <tr><td>Web search</td><td>off, or a fixed pipeline</td><td class="after">standard web search and Deep Research in the same chat, one mode per request</td></tr>
@@ -543,15 +543,15 @@
       <div class="card decision">
         <h4>A context budget the product never had</h4>
         <div class="row"><span class="tag">Problem</span>The interface counts tool iterations, not tokens or euros — 256 by default.</div>
-        <div class="row"><span class="tag">Choice</span>40 iterations, 16k output cap, compaction threshold per model on the measured window.</div>
-        <div class="row"><span class="tag result">Result</span>Long chats compacted from 41.5k to 13.9k tokens, answer still correct.</div>
+        <div class="row"><span class="tag">Choice</span>40 iterations, output caps of 16k (32k for Excel), compaction thresholds per model.</div>
+        <div class="row"><span class="tag result">Result</span>In the 15 October 2026 test on Regolo, compaction reduced a chat from 41.5k to 13.9k tokens while preserving the facts needed for the answer.</div>
       </div>
 
       <div class="card decision">
         <h4>Upgrades as part of the service</h4>
         <div class="row"><span class="tag">Problem</span>A moving tag pulls a different image on a new machine; database migrations don't roll back.</div>
         <div class="row"><span class="tag">Choice</span>Digest pinning, "new version" notice off, upgrades tested on the template first.</div>
-        <div class="row"><span class="tag result">Result</span>0.11.4 → 0.12.2 done with a checklist of known traps and a rollback path.</div>
+        <div class="row"><span class="tag result">Result</span>0.12.2 → 0.13.3 deployed on 16 November 2026, with backups and post-upgrade checks.</div>
       </div>
 
       <div class="card decision">
@@ -578,8 +578,8 @@
       <div class="card incident">
         <h4>Long prompts failed on the default model</h4>
         <div class="row"><span class="tag">Symptom</span>HTTP 400 with only 6–12k tokens of input.</div>
-        <div class="row"><span class="tag">Cause</span>The provider silently injected a 200k output budget on that model.</div>
-        <div class="row"><span class="tag fix">Fix</span>Explicit 16k output cap — a 30k-token input now answers in 9.1s.</div>
+        <div class="row"><span class="tag">Cause</span>In October 2026, Regolo injected a 200k output budget on GLM-5.2 when the client omitted the limit.</div>
+        <div class="row"><span class="tag fix">Fix</span>An explicit 16k output cap let the same 30k-token input complete in 9.1s in the 15 October 2026 Regolo test.</div>
       </div>
 
       <div class="card incident">
@@ -607,7 +607,7 @@
         <h4>A sidebar full of "Empty Conversation"</h4>
         <div class="row"><span class="tag">Symptom</span>Chats opened with "ciao" got an English, useless title — forever.</div>
         <div class="row"><span class="tag">Cause</span>The title is generated once, from the first exchange, in English when unsure.</div>
-        <div class="row"><span class="tag fix">Fix</span>Italian title template with a "Nuova conversazione" rule — 0.4s per title.</div>
+        <div class="row"><span class="tag fix">Fix</span>Italian title template with a "Nuova conversazione" rule. The October 2026 test on Regolo took 0.4s per title.</div>
       </div>
 
       <div class="card incident">
@@ -650,13 +650,13 @@
   <!-- MEASURED RESULTS -->
   <section class="results">
     <div class="sec-head"><span class="num">10</span><h2>Some measured results</h2></div>
-    <p class="lead">Measured on the template instance, not on a benchmark suite.</p>
+    <p class="lead">Measurements from template tests. The 0.4s title, 9.1s long-prompt response and 41.5k→13.9k compaction results were recorded on Regolo in October 2026, before the move to Nebius.</p>
     <div class="metrics" aria-label="Measured results">
       <div class="metric"><span class="v">~1 GB</span><span class="l">Open WebUI alone at rest</span></div>
       <div class="metric"><span class="v">2.38 GiB</span><span class="l">Docling RAM after the upload tests</span></div>
-      <div class="metric"><span class="v">0.4s</span><span class="l">chat title, task model</span></div>
-      <div class="metric"><span class="v">9.1s</span><span class="l">30k‑token input, default model</span></div>
-      <div class="metric"><span class="v">41.5k→13.9k</span><span class="l">tokens after compaction</span></div>
+      <div class="metric"><span class="v">0.4s</span><span class="l">chat title · Regolo, Oct 2026</span></div>
+      <div class="metric"><span class="v">9.1s</span><span class="l">30k-token input · Regolo, Oct 2026</span></div>
+      <div class="metric"><span class="v">41.5k→13.9k</span><span class="l">compaction · Regolo, Oct 2026</span></div>
       <div class="metric"><span class="v">256→40</span><span class="l">tool iterations per answer</span></div>
       <div class="metric"><span class="v">4096</span><span class="l">embedding dimensions</span></div>
     </div>
