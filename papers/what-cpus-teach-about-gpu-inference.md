@@ -7,7 +7,7 @@ title: "What CPUs Teach About GPU Inference"
 
 NUMA-Aware Parallel Architectures on Dell PowerEdge R730 with vLLM
 
-## What this test teaches
+## Key takeaways
 
 Analysis and benchmarking of LLM sharding architectures on a Dell PowerEdge R730 dual-socket server (2× Xeon E5-2680 v4, 128 GB DDR4). The goal is to use CPU inference as an analytical instrument to understand the internal mechanics of the inference stack: how architectural patterns behave as workload changes, where real bottlenecks emerge, and which principles are universal regardless of GPU hardware.
 

@@ -10,7 +10,7 @@ _Qwen2.5-7B-Instruct-AWQ · Mistral-7B-Instruct-v0.3-FP8 · RTX 4070 Super 12GB 
 
 ---
 
-## What this test teaches
+## Key takeaways
 
 - Monitor output quality separately from infrastructure. The model looped with a calm GPU and the KV cache at 20%: no hardware metric showed it.
 - After a fix, test again for the next problem. Raising the repetition penalty removed the loop and exposed a second limit: text degraded after ~5,000 generated tokens, far below the 32K context window.

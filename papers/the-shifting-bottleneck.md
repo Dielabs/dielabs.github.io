@@ -11,7 +11,7 @@ title: "The Shifting Bottleneck"
 
 ---
 
-## What this test teaches
+## Key takeaways
 
 - Ask for the workload and the SLO before answering "how many users?". With the same GPU, model and settings, long prompts stopped at ~18 concurrent streams; chat traffic reached 32 and was still scaling.
 - Expect bottlenecks to move, not disappear. An FP8 KV cache raised the capacity ceiling from ~10 to ~18 streams; changing the workload moved the limit from VRAM capacity to memory bandwidth.

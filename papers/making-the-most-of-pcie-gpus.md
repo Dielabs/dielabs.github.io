@@ -28,7 +28,7 @@ description: "Measured best practices for multi-GPU PCIe infrastructure: topolog
 
 <div class="takeaways" markdown="1">
 
-## What this test teaches
+## Key takeaways
 
 - Qualify the paths your workload will use, including simultaneous transfers. A GPU specification does not describe a whole server.
 - Measure effective topology inside a VM. The topology exposed to the guest can look uniform while performance is not.

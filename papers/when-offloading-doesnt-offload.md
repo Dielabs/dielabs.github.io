@@ -11,7 +11,7 @@ _Analysis, benchmarks and real limits — An experimental investigation into KV 
 
 ---
 
-## What this test teaches
+## Key takeaways
 
 - Check which "offloading" you are enabling. The name covers three different mechanisms: a prefix cache (LMCache), preemption recovery (the vLLM native connector) and full KV swap (research frameworks).
 - Do not expect extra capacity. The scheduler still admits only what fits in VRAM; the native connector reloads preempted requests from RAM instead of recomputing them.

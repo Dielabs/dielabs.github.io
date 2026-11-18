@@ -17,7 +17,7 @@ description: "MoE expert offloading in llama.cpp on a 12 GB GPU: a 35B model on 
 
 <div class="tldr" markdown="1">
 
-## What this test teaches
+## Key takeaways
 
 A 35B Mixture-of-Experts model can run on a 12 GB consumer GPU with part of its weights in system RAM. We tested three placements of the same model: all CPU, all experts in RAM with 3.5 GB of VRAM used, and experts split between RAM and VRAM with 10.6 GB used. The main findings:
 
