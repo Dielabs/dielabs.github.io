@@ -33,15 +33,15 @@ description: "An end-to-end eval of PMI AI Excel with three frontier open-weight
 
 <div class="tldr" markdown="1">
 
-## What this test teaches
+## Key takeaways
 
-- **Same models, very different results.** From 5 successes out of 18 to 30 out of 36 by changing the harness and the briefs, not the models.
-- **The three models perform very similarly.** 10 successes out of 12 each, no calculation errors: the choice is made on time, cost and severity of errors.
-- **In an agent, cost follows the turns.** Every turn resends the whole conversation; a single websocket drop caused 28 empty calls and was worth about $1.71 of GLM's $3.89.
-- **The parser accepts, Excel refuses.** The models checked their own files with openpyxl, which said "all good": verification must be done with the program the user will use.
-- **"Done and verified" is not proof.** With the interpreter disconnected, a model declared it had created and checked files without running anything.
-- **A "standard" parameter is not standard.** On GLM and Kimi, `reasoning_effort` "high" produced less reasoning than the default: it has to be measured, not assumed.
-- **The choice: GLM 5.3 on Nebius,** the only model with no errors attributable to it. A product choice, not a statistical superiority. Keeping data in the EU in production needs a dedicated EU endpoint with zero data retention; path B is GLM 5.2 on Regolo, in Italy.
+- **The harness matters more than the model.** Same three models: from 5/18 to 30/36 successes just by fixing the harness configuration bugs we found.
+- **The three models are close.** 10/12 each, with no calculation errors. The choice comes down to time, cost and how serious the mistakes are.
+- **Agent cost grows with every turn.** Each turn resends the whole conversation. One dropped connection caused 28 empty calls, about $1.71 of GLM's $3.89 total.
+- **Check the file in the app the user will open.** The models checked their files with openpyxl and got "all good"; Excel refused them.
+- **"Done and verified" is not proof.** With the interpreter off, one model said it had created and checked the files without running anything.
+- **Measure parameters, don't trust their names.** On GLM and Kimi, `reasoning_effort` "high" produced less reasoning than the default.
+- **Our choice: GLM 5.3 on Nebius,** the only model with no errors of its own. It's a product choice, not a statistical win. For EU data in production: a dedicated EU endpoint with zero data retention, or GLM 5.2 on Regolo, in Italy.
 
 </div>
 
