@@ -55,7 +55,7 @@ wide: true
   <a class="poc-card c-pmi" href="pmi-ai-gateway.html">
     <h3>PMI AI Hub</h3>
     <span class="sub">Private AI for small businesses</span>
-    <p>Private AI for small businesses. Employees can edit Excel workbooks, read scanned quotes and compare suppliers’ terms. They can check current information on the web or request Deep Research, with a summary linked to its sources and a complete report to download.</p>
+    <p>Private AI for small businesses. Employees can edit Excel workbooks, create PowerPoint decks from scratch or from their data, read scanned quotes and compare suppliers’ terms. They can check current information on the web or request Deep Research, with a summary linked to its sources and a complete report to download.</p>
     <span class="go">Read the write-up →</span>
   </a>
   <a class="poc-card c-news" href="newsrag.html">

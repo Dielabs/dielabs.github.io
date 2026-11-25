@@ -266,7 +266,7 @@
   /* ---------- PMI AI Hub additions ---------- */
   .stage.ext{border-color:var(--text-faint); border-style:dashed; background:var(--panel-2);}
   .dot.ext{background:var(--text-faint);}
-  .models-grid{grid-template-columns:repeat(3,1fr);}
+  .models-grid{grid-template-columns:repeat(2,1fr);}
   .card .model-id{font-family:var(--mono); font-size:11px; color:var(--cloud-text); display:block; margin-bottom:8px;}
   .diff{width:100%; border-collapse:collapse; font-size:13px; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--panel);}
   .diff th{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-faint); text-align:left; font-weight:500; padding:10px 14px; border-bottom:1px solid var(--line);}
@@ -304,7 +304,7 @@
     <div class="eyebrow">POC — Private AI for small businesses</div>
     <h1>PMI AI Hub</h1>
     <p class="subtitle">Private AI for Italian small businesses.</p>
-    <p class="capabilities">Employees can read scanned quotes, ask questions about contracts and compare suppliers’ terms. They can edit Excel workbooks, check current information on the web or request Deep Research with source links and a downloadable report. Knowledge bases and saved prompts can be shared with colleagues. Italian by default, from the interface to the chat titles.</p>
+    <p class="capabilities">Employees can read scanned quotes, ask questions about contracts and compare suppliers’ terms. They can edit Excel workbooks, create PowerPoint decks from a workbook or from a detailed brief, check current information on the web or request Deep Research with source links and a downloadable report. Knowledge bases and saved prompts can be shared with colleagues. Italian by default, from the interface to the chat titles.</p>
     <p class="thesis">Built on Open WebUI. The value is not the software — it's the two dozen defaults changed, each one measured, justified and written down.</p>
   </header>
 
@@ -320,7 +320,7 @@
       <div class="conn"><span class="ar">→</span></div>
       <div class="stage edge"><span class="role">Customer VM</span><span class="name">Open WebUI · chats, files, vectors</span></div>
       <div class="conn crossing"><span class="ar">→</span><span class="tag">prompt</span></div>
-      <div class="stage cloud"><span class="role">Nebius · chat in USA</span><span class="name">Chat · task · compaction · embedding</span></div>
+      <div class="stage cloud"><span class="role">Regolo · Italy</span><span class="name">Chat · task · compaction · embedding</span></div>
     </div>
     <div class="pipeline">
       <div class="stage edge"><span class="role">Customer VM</span><span class="name">Open WebUI</span></div>
@@ -332,24 +332,24 @@
 
     <div class="legend">
       <span><i class="dot edge"></i> Customer VM — EU cloud, 4 vCPU / 8 GB, no GPU</span>
-      <span><i class="dot cloud"></i> Nebius — GLM-5.3 and Qwen3.8-27B in USA</span>
+      <span><i class="dot cloud"></i> Regolo — open models served from Italy</span>
       <span><i class="dot ext"></i> Tavily — web search API</span>
     </div>
 
     <div class="boundary-note">
-      <b>Where the data goes.</b> The VM stores chat history, original uploads and the search index. Nebius receives extracted text for embeddings, and the prompt and selected passages for answers. On the current template, Nebius lists US regions for GLM-5.3 and Qwen3.8-27B. Migration to an EU endpoint is pending. Tavily receives the search terms or URLs used for web research. <a href="https://tokenfactory.nebius.com/api/public/models_info">Nebius model regions, checked 17 November 2026</a>.
+      <b>Where the data goes.</b> The VM stores chat history, original uploads and the search index. Regolo, an Italian inference provider whose models run in Italy, receives extracted text for embeddings, and the prompt and selected passages for answers. Tavily receives the search terms or URLs used for web research.
     </div>
   </section>
 
   <!-- MODELS -->
   <section class="models">
     <div class="sec-head"><span class="num">02</span><h2>What the user sees</h2></div>
-    <p class="lead">The model picker offers these three profiles to employees.</p>
+    <p class="lead">The model picker offers these four profiles to employees.</p>
 
     <div class="cards models-grid">
       <div class="card">
         <h4>PMI AI</h4>
-        <span class="model-id">GLM-5.3 · default</span>
+        <span class="model-id">GLM-5.2 · default</span>
         <p class="desc">The main profile handles document questions and everyday work. Standard web search and Deep Research are available in the chat.</p>
       </div>
       <div class="card">
@@ -362,9 +362,14 @@
         <span class="model-id">Dedicated workbook profile · Pyodide</span>
         <p class="desc">Opens with the code interpreter on and web search off. Reads, computes, modifies and returns the file.</p>
       </div>
+      <div class="card">
+        <h4>PMI AI PowerPoint</h4>
+        <span class="model-id">Dedicated deck profile · Pyodide + python-pptx</span>
+        <p class="desc">Creates presentations, not just reads them. From scratch, starting from a long, detailed brief, or from a workbook ("three slides for the CEO"): it reads every row, computes the figures in code, checks them against the sheet's own totals and returns a ready .pptx. Attach an existing deck and it becomes the template.</p>
+      </div>
     </div>
 
-    <p style="margin-top:16px; font-size:13px; color:var(--text-dim); font-style:italic;"><b>Background tasks.</b> A separate model (Gemma 3 27B) generates titles and tags.</p>
+    <p style="margin-top:16px; font-size:13px; color:var(--text-dim); font-style:italic;"><b>Background tasks.</b> A separate model (Gemma 4 31B) generates titles, tags and follow-up suggestions.</p>
   </section>
 
   <!-- KNOWLEDGE -->
@@ -377,18 +382,18 @@
       <div class="conn"><span class="ar">→</span></div>
       <div class="stage edge"><span class="role">Customer VM</span><span class="name">Docling OCR · Open WebUI chunks</span></div>
       <div class="conn crossing"><span class="ar">→</span><span class="tag">text</span></div>
-      <div class="stage cloud"><span class="role">Nebius · API</span><span class="name">Embed · Qwen3‑Embedding‑8B</span></div>
+      <div class="stage cloud"><span class="role">Regolo · API</span><span class="name">Embed · Qwen3‑Embedding‑8B</span></div>
       <div class="conn crossing"><span class="ar">→</span><span class="tag">vectors</span></div>
       <div class="stage edge"><span class="role">Customer VM</span><span class="name">Store · Chroma</span></div>
     </div>
     <div class="pipeline">
       <div class="stage client"><span class="role">Focused retrieval</span><span class="name">Question</span></div>
       <div class="conn crossing"><span class="ar">→</span></div>
-      <div class="stage cloud"><span class="role">Nebius · API</span><span class="name">Embed the question</span></div>
+      <div class="stage cloud"><span class="role">Regolo · API</span><span class="name">Embed the question</span></div>
       <div class="conn crossing"><span class="ar">→</span></div>
       <div class="stage edge"><span class="role">Customer VM</span><span class="name">Find relevant passages · top 20</span></div>
       <div class="conn crossing"><span class="ar">→</span><span class="tag">text</span></div>
-      <div class="stage cloud"><span class="role">Nebius · API</span><span class="name">Answer · chat model</span></div>
+      <div class="stage cloud"><span class="role">Regolo · API</span><span class="name">Answer · chat model</span></div>
     </div>
 
     <div class="cards outcomes-grid">
@@ -444,9 +449,9 @@
 
     <div class="cards features-grid">
       <div class="card">
-        <h4>Editing Office files in chat</h4>
-        <div class="chip-row"><span class="chip">Excel: live</span><span class="chip">Word · PowerPoint editing: planned</span><span class="chip">runs in the browser</span></div>
-        <p class="desc">With the code interpreter enabled, the assistant can run Python in the employee’s browser (Pyodide) to calculate from workbook cells. A dedicated model knows the traps — totals rows, Excel Tables to extend, files with macros or charts to warn about. Word and PowerPoint will follow the same seamless flow: upload, ask, get the file back.</p>
+        <h4>Office files in chat</h4>
+        <div class="chip-row"><span class="chip">Excel: live</span><span class="chip">PowerPoint: practically ready</span><span class="chip">Word: planned</span><span class="chip">runs in the browser</span></div>
+        <p class="desc">With the code interpreter enabled, the assistant can run Python in the employee’s browser (Pyodide) to calculate from workbook cells. A dedicated model knows the traps — totals rows, Excel Tables to extend, files with macros or charts to warn about. PowerPoint goes one step further: the assistant <b>creates</b> decks. Write a detailed brief and get a complete deck built from scratch, or hand it a workbook and download a .pptx built from computed figures, each one traced to its source. Verified in tests and already refined on a first eval, it is practically ready. Word will follow the same flow: upload, ask, get the file back.</p>
       </div>
       <div class="card">
         <h4>Privacy by design</h4>
@@ -455,7 +460,8 @@
       </div>
       <div class="card">
         <h4>Web search and Deep Research</h4>
-        <p class="desc">The assistant can check current facts on the web or carry out a deeper investigation when requested. Deep Research checks quantitative claims against retrieved source passages and produces a cited summary with a complete Markdown report to read or download. Both research options can stay enabled, with one mode used per request.</p>
+        <div class="chip-row"><span class="chip">Deep Research: beta</span><span class="chip">cited sources</span></div>
+        <p class="desc">The assistant can check current facts on the web or carry out a deeper investigation when requested. Deep Research checks quantitative claims against retrieved source passages and produces a cited summary with a complete Markdown report to read or download. A second model reviews the draft before it is published. Both research options can stay enabled, with one mode used per request.</p>
       </div>
       <div class="card">
         <h4>Shared knowledge and prompts</h4>
@@ -484,7 +490,7 @@
         <h3>Customer VM</h3>
         <span class="sub">EU cloud · one per company · no GPU</span>
         <ul>
-          <li><span class="k">Interface</span><span class="v">Open WebUI 0.13.3, pinned base image</span></li>
+          <li><span class="k">Interface</span><span class="v">Open WebUI 0.13.4, pinned base image</span></li>
           <li><span class="k">Extraction</span><span class="v">Docling Serve · CPU OCR</span></li>
           <li><span class="k">HTTPS</span><span class="v">Caddy, Let's Encrypt, HSTS</span></li>
           <li><span class="k">Data</span><span class="v">SQLite + Chroma, in one volume</span></li>
@@ -493,12 +499,13 @@
         </ul>
       </div>
       <div class="stack-col cloud-col">
-        <h3>Nebius</h3>
-        <span class="sub">Model API · OpenAI-compatible</span>
+        <h3>Regolo</h3>
+        <span class="sub">Model API · OpenAI-compatible · Italy</span>
         <ul>
-          <li><span class="k">Default</span><span class="v">GLM-5.3</span></li>
+          <li><span class="k">Default</span><span class="v">GLM-5.2 (also Excel, PowerPoint, Deep Research)</span></li>
           <li><span class="k">Small</span><span class="v">qwen3.8‑27b (also compaction)</span></li>
-          <li><span class="k">Task model</span><span class="v">Gemma 3 27B</span></li>
+          <li><span class="k">Task model</span><span class="v">Gemma 4 31B</span></li>
+          <li><span class="k">Research review</span><span class="v">gpt-oss-120b</span></li>
           <li><span class="k">Embeddings</span><span class="v">Qwen3‑Embedding‑8B, 4096‑dim</span></li>
         </ul>
       </div>
@@ -551,7 +558,7 @@
         <h4>Upgrades as part of the service</h4>
         <div class="row"><span class="tag">Problem</span>A moving tag pulls a different image on a new machine; database migrations don't roll back.</div>
         <div class="row"><span class="tag">Choice</span>Digest pinning, "new version" notice off, upgrades tested on the template first.</div>
-        <div class="row"><span class="tag result">Result</span>0.12.2 → 0.13.3 deployed on 16 November 2026, with backups and post-upgrade checks.</div>
+        <div class="row"><span class="tag result">Result</span>0.12.2 → 0.13.3 on 16 November and 0.13.4 on 22 November 2026, each with backups and post-upgrade checks.</div>
       </div>
 
       <div class="card decision">
@@ -616,6 +623,20 @@
         <div class="row"><span class="tag">Cause</span>Values written into the totals row; the Excel Table not extended.</div>
         <div class="row"><span class="tag fix">Fix</span>Explicit rules in the Excel model — file reopened clean.</div>
       </div>
+
+      <div class="card incident">
+        <h4>Requests that never ended</h4>
+        <div class="row"><span class="tag">Symptom</span>About one chat request in three hung: no answer, no error, a spinner forever.</div>
+        <div class="row"><span class="tag">Cause</span>The provider kept the stream open without sending data, and Open WebUI waits with no limit by default.</div>
+        <div class="row"><span class="tag fix">Fix</span>A stream silent for 60 seconds is closed with a clear error in chat. The product moved back to Regolo.</div>
+      </div>
+
+      <div class="card incident">
+        <h4>Confident answers on old versions</h4>
+        <div class="row"><span class="tag">Symptom</span>Asked for the latest Open WebUI release, the assistant named an old one.</div>
+        <div class="row"><span class="tag">Cause</span>The model did not know today's date and answered from search snippets.</div>
+        <div class="row"><span class="tag fix">Fix</span>The prompt carries today's date and asks to open the main source for versions, prices, dates and news.</div>
+      </div>
     </div>
     <p class="lesson">Lesson: verify the content, not the status code — a 200 can carry an empty answer, or the web app's own HTML.</p>
   </section>
@@ -630,15 +651,15 @@
       </div>
       <div class="roadmap-item">
         <h4>Hardening before the first customer</h4>
-        <p>Migration to a Nebius EU endpoint with zero data retention, a real Let's Encrypt certificate on an EU VM, two-factor authentication for local accounts, off-site backups, and an alert when the service or the provider goes down.</p>
+        <p>A real Let's Encrypt certificate on an EU VM, two-factor authentication for local accounts, off-site backups, and an alert when the service or the provider goes down.</p>
       </div>
       <div class="roadmap-item">
         <h4>Enhanced edition</h4>
         <p>Same workspace with a LiteLLM gateway in front of the models and full Microsoft 365 integration, for companies that outgrow the light version.</p>
       </div>
       <div class="roadmap-item">
-        <h4>Word and PowerPoint editing <span style="color:var(--text-faint);font-weight:400;">(planned)</span></h4>
-        <p>The same seamless integration Excel has today, extended to Word and PowerPoint: create documents and decks with the company letterhead, or upload one and get it back edited. Candidate tools reviewed; code to be audited and pinned before any install.</p>
+        <h4>PowerPoint release, then Word</h4>
+        <p>PowerPoint creation already works in tests: next comes the release, after a wider eval on real company files. Word follows the same seamless flow: documents with the company letterhead, or upload one and get it back edited. Candidate tools for Word reviewed; code to be audited and pinned before any install.</p>
       </div>
       <div class="roadmap-item">
         <h4>A European web search</h4>
@@ -650,7 +671,7 @@
   <!-- MEASURED RESULTS -->
   <section class="results">
     <div class="sec-head"><span class="num">10</span><h2>Some measured results</h2></div>
-    <p class="lead">Measurements from template tests. The 0.4s title, 9.1s long-prompt response and 41.5k→13.9k compaction results were recorded on Regolo in October 2026, before the move to Nebius.</p>
+    <p class="lead">Measurements from template tests. The 0.4s title, 9.1s long-prompt response and 41.5k→13.9k compaction results were recorded on Regolo in October 2026.</p>
     <div class="metrics" aria-label="Measured results">
       <div class="metric"><span class="v">~1 GB</span><span class="l">Open WebUI alone at rest</span></div>
       <div class="metric"><span class="v">2.38 GiB</span><span class="l">Docling RAM after the upload tests</span></div>
