@@ -37,19 +37,19 @@ Cost per completed task. Time to a usable answer. Corrections a person still has
 
 *Measured in [What It Costs to Be Right](/papers/what-it-costs-to-be-right.html): six models solved about the same share of exercises, at a cost per solved exercise that varied more than tenfold.*
 
-## 3. Run the right evals.
+## 3. Run the right Evaluation Loops.
 
 Build a golden test set from real production tasks, with expected outcomes checked by domain experts. Use it to compare alternatives, catch regressions and guide improvements to the system.
 
-A capacity benchmark with synthetic prompts tells you how much the system can carry; only an eval on real tasks tells you whether the answers are good. You need both.
+A capacity benchmark with synthetic prompts tells you how much the system can carry; only an Evaluation Loop on real tasks tells you whether the answers are good. You need both.
 
-*Measured in [When LLM Evals Become Harness Tuning](/papers/when-llm-evals-become-harness-tuning.html): on a real workbook, files that the models' own check had accepted were refused by Excel.*
+*Measured in [When LLM Evaluation Loops Become Harness Tuning](/papers/when-llm-evals-become-harness-tuning.html): on a real workbook, files that the models' own check had accepted were refused by Excel.*
 
 ## 4. Evaluate the system, not the model.
 
 The model is one part. The prompt, the tools, the client and the limits around it decide the result as much as the model does. Test the whole path, from the request to the output the user receives, before comparing models.
 
-*Measured in [When LLM Evals Become Harness Tuning](/papers/when-llm-evals-become-harness-tuning.html): the same three models went from 5 successes out of 18 to 30 out of 36 when only the harness and the briefs changed.*
+*Measured in [When LLM Evaluation Loops Become Harness Tuning](/papers/when-llm-evals-become-harness-tuning.html): the same three models went from 5 successes out of 18 to 30 out of 36 when only the harness and the briefs changed.*
 
 ## 5. Choose the smallest model that passes.
 

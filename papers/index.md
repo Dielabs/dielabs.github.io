@@ -66,7 +66,7 @@ How reliably can a model or agent complete a task, at what cost, and in how much
     <p>Being right costs money or time. Six cloud models solved about the same share of 50 coding exercises, at a cost per solved exercise that varied more than tenfold. A local model on a 12 GB GPU landed in the same range with thinking on, paying in time: over four minutes per exercise.</p>
   </a>
   <a class="paper-card" href="when-llm-evals-become-harness-tuning.html" aria-labelledby="when-llm-evals-become-harness-tuning">
-    <h3 id="when-llm-evals-become-harness-tuning">When LLM Evals Become Harness Tuning</h3>
+    <h3 id="when-llm-evals-become-harness-tuning">When LLM Evaluation Loops Become Harness Tuning</h3>
     <p>We set out to choose a model and ended up fixing the harness. Same three models, two rounds: from 5 successes out of 18 to 30 out of 36. Eight of the first 12 failures came from the harness and the client, not the model. In an agent, evaluate the harness before the model.</p>
   </a>
 </div>

@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "When LLM Evals Become Harness Tuning"
+title: "When LLM Evaluation Loops Become Harness Tuning"
 redirect_from:
 - /papers/when-llm-evals-become-harness-evals
 - /papers/when-llm-evals-become-harness-evals.html
-description: "An end-to-end eval of PMI AI Excel with three frontier open-weight models: from 5 successes out of 18 to 30 out of 36, without changing the model."
+description: "An end-to-end Evaluation Loop on PMI AI Excel with three frontier open-weight models: from 5 successes out of 18 to 30 out of 36, without changing the model."
 ---
 
 <style>
@@ -21,11 +21,11 @@ description: "An end-to-end eval of PMI AI Excel with three frontier open-weight
   @media (max-width: 700px) { .content > table { display: block; overflow-x: auto; } }
 </style>
 
-# When LLM Evals Become Harness Tuning
+# When LLM Evaluation Loops Become Harness Tuning
 
 <p class="paper-byline">Diego Bardella · Dielabs · November 2026</p>
 
-## Evaluating an agentic assistant: the PMI AI Excel eval
+## Evaluating an agentic assistant: the PMI AI Excel Evaluation Loop
 
 <p class="paper-meta"><strong>Lab:</strong> Dielabs &nbsp;<strong>System:</strong> PMI AI Excel, OpenWebUI 0.12.2 + Pyodide &nbsp;<strong>Models:</strong> GLM 5.3, Kimi K3.1 Pro, DeepSeek V4 Pro, via Nebius &nbsp;<strong>Test bed:</strong> 10 exercises on a real administrative workbook, every result checked in Excel &nbsp;<strong>Measured:</strong> November 2026 (prices as of 13 November 2026)</p>
 
@@ -53,7 +53,7 @@ In an agentic assistant the model does not work alone. It receives a system prom
 
 Evaluating **end-to-end** means measuring the whole path: from the user's request to the file produced, opened in the application the user will actually use.
 
-The starting question was practical: which model to use for SMEs' Excel files. Answering it required trials on the whole system, with a real file. Along the way the eval changed function: each round of trials revealed a defect in the harness, which was fixed before the next round. In the end the model choice came, but the main value was a harness that works.
+The starting question was practical: which model to use for SMEs' Excel files. Answering it required trials on the whole system, with a real file. Along the way the Evaluation Loop changed function: each round of trials revealed a defect in the harness, which was fixed before the next round. In the end the model choice came, but the main value was a harness that works.
 
 ## 2. The system under test
 
@@ -135,7 +135,7 @@ The "file needing repair" class was born after v1. An .xlsx file is a ZIP archiv
 
 **Classify by cause before counting.** Every unsuccessful outcome is attributed to a cause. The user always sees the same thing, "no good file", but underneath there are very different symptoms: request never sent, tools not available to the model, token cap exhausted, defective file, wrong data.
 
-| Cause | Examples in this eval |
+| Cause | Examples in this Evaluation Loop |
 |---|---|
 | Model | File that Excel does not open; label added out of place |
 | Harness | Token cap consumed by reasoning; file text in the prompt; openpyxl loading bug |
@@ -145,7 +145,7 @@ The "file needing repair" class was born after v1. An .xlsx file is a ZIP archiv
 
 Without this step a network fault or an ambiguous brief becomes "the model got it wrong", and the model is chosen for the wrong reasons.
 
-## 5. From v1 to v2: the eval that builds the harness
+## 5. From v1 to v2: the Evaluation Loop that builds the harness
 
 **v1 (9–10 November).** v1 configuration from the table in §2. Campaign suspended after 18 attempts: GLM 10, Kimi 8, DeepSeek not yet started. Result: 5 successes. GLM had 3 successes and 7 failures; Kimi 2 successes, 1 partial and 5 failures.
 
@@ -253,7 +253,7 @@ The estimates **do not apply the cache discount**: many providers charge much le
 - **DeepSeek** is the cheapest and uses the fewest input tokens; it has a minor error.
 - **GLM** has no errors attributable to the model; it is the slowest on long tasks.
 
-**The choice.** GLM costs about $3.89 against DeepSeek's $1.93, but with the replica hit by the websocket removed, which does not depend on the model, it drops to about $2.18: the two are close. At similar cost, reliability decides: we chose the only model with no attributable errors, **GLM 5.3 on Nebius**. In production "PMI AI Excel" moves from GLM 5.2 on Regolo to GLM 5.3 on Nebius, with the v2 configuration plus a rule on disconnection (§7.5). This is still a test setup. Nebius's shared per-token endpoints have no fixed region and keep inputs and outputs by default, so a production rollout that promises data in the EU needs a dedicated endpoint in an EU region with zero data retention enabled. Path B is GLM 5.2 on Regolo, in Italy: the model PMI AI Excel used before this eval, not re-run on the v2 suite. With one or two trials per case, this is a product choice and not a statistical superiority: zero errors against one, over 12 trials, is not a measured difference.
+**The choice.** GLM costs about $3.89 against DeepSeek's $1.93, but with the replica hit by the websocket removed, which does not depend on the model, it drops to about $2.18: the two are close. At similar cost, reliability decides: we chose the only model with no attributable errors, **GLM 5.3 on Nebius**. In production "PMI AI Excel" moves from GLM 5.2 on Regolo to GLM 5.3 on Nebius, with the v2 configuration plus a rule on disconnection (§7.5). This is still a test setup. Nebius's shared per-token endpoints have no fixed region and keep inputs and outputs by default, so a production rollout that promises data in the EU needs a dedicated endpoint in an EU region with zero data retention enabled. Path B is GLM 5.2 on Regolo, in Italy: the model PMI AI Excel used before this Evaluation Loop, not re-run on the v2 suite. With one or two trials per case, this is a product choice and not a statistical superiority: zero errors against one, over 12 trials, is not a measured difference.
 
 ## 7. Things we did not expect
 
@@ -294,7 +294,7 @@ Decisions taken: the 40-iteration limit was not reduced, because it is a global 
 
 ## 8. Lessons and best practices
 
-**Lessons.** Beyond the surprises in §7, the eval left some general lessons.
+**Lessons.** Beyond the surprises in §7, the Evaluation Loop left some general lessons.
 
 - **Frontier open-weight models perform very similarly.** With a correct harness and clear briefs, 10 successes out of 12 for all three and no calculation errors. Choosing requires other criteria: time, cost, severity of errors.
 - **The test file must be real.** The pre-test with a synthetic 6-cell file passed, and showed none of the real causes. The problems emerged only with the real workbook: size, formulas, layout designed for people.
@@ -303,7 +303,7 @@ Decisions taken: the 40-iteration limit was not reduced, because it is a global 
 - **The execution environment enters the critical path.** With the interpreter in the browser, the network and the behaviour of the user's PC decide whether the task gets to the end. The provider can fail without retries. These are parts of the system to be evaluated like the model.
 - **Criteria must be made uniform, and corrections declared.** The same behaviour judged in two ways on different models distorts the comparison. Correcting afterwards is legitimate if the correction applies to all, is declared and does not rewrite the archives.
 
-**Best practices for the next evals.**
+**Best practices for the next Evaluation Loops.**
 
 1. **Evaluate the harness, not just the model.** Measure end-to-end, but classify every outcome by cause (model, harness, client, provider, brief) before counting.
 2. **Pre-test on the real material**, with at least one file-writing case for each model and with the final configuration.
@@ -340,7 +340,7 @@ Decisions taken: the 40-iteration limit was not reduced, because it is a global 
 
 ## 10. Conclusions and open items
 
-On this task the three frontier open-weight models perform very similarly: 10 successes out of 12 each and no calculation errors. The real work of the eval was something else: finding, round after round, the defects in the harness that prevented the models from expressing themselves. From 5 successes out of 18 to 30 out of 36, without changing the model. The model was chosen at the end, on errors and cost: GLM 5.3.
+On this task the three frontier open-weight models perform very similarly: 10 successes out of 12 each and no calculation errors. The real work of the Evaluation Loop was something else: finding, round after round, the defects in the harness that prevented the models from expressing themselves. From 5 successes out of 18 to 30 out of 36, without changing the model. The model was chosen at the end, on errors and cost: GLM 5.3.
 
 Still open:
 
