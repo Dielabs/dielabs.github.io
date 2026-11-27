@@ -38,7 +38,7 @@ nav, .site-nav { background: #232928f5; border-color: var(--border); }
   color: var(--blue);
 }
 .nav-logo, .footer-logo { color: var(--text); }
-.nav-cv, .private-card { opacity: 1; }
+.private-card { opacity: 1; }
 body > .hero .orb { display: none; }
 body > .hero > .hero-content {
   display: grid;
